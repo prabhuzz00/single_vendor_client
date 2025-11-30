@@ -1505,6 +1505,18 @@ p:not(:last-of-type) {
   opacity: var(--PhoneInputCountrySelectArrow-opacity);
 }
 
+.sticker-text-outline {
+  /* This creates a very thick and solid white outline */
+  text-shadow: 
+    /* Primary 3px offsets (The main thickness) */ 3px 3px 0 #fff,
+    -3px 3px 0 #fff, 3px -3px 0 #fff, -3px -3px 0 #fff,
+    /* Secondary 2px offsets (Fill in between the 3px corners) */ 2px 2px 0 #fff,
+    -2px 2px 0 #fff, 2px -2px 0 #fff, -2px -2px 0 #fff,
+    /* Horizontal & Vertical 3px offsets (for a full perimeter) */ 3px 0px 0
+      #fff,
+    -3px 0px 0 #fff, 0px 3px 0 #fff, 0px -3px 0 #fff;
+}
+
 /* .PhoneInputCountrySelect:focus
   + .PhoneInputCountryIcon
   + .PhoneInputCountrySelectArrow {
@@ -1525,3 +1537,20 @@ p:not(:last-of-type) {
   opacity: 1;
   color: var(--PhoneInputCountrySelectArrow-color--focus);
 } */
+
+/* Footer heading text color override */
+.pb-16.lg\:pb-0.xl\:pb-0 h3,
+.pb-16.lg\:pb-0.xl\:pb-0 h3 *,
+.pb-16.lg\:pb-0.xl\:pb-0 h3 span,
+.pb-16.lg\:pb-0.xl\:pb-0 h3 div {
+  color: #ffffff !important;
+}
+
+/* Footer link text color override */
+.pb-16.lg\:pb-0.xl\:pb-0 a {
+  color: #ffffff !important;
+}
+
+.pb-16.lg\:pb-0.xl\:pb-0 a:hover {
+  color: #facc15 !important; /* yellow-400 */
+}

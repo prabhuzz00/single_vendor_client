@@ -2,14 +2,14 @@ import React from "react";
 
 const InputPayment = ({ register, Icon, name, value, setShowCard }) => {
   return (
-    <div className="px-3 py-4 card border border-gray-200 bg-white rounded-leather">
+    <div className="px-3 py-4 card border border-gray-200 bg-white rounded-lg">
       <label className="cursor-pointer label">
         <div className="flex item-center justify-between">
           <div className="flex items-center">
-            <span className="text-xl mr-3 text-leather-charcoal-600">
+            <span className="text-xl mr-3 text-gray-600">
               <Icon />
             </span>
-            <h6 className="font-serif font-medium text-sm text-leather-charcoal-600">
+            <h6 className="font-serif font-medium text-sm text-gray-600">
               {name}
             </h6>
           </div>
@@ -21,7 +21,7 @@ const InputPayment = ({ register, Icon, name, value, setShowCard }) => {
             type="radio"
             value={value}
             name="paymentMethod"
-            className="form-radio outline-none focus:ring-0 text-leather-brown"
+            className="form-radio outline-none focus:ring-0 text-yellow-600"
           />
         </div>
       </label>

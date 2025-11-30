@@ -39,14 +39,12 @@ const ContactUs = () => {
     }
 
     return (
-      <div className="border border-leather-border p-10 rounded-leather text-center bg-leather-white hover:shadow-leather transition-all">
-        <span className="flex justify-center text-4xl text-leather-brown mb-4">
+      <div className="border border-gray-200 p-10 rounded-lg text-center bg-white hover:shadow-lg transition-all">
+        <span className="flex justify-center text-4xl text-yellow-600 mb-4">
           <Icon />
         </span>
-        <h5 className="text-xl mb-2 font-bold text-leather-black">{title}</h5>
-        <p className="mb-0 text-base text-leather-charcoal-600 leading-7">
-          {content}
-        </p>
+        <h5 className="text-xl mb-2 font-bold text-black">{title}</h5>
+        <p className="mb-0 text-base text-gray-600 leading-7">{content}</p>
       </div>
     );
   };
@@ -60,7 +58,7 @@ const ContactUs = () => {
         )}
       />
 
-      <div className="bg-leather-white">
+      <div className="bg-white">
         <div className="max-w-screen-2xl mx-auto lg:py-20 py-10 px-4 sm:px-10">
           <div className="grid md:grid-cols-2 gap-6 lg:grid-cols-3 xl:gap-8 font-serif">
             <ContactCard
@@ -72,7 +70,7 @@ const ContactUs = () => {
                 <>
                   <a
                     href={`mailto:${storeCustomizationSetting?.contact_us?.email_box_email}`}
-                    className="text-leather-brown hover:text-leather-brown-600 transition-colors"
+                    className="text-yellow-600 hover:text-yellow-700 transition-colors"
                   >
                     {showingTranslateValue(
                       storeCustomizationSetting?.contact_us?.email_box_email
@@ -95,7 +93,7 @@ const ContactUs = () => {
                 <>
                   <a
                     href={`tel:${storeCustomizationSetting?.contact_us?.call_box_phone}`}
-                    className="text-leather-brown hover:text-leather-brown-600 transition-colors"
+                    className="text-yellow-600 hover:text-yellow-700 transition-colors"
                   >
                     {showingTranslateValue(
                       storeCustomizationSetting?.contact_us?.call_box_phone
@@ -148,7 +146,7 @@ const ContactUs = () => {
                   "/contact-us.png"
                 }
                 alt="Contact Us"
-                className="block w-auto rounded-leather"
+                className="block w-auto rounded-lg"
               />
             </div>
             <div className="px-0 pb-2 lg:w-5/12 flex flex-col md:flex-row">
@@ -157,7 +155,7 @@ const ContactUs = () => {
                 className="w-full mx-auto flex flex-col justify-center"
               >
                 <div className="mb-12">
-                  <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold font-serif mb-3 text-leather-black">
+                  <h3 className="text-xl md:text-2xl lg:text-3xl font-semibold font-serif mb-3 text-black">
                     <CMSkeleton
                       count={1}
                       height={50}
@@ -165,7 +163,7 @@ const ContactUs = () => {
                       data={storeCustomizationSetting?.contact_us?.form_title}
                     />
                   </h3>
-                  <p className="text-base text-leather-charcoal-600 leading-7">
+                  <p className="text-base text-gray-600 leading-7">
                     <CMSkeleton
                       count={2}
                       height={20}
@@ -225,7 +223,7 @@ const ContactUs = () => {
                         required: `Message is required!`,
                       })}
                       name="message"
-                      className="px-4 py-3 flex items-center w-full rounded-leather appearance-none opacity-75 transition duration-300 ease-in-out text-sm focus:ring-0 bg-leather-white border border-leather-border focus:shadow-none focus:outline-none focus:border-leather-brown placeholder-leather-charcoal-600"
+                      className="px-4 py-3 flex items-center w-full rounded-lg appearance-none opacity-75 transition duration-300 ease-in-out text-sm focus:ring-0 bg-white border border-gray-300 focus:shadow-none focus:outline-none focus:border-yellow-600 placeholder-gray-500"
                       autoComplete="off"
                       spellCheck="false"
                       rows="4"
@@ -236,7 +234,7 @@ const ContactUs = () => {
                     <Error errorName={errors.message} />
                   </div>
                   <div className="relative">
-                    <button className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border-0 border-transparent rounded-leather placeholder-white focus-visible:outline-none focus:outline-none bg-leather-brown text-leather-white px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 hover:text-white hover:bg-leather-brown-600 h-12 mt-1 text-sm lg:text-base w-full sm:w-auto">
+                    <button className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border-0 border-transparent rounded-lg placeholder-white focus-visible:outline-none focus:outline-none bg-black text-white px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 hover:text-white hover:bg-gray-900 h-12 mt-1 text-sm lg:text-base w-full sm:w-auto">
                       {t("common:contact-page-form-send-btn")}
                     </button>
                   </div>

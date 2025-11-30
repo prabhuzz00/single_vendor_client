@@ -84,7 +84,7 @@ const Checkout = () => {
                     </div>
                   )}
                   <div className="form-group">
-                    <h2 className="font-semibold font-serif text-base text-leather-black pb-3">
+                    <h2 className="font-semibold font-serif text-base text-black pb-3">
                       01.{" "}
                       {showingTranslateValue(
                         storeCustomizationSetting?.checkout?.personal_details
@@ -150,7 +150,7 @@ const Checkout = () => {
                   </div>
 
                   <div className="form-group mt-12">
-                    <h2 className="font-semibold font-serif text-base text-leather-black pb-3">
+                    <h2 className="font-semibold font-serif text-base text-black pb-3">
                       02.{" "}
                       {showingTranslateValue(
                         storeCustomizationSetting?.checkout?.shipping_details
@@ -268,7 +268,7 @@ const Checkout = () => {
                     </div>
                   </div>
                   <div className="form-group mt-12">
-                    <h2 className="font-semibold text-base text-leather-black pb-3">
+                    <h2 className="font-semibold text-base text-black pb-3">
                       03.{" "}
                       {showingTranslateValue(
                         storeCustomizationSetting?.checkout?.payment_method
@@ -326,7 +326,7 @@ const Checkout = () => {
                     <div className="col-span-6 sm:col-span-3">
                       <Link
                         href="/"
-                        className="bg-leather-tan-50 border border-leather-border rounded-leather py-3 text-center text-sm font-medium text-leather-charcoal-600 hover:text-leather-black hover:border-leather-brown transition-all flex justify-center font-serif w-full"
+                        className="bg-yellow-50 border border-gray-300 rounded-lg py-3 text-center text-sm font-medium text-gray-600 hover:text-black hover:border-yellow-600 transition-all flex justify-center font-serif w-full"
                       >
                         <span className="text-xl mr-2">
                           <IoReturnUpBackOutline />
@@ -340,7 +340,7 @@ const Checkout = () => {
                       <button
                         type="submit"
                         disabled={isEmpty || !stripe || isCheckoutSubmit}
-                        className="border border-leather-brown text-leather-brown hover:bg-leather-brown hover:text-leather-white transition-all rounded-leather py-3 text-center text-sm font-serif font-medium flex justify-center w-full"
+                        className="border border-yellow-600 text-yellow-600 hover:bg-black hover:text-white transition-all rounded-lg py-3 text-center text-sm font-serif font-medium flex justify-center w-full"
                       >
                         {isCheckoutSubmit ? (
                           <span className="flex justify-center text-center">
@@ -375,24 +375,24 @@ const Checkout = () => {
             </div>
 
             <div className="md:w-full lg:w-2/5 lg:ml-10 xl:ml-14 md:ml-6 flex flex-col h-full md:sticky lg:sticky top-28 md:order-2 lg:order-2">
-              <div className="border border-leather-border p-5 lg:px-8 lg:py-8 rounded-leather bg-leather-white order-1 sm:order-2">
-                <h2 className="font-semibold font-serif text-lg pb-4 text-leather-black">
+              <div className="border border-gray-300 p-5 lg:px-8 lg:py-8 rounded-lg bg-white order-1 sm:order-2">
+                <h2 className="font-semibold font-serif text-lg pb-4 text-black">
                   {showingTranslateValue(
                     storeCustomizationSetting?.checkout?.order_summary
                   )}
                 </h2>
 
-                <div className="overflow-y-scroll flex-grow scrollbar-hide w-full max-h-64 bg-leather-tan-50 block">
+                <div className="overflow-y-scroll flex-grow scrollbar-hide w-full max-h-64 bg-yellow-50 block">
                   {items.map((item) => (
                     <CartItem key={item.id} item={item} currency={currency} />
                   ))}
 
                   {isEmpty && (
                     <div className="text-center py-10">
-                      <span className="flex justify-center my-auto text-leather-charcoal-600 font-semibold text-4xl">
+                      <span className="flex justify-center my-auto text-gray-600 font-semibold text-4xl">
                         <IoBagHandle />
                       </span>
-                      <h2 className="font-medium font-serif text-sm pt-2 text-leather-charcoal-600">
+                      <h2 className="font-medium font-serif text-sm pt-2 text-gray-600">
                         No Item Added Yet!
                       </h2>
                     </div>
@@ -402,9 +402,9 @@ const Checkout = () => {
                 <div className="flex items-center mt-4 py-4 lg:py-4 text-sm w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
                   <form className="w-full">
                     {couponInfo.couponCode ? (
-                      <span className="bg-leather-tan-50 px-4 py-3 leading-tight w-full rounded-leather flex justify-between">
+                      <span className="bg-yellow-50 px-4 py-3 leading-tight w-full rounded-lg flex justify-between">
                         {" "}
-                        <p className="text-leather-brown">
+                        <p className="text-yellow-600">
                           Coupon Applied{" "}
                         </p>{" "}
                         <span className="text-red-500 text-right">
@@ -417,13 +417,13 @@ const Checkout = () => {
                           ref={couponRef}
                           type="text"
                           placeholder={t("common:couponCode")}
-                          className="form-input py-2 px-3 md:px-4 w-full appearance-none transition ease-in-out border text-input text-sm rounded-leather h-12 duration-200 bg-leather-white border-leather-border focus:ring-0 focus:outline-none focus:border-leather-brown placeholder-leather-charcoal-600 placeholder-opacity-75"
+                          className="form-input py-2 px-3 md:px-4 w-full appearance-none transition ease-in-out border text-input text-sm rounded-lg h-12 duration-200 bg-white border-gray-300 focus:ring-0 focus:outline-none focus:border-yellow-600 placeholder-gray-500 placeholder-opacity-75"
                         />
                         {isCouponAvailable ? (
                           <button
                             disabled={isCouponAvailable}
                             type="submit"
-                            className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-leather-border rounded-leather placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 mt-3 sm:mt-0 sm:ml-3 md:mt-0 md:ml-3 lg:mt-0 lg:ml-3 hover:text-leather-white hover:bg-leather-brown h-12 text-sm lg:text-base w-full sm:w-auto"
+                            className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-gray-300 rounded-lg placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 mt-3 sm:mt-0 sm:ml-3 md:mt-0 md:ml-3 lg:mt-0 lg:ml-3 hover:text-white hover:bg-black h-12 text-sm lg:text-base w-full sm:w-auto"
                           >
                             <img
                               src="/loader/spinner.gif"
@@ -437,7 +437,7 @@ const Checkout = () => {
                           <button
                             disabled={isCouponAvailable}
                             onClick={handleCouponCode}
-                            className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-leather-border rounded-leather placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 mt-3 sm:mt-0 sm:ml-3 md:mt-0 md:ml-3 lg:mt-0 lg:ml-3 hover:text-leather-white hover:bg-leather-brown h-12 text-sm lg:text-base w-full sm:w-auto"
+                            className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-gray-300 rounded-lg placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 mt-3 sm:mt-0 sm:ml-3 md:mt-0 md:ml-3 lg:mt-0 lg:ml-3 hover:text-white hover:bg-black h-12 text-sm lg:text-base w-full sm:w-auto"
                           >
                             {showingTranslateValue(
                               storeCustomizationSetting?.checkout?.apply_button
@@ -448,25 +448,25 @@ const Checkout = () => {
                     )}
                   </form>
                 </div>
-                <div className="flex items-center py-2 text-sm w-full font-semibold text-leather-charcoal-600 last:border-b-0 last:text-base last:pb-0">
+                <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-600 last:border-b-0 last:text-base last:pb-0">
                   {showingTranslateValue(
                     storeCustomizationSetting?.checkout?.sub_total
                   )}
-                  <span className="ml-auto flex-shrink-0 text-leather-black font-bold">
+                  <span className="ml-auto flex-shrink-0 text-black font-bold">
                     {currency}
                     {cartTotal?.toFixed(2)}
                   </span>
                 </div>
-                <div className="flex items-center py-2 text-sm w-full font-semibold text-leather-charcoal-600 last:border-b-0 last:text-base last:pb-0">
+                <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-600 last:border-b-0 last:text-base last:pb-0">
                   {showingTranslateValue(
                     storeCustomizationSetting?.checkout?.shipping_cost
                   )}
-                  <span className="ml-auto flex-shrink-0 text-leather-black font-bold">
+                  <span className="ml-auto flex-shrink-0 text-black font-bold">
                     {currency}
                     {shippingCost?.toFixed(2)}
                   </span>
                 </div>
-                <div className="flex items-center py-2 text-sm w-full font-semibold text-leather-charcoal-600 last:border-b-0 last:text-base last:pb-0">
+                <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-600 last:border-b-0 last:text-base last:pb-0">
                   {showingTranslateValue(
                     storeCustomizationSetting?.checkout?.discount
                   )}
@@ -475,7 +475,7 @@ const Checkout = () => {
                     {discountAmount.toFixed(2)}
                   </span>
                 </div>
-                <div className="border-t border-leather-border mt-4">
+                <div className="border-t border-gray-300 mt-4">
                   <div className="flex items-center font-bold font-serif justify-between pt-5 text-sm uppercase">
                     {showingTranslateValue(
                       storeCustomizationSetting?.checkout?.total_cost

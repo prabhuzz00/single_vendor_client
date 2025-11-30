@@ -48,7 +48,7 @@ const SubCategoryItem = ({
   return (
     <button
       onClick={handleClick}
-      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-leather-brown"
+      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-yellow-600"
     >
       {showingTranslateValue(subCategory?.name)}
     </button>
@@ -123,14 +123,14 @@ const CategoryDropdown = ({
     >
       <button
         onClick={handleCategoryButtonClick}
-        className="group inline-flex items-center py-2 hover:text-leather-brown focus:outline-none transition-colors"
+        className="group inline-flex items-center py-2 hover:text-yellow-600 focus:outline-none transition-colors"
       >
         <span className="font-serif text-sm font-medium">
           {showingTranslateValue(category?.name)}
         </span>
         {hasSubCategories && (
           <ChevronDownIcon
-            className="ml-1 h-3 w-3 group-hover:text-leather-brown transition-colors"
+            className="ml-1 h-3 w-3 group-hover:text-yellow-600 transition-colors"
             aria-hidden="true"
           />
         )}
@@ -170,12 +170,12 @@ const MainCategoriesDropdown = ({
 
   return (
     <Popover className="relative font-serif">
-      <Popover.Button className="group inline-flex items-center py-2 hover:text-leather-brown focus:outline-none transition-colors">
+      <Popover.Button className="group inline-flex items-center py-2 hover:text-yellow-600 focus:outline-none transition-colors">
         <span className="font-serif text-sm font-medium">
           {showingTranslateValue(storeCustomizationSetting?.navbar?.categories)}
         </span>
         <ChevronDownIcon
-          className="ml-1 h-3 w-3 group-hover:text-leather-brown transition-colors"
+          className="ml-1 h-3 w-3 group-hover:text-yellow-600 transition-colors"
           aria-hidden="true"
         />
       </Popover.Button>
@@ -189,7 +189,7 @@ const MainCategoriesDropdown = ({
         leaveTo="opacity-0 translate-y-1"
       >
         <Popover.Panel className="absolute z-10 -ml-1 mt-1 transform w-screen max-w-xs c-h-65vh bg-white">
-          <div className="rounded-md shadow-leather ring-1 ring-black ring-opacity-5 overflow-y-scroll flex-grow scrollbar-hide w-full h-full">
+          <div className="rounded-md shadow-xl ring-1 ring-black ring-opacity-5 overflow-y-scroll flex-grow scrollbar-hide w-full h-full">
             <Category categories={categories} isLoading={categoriesLoading} />
           </div>
         </Popover.Panel>
@@ -215,7 +215,7 @@ const LanguageOptionsList = ({ languages, onLanguageChange }) => {
 const LanguageDropdown = ({ languages, currentLang, onLanguageChange }) => {
   return (
     <Popover className="relative">
-      <Popover.Button className="flex items-center space-x-2 py-2 text-sm font-medium hover:text-leather-brown transition-colors">
+      <Popover.Button className="flex items-center space-x-2 py-2 text-sm font-medium hover:text-yellow-600 transition-colors">
         <div
           className={`flot-l flag ${currentLang?.flag?.toLowerCase() || ""}`}
         ></div>
@@ -325,7 +325,7 @@ const NavbarPromo = () => {
   const firstFiveCategories = categories.slice(0, 5);
 
   return (
-    <div className="hidden lg:block xl:block bg-white border-b border-leather-border">
+    <div className="hidden lg:block xl:block bg-white border-b border-gray-300">
       <div className="max-w-screen-2xl mx-auto px-3 sm:px-10 h-12 flex justify-between items-center">
         <div className="inline-flex items-center space-x-6">
           <MainCategoriesDropdown

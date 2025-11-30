@@ -16,15 +16,15 @@ const Faq = () => {
     <Disclosure>
       {({ open }) => (
         <>
-          <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-leather-charcoal-700 focus:text-leather-brown bg-leather-tan-50 hover:bg-leather-tan-100 rounded-leather focus:outline-none focus-visible:ring focus-visible:ring-leather-brown focus-visible:ring-opacity-75 transition-colors">
+          <Disclosure.Button className="flex justify-between w-full px-4 py-3 text-base font-medium text-left text-gray-700 focus:text-yellow-600 bg-yellow-50 hover:bg-yellow-100 rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-yellow-600 focus-visible:ring-opacity-75 transition-colors">
             <span>{question}</span>
             <ChevronUpIcon
               className={`${
-                open ? "transform rotate-180 text-leather-brown" : ""
-              } w-5 h-5 text-leather-charcoal-600 transition-transform`}
+                open ? "transform rotate-180 text-yellow-600" : ""
+              } w-5 h-5 text-gray-600 transition-transform`}
             />
           </Disclosure.Button>
-          <Disclosure.Panel className="px-4 pt-3 pb-8 text-sm leading-7 text-leather-charcoal-600">
+          <Disclosure.Panel className="px-4 pt-3 pb-8 text-sm leading-7 text-gray-600">
             {answer}
           </Disclosure.Panel>
         </>
@@ -38,7 +38,7 @@ const Faq = () => {
         headerBg={storeCustomizationSetting?.faq?.header_bg}
         title={showingTranslateValue(storeCustomizationSetting?.faq?.title)}
       />
-      <div className="bg-leather-white">
+      <div className="bg-white">
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-10 py-10 lg:py-12">
           <div className="grid gap-8 lg:mb-8 items-center md:grid-cols-2 xl:grid-cols-2">
             <div className="pr-8">
@@ -47,7 +47,7 @@ const Faq = () => {
                 height={550}
                 src={storeCustomizationSetting?.faq?.left_img || "/faq.svg"}
                 alt="FAQ Illustration"
-                className="rounded-leather"
+                className="rounded-lg"
               />
             </div>
             <div className="space-y-3">

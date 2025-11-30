@@ -44,19 +44,19 @@ const Search = ({ products, attributes }) => {
           </div>
 
           {productData?.length > 0 && (
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-leather-cream-100 border border-leather-border rounded-leather p-3 mb-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-yellow-50 border border-gray-300 rounded-lg p-3 mb-6">
               <div>
-                <h6 className="text-sm font-serif text-leather-charcoal-700">
+                <h6 className="text-sm font-serif text-gray-700">
                   {productData.length} products found
                 </h6>
-                <p className="text-xs text-leather-charcoal-500 mt-1">
+                <p className="text-xs text-gray-500 mt-1">
                   Price range: {priceRange[0]} - {priceRange[1]}
                 </p>
               </div>
 
               <select
                 onChange={(e) => setSortedField(e.target.value)}
-                className="text-sm font-serif font-medium bg-leather-white rounded-leather border border-leather-border px-3 py-2 cursor-pointer focus:ring-0 focus:border-leather-brown focus:outline-none text-leather-charcoal-700"
+                className="text-sm font-serif font-medium bg-white rounded-lg border border-gray-300 px-3 py-2 cursor-pointer focus:ring-0 focus:border-yellow-600 focus:outline-none text-gray-700"
               >
                 <option value="" hidden>
                   {t("common:sortByPrice")}
@@ -78,17 +78,17 @@ const Search = ({ products, attributes }) => {
                     height={340}
                     className="mx-auto mb-4"
                   />
-                  <h2 className="text-lg md:text-xl font-medium text-leather-charcoal-600">
+                  <h2 className="text-lg md:text-xl font-medium text-gray-600">
                     {t("common:sorryText")} 😞
                   </h2>
-                  <p className="text-sm text-leather-charcoal-500 mt-2">
+                  <p className="text-sm text-gray-500 mt-2">
                     No products found in the price range ${priceRange[0]} - $
                     {priceRange[1]}
                   </p>
                 </div>
               ) : (
                 <>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5 lg:gap-6">
                     {productData
                       .slice(0, visibleProduct)
                       .map((product, index) => (
@@ -103,7 +103,7 @@ const Search = ({ products, attributes }) => {
                   {productData.length > visibleProduct && (
                     <button
                       onClick={() => setVisibleProduct((p) => p + 10)}
-                      className="block mx-auto mt-6 bg-leather-cream-100 hover:bg-leather-brown hover:text-white px-8 py-3 rounded-leather text-sm transition"
+                      className="block mx-auto mt-6 bg-yellow-50 hover:bg-black hover:text-white px-8 py-3 rounded-lg text-sm transition"
                     >
                       {t("common:loadMoreBtn")}
                     </button>

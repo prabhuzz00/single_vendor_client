@@ -39,20 +39,20 @@ const FeatureCard = () => {
   ];
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 mx-auto bg-leather-cream-50 border border-leather-border rounded-lg">
+    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-4 mx-auto bg-yellow-50 border border-gray-200 rounded-lg">
       {featurePromo.map((promo) => (
         <div
           key={promo.id}
-          className="border-r border-leather-border last:border-r-0 py-3 flex items-center justify-center bg-leather-cream-50 hover:bg-leather-cream-100 transition-colors duration-200"
+          className="border-r border-gray-200 last:border-r-0 py-3 flex items-center justify-center bg-yellow-50 hover:bg-yellow-100 transition-colors duration-200"
         >
           <div className="mr-3">
             <promo.icon
-              className="flex-shrink-0 h-4 w-4 text-leather-brown-600"
+              className="flex-shrink-0 h-4 w-4 text-yellow-600"
               aria-hidden="true"
             />
           </div>
           <div className="text-center sm:text-left">
-            <span className="block font-serif text-sm font-medium leading-5 text-leather-chocolate-800">
+            <span className="block font-serif text-sm font-medium leading-5 text-black">
               {promo?.title}
             </span>
           </div>

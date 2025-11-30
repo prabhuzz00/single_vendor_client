@@ -34,9 +34,9 @@ const CartItem = ({ item, currency }) => {
   };
 
   return (
-    <div className="group w-full flex items-start p-4 border-b border-leather-border-light hover:border-leather-border-dark transition-all duration-300 hover:bg-leather-cream-50">
+    <div className="group w-full flex items-start p-4 border-b border-gray-200 hover:border-gray-400 transition-all duration-300 hover:bg-yellow-50">
       <div className="relative flex-shrink-0 mr-4">
-        <div className="relative rounded-leather overflow-hidden border border-leather-border-light bg-white">
+        <div className="relative rounded-lg overflow-hidden border border-gray-200 bg-white">
           <Link href={`/product/${item.slug || "#"}`} onClick={closeCartDrawer}>
             <img
               src={item.image || "/placeholder-image.jpg"}
@@ -53,13 +53,13 @@ const CartItem = ({ item, currency }) => {
         <Link
           href={`/product/${item.slug || "#"}`}
           onClick={closeCartDrawer}
-          className="block text-base font-semibold text-leather-chocolate-800 hover:text-leather-brown-600 transition-colors line-clamp-2"
+          className="block text-base font-semibold text-black hover:text-yellow-600 transition-colors line-clamp-2"
         >
           {item.title}
         </Link>
 
         <div className="mb-3">
-          <span className="text-xs text-white bg-leather-brown-600 py-1 px-2 rounded-full">
+          <span className="text-xs text-white bg-yellow-600 py-1 px-2 rounded-full">
             {categoryName}
           </span>
         </div>
@@ -82,21 +82,21 @@ const CartItem = ({ item, currency }) => {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="flex items-center border border-leather-border rounded-leather bg-white">
+            <div className="flex items-center border border-gray-300 rounded-lg bg-white">
               <button
                 onClick={handleDecrease}
-                className="p-2 text-leather-charcoal-500 hover:text-leather-brown-600 hover:bg-leather-cream-50 transition-colors"
+                className="p-2 text-gray-500 hover:text-yellow-600 hover:bg-yellow-50 transition-colors"
               >
                 <FiMinus className="w-3 h-3" />
               </button>
 
-              <span className="px-3 py-2 text-sm font-semibold text-leather-chocolate-800 min-w-[40px] text-center">
+              <span className="px-3 py-2 text-sm font-semibold text-black min-w-[40px] text-center">
                 {itemQuantity}
               </span>
 
               <button
                 onClick={handleIncrease}
-                className="p-2 text-leather-charcoal-500 hover:text-leather-brown-600 hover:bg-leather-cream-50 transition-colors"
+                className="p-2 text-gray-500 hover:text-yellow-600 hover:bg-yellow-50 transition-colors"
               >
                 <FiPlus className="w-3 h-3" />
               </button>
@@ -104,20 +104,20 @@ const CartItem = ({ item, currency }) => {
 
             <button
               onClick={handleRemove}
-              className="p-2 text-leather-charcoal-400 hover:text-red-600 hover:bg-red-50  transition-colors rounded-full"
+              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50  transition-colors rounded-full"
             >
               <FiTrash2 className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        <div className="flex items-center justify-between mt-3 pt-3 border-t border-leather-border-light">
-          <span className="text-sm text-leather-charcoal-500">
+        <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-200">
+          <span className="text-sm text-gray-500">
             Item: {currency}
             {itemPrice.toFixed(2)}
           </span>
 
-          <span className="text-sm font-medium text-leather-brown-600">
+          <span className="text-sm font-medium text-yellow-600">
             Total: {currency}
             {itemTotal.toFixed(2)}
           </span>

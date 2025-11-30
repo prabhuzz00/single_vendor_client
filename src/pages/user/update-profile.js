@@ -126,21 +126,21 @@ const UpdateProfile = () => {
           <div className="w-full">
             {/* Demo Mode Banner */}
             {isDemoMode && (
-              <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-leather">
-                <p className="text-sm text-leather-charcoal-600">
+              <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p className="text-sm text-gray-600">
                   <strong>Demo Mode:</strong> Profile updates are simulated for
                   demonstration purposes.
                 </p>
               </div>
             )}
 
-            <div className="mx-auto text-left w-full max-w-4xl px-4 py-8 sm:p-10 overflow-hidden transition-all transform bg-white shadow-leather rounded-2xl">
+            <div className="mx-auto text-left w-full max-w-4xl px-4 py-8 sm:p-10 overflow-hidden transition-all transform bg-white shadow-xl rounded-2xl">
               <div className="overflow-hidden mx-auto">
                 <div className="text-center mb-8">
-                  <h2 className="text-2xl font-bold font-serif text-leather-black">
+                  <h2 className="text-2xl font-bold font-serif text-black">
                     Update Profile
                   </h2>
-                  <p className="text-sm md:text-base text-leather-charcoal-600 mt-2">
+                  <p className="text-sm md:text-base text-gray-600 mt-2">
                     Manage your personal information
                   </p>
                 </div>
@@ -154,7 +154,7 @@ const UpdateProfile = () => {
                     <div className="text-center">
                       <Label
                         label="Profile Photo"
-                        className="text-leather-black font-medium mb-3"
+                        className="text-black font-medium mb-3"
                       />
                       <div className="flex justify-center">
                         <Uploader
@@ -162,7 +162,7 @@ const UpdateProfile = () => {
                           setImageUrl={setImageUrl}
                         />
                       </div>
-                      <p className="mt-2 text-sm text-leather-charcoal-600">
+                      <p className="mt-2 text-sm text-gray-600">
                         JPG, PNG or WebP. Max 5MB.
                       </p>
                     </div>
@@ -196,7 +196,7 @@ const UpdateProfile = () => {
                           Icon={FiMail}
                           className="bg-gray-50 cursor-not-allowed"
                         />
-                        <p className="mt-1 text-xs text-leather-charcoal-600">
+                        <p className="mt-1 text-xs text-gray-600">
                           Email cannot be changed
                         </p>
                       </div>
@@ -237,7 +237,7 @@ const UpdateProfile = () => {
                         type="button"
                         onClick={initializeForm}
                         disabled={loading || !isDirty}
-                        className="px-6 py-3 border border-gray-300 rounded-leather text-sm font-medium text-leather-charcoal-600 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-leather-brown focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                        className="px-6 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-600 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                       >
                         Reset Changes
                       </button>
@@ -246,7 +246,7 @@ const UpdateProfile = () => {
                         <button
                           disabled={loading}
                           type="submit"
-                          className="md:text-sm leading-5 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-leather placeholder-white focus-visible:outline-none focus:outline-none bg-leather-brown text-leather-white px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:bg-leather-brown-600 h-12 mt-1 text-sm lg:text-sm w-full sm:w-auto"
+                          className="md:text-sm leading-5 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-lg placeholder-white focus-visible:outline-none focus:outline-none bg-black text-white px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:bg-black-600 h-12 mt-1 text-sm lg:text-sm w-full sm:w-auto"
                         >
                           <img
                             src="/loader/spinner.gif"
@@ -262,7 +262,7 @@ const UpdateProfile = () => {
                         <button
                           disabled={isFormDisabled}
                           type="submit"
-                          className="w-full sm:w-auto text-center py-3 px-8 rounded-leather bg-leather-brown text-leather-white hover:bg-leather-brown-600 transition-all focus:outline-none focus:ring-2 focus:ring-leather-brown focus:ring-offset-2 h-12 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="w-full sm:w-auto text-center py-3 px-8 rounded-lg bg-black text-white hover:bg-black-600 transition-all focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2 h-12 font-medium disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                           Update Profile
                         </button>

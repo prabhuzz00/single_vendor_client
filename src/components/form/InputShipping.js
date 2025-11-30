@@ -12,20 +12,20 @@ const InputShipping = ({
 }) => {
   return (
     <div>
-      <div className="p-3 card border border-gray-200 bg-white rounded-leather">
+      <div className="p-3 card border border-gray-200 bg-white rounded-lg">
         <label className="cursor-pointer label">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <span className="text-2xl mr-3 text-leather-charcoal-600">
+              <span className="text-2xl mr-3 text-gray-600">
                 <FiTruck />
               </span>
               <div>
-                <h6 className="font-serif font-medium text-sm text-leather-charcoal-600">
+                <h6 className="font-serif font-medium text-sm text-gray-600">
                   {value}
                 </h6>
-                <p className="text-xs text-leather-charcoal-600 font-medium">
+                <p className="text-xs text-gray-600 font-medium">
                   {description}
-                  <span className="font-medium text-leather-charcoal-600">
+                  <span className="font-medium text-gray-600">
                     {currency}
                     {parseFloat(cost).toFixed(2)}
                   </span>
@@ -40,7 +40,7 @@ const InputShipping = ({
               name="shippingOption"
               type="radio"
               value={value}
-              className="form-radio outline-none focus:ring-0 text-leather-brown"
+              className="form-radio outline-none focus:ring-0 text-yellow-600"
             />
           </div>
         </label>

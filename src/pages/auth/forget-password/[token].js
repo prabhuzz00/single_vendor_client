@@ -73,10 +73,10 @@ const ForgetPassword = () => {
       <div className="h-screen flex items-center justify-center bg-gray-100">
         <div className="bg-white rounded-leather shadow-leather max-w-md w-full space-y-8 py-12 px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-6">
-            <h2 className="text-2xl font-bold font-serif text-leather-black">
+            <h2 className="text-2xl font-bold font-serif text-black">
               {showLogin ? "Login" : "Forget Password"}
             </h2>
-            <p className="text-sm md:text-base text-leather-charcoal-600 mt-2 mb-8 sm:mb-10">
+            <p className="text-sm md:text-base text-gray-600 mt-2 mb-8 sm:mb-10">
               {showLogin
                 ? "Login with your email and new password"
                 : "Reset Your Password"}
@@ -150,7 +150,7 @@ const ForgetPassword = () => {
                           value === password.current ||
                           "The passwords do not match",
                       })}
-                      className="py-2 px-4 md:px-5 w-full appearance-none border text-sm opacity-75 text-input rounded-leather placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-gray-100 border-gray-200 focus:outline-none focus:border-leather-brown h-11 md:h-12"
+                      className="py-2 px-4 md:px-5 w-full appearance-none border text-sm opacity-75 text-input rounded-lg placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-gray-100 border-gray-200 focus:outline-none focus:border-yellow-600 h-11 md:h-12"
                     />
 
                     <Error errorName={errors.confirm_password} />
@@ -161,7 +161,7 @@ const ForgetPassword = () => {
               <button
                 disabled={loading}
                 type="submit"
-                className="w-full text-center py-3 rounded-leather bg-leather-brown font-medium text-sm text-leather-white hover:bg-leather-brown-600 transition-all focus:outline-none my-1"
+                className="w-full text-center py-3 rounded-lg bg-black font-medium text-sm text-white hover:bg-gray-900 transition-all focus:outline-none my-1"
               >
                 {showLogin ? "Login" : "Reset Password"}
               </button>

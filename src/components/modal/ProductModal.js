@@ -221,7 +221,7 @@ const ProductModal = ({
         <div className="inline-block overflow-y-auto h-full align-middle transition-all transform bg-white shadow-xl rounded-2xl">
           <div className="flex flex-col lg:flex-row md:flex-row w-full max-w-4xl overflow-hidden">
             <Link href={`/product/${product.slug}`} passHref>
-              <div className=" p-8 flex flex-col items-center justify-center bg-leather-cream-50 h-full">
+              <div className=" p-8 flex flex-col items-center justify-center bg-yellow-50 h-full">
                 <div className="relative w-full h-full  flex items-center justify-center">
                   <Discount product={product} discount={discount} modal />
                   <div className="relative w-full h-full flex items-center justify-center">
@@ -326,7 +326,7 @@ const ProductModal = ({
                   <button
                     onClick={() => handleAddToCart(product)}
                     disabled={product.quantity < 1}
-                    className="bg-leather-brown-600 hover:bg-leather-brown-700 text-leather-cream-100 text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border-0 border-transparent rounded-lg focus-visible:outline-none focus:outline-none px-4 ml-4 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 w-full h-12 shadow-leather hover:shadow-leather-md"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-black text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border-0 border-transparent rounded-lg focus-visible:outline-none focus:outline-none px-4 ml-4 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 w-full h-12 shadow-md hover:shadow-lg"
                   >
                     {t("common:addToCart")}
                   </button>
@@ -358,7 +358,7 @@ const ProductModal = ({
                   <div>
                     <button
                       onClick={() => handleMoreInfo(product.slug)}
-                      className="font-sans font-medium text-sm text-orange-500"
+                      className="font-sans font-medium text-sm text-yellow-500"
                     >
                       {t("common:moreInfo")}
                     </button>

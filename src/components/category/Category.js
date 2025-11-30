@@ -28,7 +28,7 @@ const Category = () => {
   return (
     <div className="flex flex-col w-full h-full bg-white cursor-pointer scrollbar-hide">
       {categoryDrawerOpen && (
-        <div className="w-full flex justify-between items-center h-16 px-6 py-4 bg-leather-brown text-white border-b border-gray-200">
+        <div className="w-full flex justify-between items-center h-16 px-6 py-4 bg-black text-white border-b border-gray-200">
           <h2 className="font-semibold font-serif text-lg m-0 text-white flex align-center">
             <Link href="/" className="mr-10">
               <Image

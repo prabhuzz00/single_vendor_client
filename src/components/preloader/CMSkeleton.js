@@ -30,7 +30,7 @@ const CMSkeleton = ({
 
   if (error) {
     return (
-      <span className="text-center mx-auto text-leather-brown font-semibold">
+      <span className="text-center mx-auto text-yellow-600 font-semibold">
         {error?.response?.data?.message || error?.message}
       </span>
     );
@@ -40,9 +40,7 @@ const CMSkeleton = ({
     return html ? (
       parse(showingTranslateValue(data))
     ) : (
-      <span className="text-leather-chocolate">
-        {showingTranslateValue(data)}
-      </span>
+      <span style={{ color: "inherit" }}>{showingTranslateValue(data)}</span>
     );
   }
 

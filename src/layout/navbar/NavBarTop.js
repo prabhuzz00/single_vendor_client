@@ -43,7 +43,7 @@ const NavBarTop = () => {
   const renderNavItem = (href, text) => {
     return (
       <div>
-        <Link href={href} className="font-medium hover:text-leather-brown">
+        <Link href={href} className="font-medium hover:text-yellow-600">
           {showingTranslateValue(text)}
         </Link>
         <span className="mx-2">|</span>
@@ -52,9 +52,9 @@ const NavBarTop = () => {
   };
 
   return (
-    <div className="hidden lg:block bg-leather-cream-100">
+    <div className="hidden lg:block bg-yellow-50">
       <div className="max-w-screen-2xl mx-auto px-3 sm:px-10">
-        <div className="text-leather-charcoal-700 py-2 font-sans text-xs font-medium border-b border-leather-border flex justify-between items-center">
+        <div className="text-gray-700 py-2 font-sans text-xs font-medium border-b border-gray-300 flex justify-between items-center">
           <span className="flex items-center">
             <FiPhoneCall className="mr-2" />
             {showingTranslateValue(
@@ -64,7 +64,7 @@ const NavBarTop = () => {
               href={`tel:${
                 storeCustomizationSetting?.navbar?.phone || "+099949343"
               }`}
-              className="font-bold text-leather-brown ml-1"
+              className="font-bold text-yellow-600 ml-1"
             >
               {storeCustomizationSetting?.navbar?.phone || "+099949343"}
             </a>
@@ -83,7 +83,7 @@ const NavBarTop = () => {
               )}
             <Link
               href="/user/my-account"
-              className="font-medium hover:text-leather-brown"
+              className="font-medium hover:text-yellow-600"
             >
               {showingTranslateValue(
                 storeCustomizationSetting?.navbar?.my_account
@@ -93,7 +93,7 @@ const NavBarTop = () => {
             {userInfo?.email ? (
               <button
                 onClick={handleLogOut}
-                className="flex items-center font-medium hover:text-leather-brown"
+                className="flex items-center font-medium hover:text-yellow-600"
               >
                 <span className="mr-1">
                   <IoLockOpenOutline />
@@ -105,7 +105,7 @@ const NavBarTop = () => {
             ) : (
               <Link
                 href="/auth/login"
-                className="flex items-center font-medium hover:text-leather-brown"
+                className="flex items-center font-medium hover:text-yellow-600"
               >
                 <span className="mr-1">
                   <FiUser />

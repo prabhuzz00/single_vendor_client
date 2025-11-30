@@ -37,12 +37,12 @@ const Order = ({ params }) => {
         </h2>
       ) : (
         <div className="max-w-screen-2xl mx-auto py-10 px-3 sm:px-6">
-          <div className="bg-leather-tan rounded-leather mb-5 px-4 py-3">
+          <div className="bg-yellow-50 rounded-lg mb-5 px-4 py-3">
             <label>
               {showingTranslateValue(
                 storeCustomizationSetting?.dashboard?.invoice_message_first
               )}{" "}
-              <span className="font-bold text-leather-brown">
+              <span className="font-bold text-yellow-600">
                 {data?.user_info?.name},
               </span>{" "}
               {showingTranslateValue(
@@ -50,7 +50,7 @@ const Order = ({ params }) => {
               )}
             </label>
           </div>
-          <div className="bg-white rounded-leather shadow-leather">
+          <div className="bg-white rounded-lg shadow-xl">
             <Invoice
               data={data}
               printRef={printRef}
@@ -74,7 +74,7 @@ const Order = ({ params }) => {
                     loading ? (
                       "Loading..."
                     ) : (
-                      <button className="mb-3 sm:mb-0 md:mb-0 lg:mb-0 flex items-center justify-center bg-leather-brown text-leather-white transition-all font-serif text-sm font-semibold h-10 py-2 px-5 rounded-leather hover:bg-leather-brown-600">
+                      <button className="mb-3 sm:mb-0 md:mb-0 lg:mb-0 flex items-center justify-center bg-black text-white transition-all font-serif text-sm font-semibold h-10 py-2 px-5 rounded-lg hover:bg-gray-900">
                         {showingTranslateValue(
                           storeCustomizationSetting?.dashboard?.download_button
                         )}{" "}
@@ -88,7 +88,7 @@ const Order = ({ params }) => {
 
                 <ReactToPrint
                   trigger={() => (
-                    <button className="mb-3 sm:mb-0 md:mb-0 lg:mb-0 flex items-center justify-center bg-leather-brown text-leather-white transition-all font-serif text-sm font-semibold h-10 py-2 px-5 rounded-leather hover:bg-leather-brown-600">
+                    <button className="mb-3 sm:mb-0 md:mb-0 lg:mb-0 flex items-center justify-center bg-black text-white transition-all font-serif text-sm font-semibold h-10 py-2 px-5 rounded-lg hover:bg-gray-900">
                       {showingTranslateValue(
                         storeCustomizationSetting?.dashboard?.print_button
                       )}{" "}

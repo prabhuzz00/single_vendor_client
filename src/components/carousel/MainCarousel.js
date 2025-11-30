@@ -129,31 +129,31 @@ const MainCarousel = () => {
         {sliderData?.map((item, i) => {
           return (
             <SwiperSlide
-              className="h-full w-full relative rounded-leather overflow-hidden"
+              className="h-full w-full relative rounded-2xl overflow-hidden"
               key={i + 1}
             >
-              <div className="relative w-full h-48 sm:h-56 md:h-64 lg:h-72">
+              <div className="relative w-full h-96 sm:h-[28rem] md:h-[32rem] lg:h-[36rem]">
                 <Image
                   src={item.image || "/slider/slider-1.jpg"}
                   alt={item.title}
                   width={800}
                   height={400}
-                  className="object-cover w-full h-48 sm:h-56 md:h-64 lg:h-72"
+                  className="object-cover w-full h-96 sm:h-[28rem] md:h-[32rem] lg:h-[36rem]"
                   priority
                 />
-                <div className="absolute inset-0 bg-black bg-opacity-20"></div>
+                <div className="absolute inset-0 bg-black bg-opacity-0"></div>
               </div>
               <div className="absolute top-0 left-0 z-10 p-r-16 flex-col flex w-full h-full place-items-start justify-center">
                 <div className="pl-4 pr-12 sm:pl-10 sm:pr-16 w-10/12 lg:w-8/12 xl:w-7/12">
-                  <h1 className="mb-2 font-serif text-xl sm:text-lg md:text-2xl line-clamp-1 md:line-clamp-none  lg:line-clamp-none  lg:text-3xl font-bold text-leather-black">
+                  <h1 className="mb-2 font-serif text-xl sm:text-lg md:text-2xl line-clamp-1 md:line-clamp-none  lg:line-clamp-none  lg:text-5xl font-bold text-black sticker-text-outline">
                     {item.title}
                   </h1>
-                  <p className="text-base leading-6 text-leather-charcoal-600 font-sans line-clamp-1  md:line-clamp-none lg:line-clamp-none">
+                  {/* <p className="text-base leading-6 text-gray-800 font-sans line-clamp-1  md:line-clamp-none lg:line-clamp-none sticker-text-outline">
                     {item.info}
-                  </p>
+                  </p> */}
                   <Link
                     href={item.url}
-                    className="hidden sm:inline-block lg:inline-block text-sm leading-6 font-serif font-medium mt-6 px-6 py-2 bg-leather-brown text-center rounded-leather text-leather-white hover:bg-leather-brown-600 transition-colors"
+                    className="hidden sm:inline-block lg:inline-block text-sm leading-6 font-semibold mt-6 px-8 py-3 bg-yellow-400 text-center rounded-full text-black hover:bg-yellow-500 hover:shadow-lg transition-all border-2 border-yellow-500 active:scale-95"
                   >
                     {item.buttonName}
                   </Link>

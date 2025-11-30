@@ -27,6 +27,7 @@ import useAddToCart from "@hooks/useAddToCart";
 import Loading from "@components/preloader/Loading";
 import ProductCard from "@components/product/ProductCard";
 import VariantList from "@components/variants/VariantList";
+import SizeVariantSelector from "@components/variants/SizeVariantSelector";
 import { SidebarContext } from "@context/SidebarContext";
 import AttributeServices from "@services/AttributeServices";
 import ProductServices from "@services/ProductServices";
@@ -56,6 +57,12 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
   const [variantAttributes, setVariantAttributes] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalOriginalPrice, setTotalOriginalPrice] = useState(0);
+
+  // Size variant specific states
+  const [sizeVariants, setSizeVariants] = useState([]);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedTier, setSelectedTier] = useState(null);
+  const [hasSizeVariants, setHasSizeVariants] = useState(false);
 
   const productImages = product?.image || [];
 
@@ -127,6 +134,22 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     setIsLoading(!isLoading);
   };
 
+  const handleSizeChange = (size) => {
+    setSelectedSize(size);
+    setSelectedTier(null); // Reset tier when size changes
+    setItem(1); // Reset quantity
+  };
+
+  const handleTierChange = (tier) => {
+    setSelectedTier(tier);
+    setItem(tier.quantity); // Set quantity to tier quantity
+    setPrice(tier.finalPrice);
+    setOriginalPrice(tier.basePrice);
+    const discountPercent = tier.discount || 0;
+    setDiscount(discountPercent);
+    setStock(tier.quantity); // Set stock to tier quantity for now
+  };
+
   const handleAddToCart = () => {
     if (!product) {
       notifyError("Product not found");
@@ -138,6 +161,38 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
       return;
     }
 
+    // Handle size variants
+    if (hasSizeVariants) {
+      if (!selectedSize || !selectedTier) {
+        notifyError("Please select size and quantity tier");
+        return;
+      }
+
+      const { variants, categories, description, ...updatedProduct } = product;
+
+      const newItem = {
+        ...updatedProduct,
+        id: `${product._id}-size-${
+          selectedSize.id || selectedSize.combination
+        }-${selectedTier.quantity}`,
+        title: `${showingTranslateValue(product.title)} - ${
+          selectedSize.combination
+        }`,
+        image: selectedImage,
+        variant: {
+          variantType: "size",
+          size: selectedSize.combination,
+          tier: selectedTier,
+        },
+        price: getNumber(selectedTier.finalPrice),
+        originalPrice: getNumber(selectedTier.basePrice),
+      };
+
+      handleAddItem(newItem);
+      return;
+    }
+
+    // Handle traditional variants
     const isVariantSelected = product?.variants?.some(
       (variant) =>
         Object.entries(variant).sort().toString() ===
@@ -208,8 +263,40 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     }
   }, [productImages, selectedImage]);
 
+  // Detect and initialize size variants
   useEffect(() => {
     if (!product?.variants) return;
+
+    const detectedSizeVariants = product.variants.filter(
+      (variant) => variant.variantType === "size"
+    );
+
+    if (detectedSizeVariants.length > 0) {
+      setHasSizeVariants(true);
+      setSizeVariants(detectedSizeVariants);
+
+      // Auto-select first size variant
+      const firstSize = detectedSizeVariants[0];
+      setSelectedSize(firstSize);
+
+      // Auto-select first tier of first size
+      if (firstSize.pricingTiers && firstSize.pricingTiers.length > 0) {
+        const firstTier = firstSize.pricingTiers[0];
+        setSelectedTier(firstTier);
+        setItem(firstTier.quantity);
+        setPrice(firstTier.finalPrice);
+        setOriginalPrice(firstTier.basePrice);
+        setDiscount(firstTier.discount || 0);
+        setStock(firstTier.quantity);
+      }
+    } else {
+      setHasSizeVariants(false);
+      setSizeVariants([]);
+    }
+  }, [product]);
+
+  useEffect(() => {
+    if (!product?.variants || hasSizeVariants) return;
 
     if (selectedValue) {
       const result = product.variants.filter(variantFilter);
@@ -270,14 +357,20 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
       setSelectedImage(productImages[0] || "");
       calculateProductPricing(product?.prices || {});
     }
-  }, [product, selectedValue, selectedVariantAttributes, selectedVariant]);
+  }, [
+    product,
+    selectedValue,
+    selectedVariantAttributes,
+    selectedVariant,
+    hasSizeVariants,
+  ]);
 
   useEffect(() => {
-    if (!product?.variants) return;
+    if (!product?.variants || hasSizeVariants) return;
 
     const matchedAttributes = attributes?.filter(attributeFilter);
     setVariantAttributes(matchedAttributes?.sort() || []);
-  }, [attributes, product]);
+  }, [attributes, product, hasSizeVariants]);
 
   useEffect(() => {
     setIsLoading(false);
@@ -314,8 +407,8 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
       onClick={() => handleImageChange(image)}
       className={`flex-shrink-0 w-16 h-16 rounded-lg border-2 overflow-hidden transition-all duration-200 ${
         selectedImage === image
-          ? "border-leather-brown-600 shadow-leather"
-          : "border-leather-border hover:border-leather-border-dark"
+          ? "border-yellow-600 shadow-lg"
+          : "border-gray-300 hover:border-gray-400"
       }`}
     >
       <Image
@@ -345,7 +438,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
 
   const variantAttributeSections = variantAttributes.map((attribute) => (
     <div key={attribute._id} className="mb-4">
-      <h4 className="text-sm font-semibold text-leather-chocolate-800 py-1">
+      <h4 className="text-sm font-semibold text-black py-1">
         {showingTranslateValue(attribute?.name)}:
       </h4>
       <div className="flex flex-row">
@@ -375,11 +468,11 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     ));
 
   const QuantityCounter = () => (
-    <div className="group flex items-center justify-between rounded-lg overflow-hidden flex-shrink-0 border h-12 border-leather-border bg-white">
+    <div className="group flex items-center justify-between rounded-lg overflow-hidden flex-shrink-0 border h-12 border-gray-300 bg-white">
       <button
         onClick={handleQuantityDecrease}
-        disabled={item === 1}
-        className="flex items-center justify-center h-full flex-shrink-0 transition ease-in-out duration-300 focus:outline-none w-12 text-leather-charcoal-600 border-e border-leather-border hover:text-leather-brown-600 hover:bg-leather-cream-50 disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={item === 1 || hasSizeVariants}
+        className="flex items-center justify-center h-full flex-shrink-0 transition ease-in-out duration-300 focus:outline-none w-12 text-gray-700 border-e border-gray-300 hover:text-black hover:bg-yellow-50 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <FiMinus className="w-4 h-4" />
       </button>
@@ -391,13 +484,14 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
         value={item}
         onChange={handleInputChange}
         onBlur={handleInputBlur}
-        className="font-semibold text-center transition-colors duration-250 ease-in-out cursor-text flex-shrink-0 text-base text-leather-chocolate-800 w-10 md:w-20 xl:w-24 bg-transparent border-0 focus:outline-none focus:ring-0"
+        disabled={hasSizeVariants}
+        className="font-semibold text-center transition-colors duration-250 ease-in-out cursor-text flex-shrink-0 text-base text-black w-10 md:w-20 xl:w-24 bg-transparent border-0 focus:outline-none focus:ring-0 disabled:opacity-50"
       />
 
       <button
         onClick={handleQuantityIncrease}
-        disabled={stock <= item}
-        className="flex items-center justify-center h-full flex-shrink-0 transition ease-in-out duration-300 focus:outline-none w-10 md:w-12 text-leather-charcoal-600 border-s border-leather-border hover:text-leather-brown-600 hover:bg-leather-cream-50 disabled:opacity-50 disabled:cursor-not-allowed"
+        disabled={stock <= item || hasSizeVariants}
+        className="flex items-center justify-center h-full flex-shrink-0 transition ease-in-out duration-300 focus:outline-none w-10 md:w-12 text-gray-700 border-s border-gray-300 hover:text-black hover:bg-yellow-50 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <FiPlus className="w-4 h-4" />
       </button>
@@ -407,7 +501,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
   const AddToCartButton = () => (
     <button
       onClick={handleAddToCart}
-      className="bg-leather-brown-600 hover:bg-leather-brown-700 text-leather-cream-100 text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border-0 border-transparent rounded-lg focus-visible:outline-none focus:outline-none px-4 ml-4 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 w-full h-12 shadow-leather hover:shadow-leather-md"
+      className="bg-black hover:bg-gray-900 text-white text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border-0 border-transparent rounded-lg focus-visible:outline-none focus:outline-none px-4 ml-4 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 w-full h-12 shadow-lg hover:shadow-xl"
     >
       {t("common:addToCart")}
     </button>
@@ -419,7 +513,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     >
       <button
         type="button"
-        className="text-leather-brown-600 font-serif font-medium underline ml-2 hover:text-leather-brown-700"
+        className="text-yellow-600 font-serif font-medium underline ml-2 hover:text-yellow-700"
         onClick={handleCategoryClick}
       >
         {category_name}
@@ -430,7 +524,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
   const ReadMoreButton = () => (
     <button
       onClick={handleReadMoreToggle}
-      className="text-leather-brown-600 hover:text-leather-brown-700 font-medium text-sm"
+      className="text-yellow-600 hover:text-yellow-700 font-medium text-sm"
     >
       {isReadMore ? t("common:moreInfo") : t("common:showLess")}
     </button>
@@ -445,7 +539,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
               Product Not Found
             </h1>
             <Link href="/">
-              <button className="px-6 py-3 bg-leather-brown-600 text-white rounded-lg hover:bg-leather-brown-700 transition-colors">
+              <button className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-900 transition-colors">
                 Back to Home
               </button>
             </Link>
@@ -464,14 +558,14 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
           title={showingTranslateValue(product?.title) || "Product"}
           description={productDescription}
         >
-          <div className="px-0 py-10 lg:py-12 bg-leather-white">
+          <div className="px-0 py-10 lg:py-12 bg-white">
             <div className="mx-auto px-4 lg:px-8 max-w-screen-2xl">
               <div className="flex items-center pb-6">
-                <ol className="flex items-center space-x-2 text-sm text-leather-charcoal-600">
+                <ol className="flex items-center space-x-2 text-sm text-gray-600">
                   <li>
                     <Link
                       href="/"
-                      className="hover:text-leather-brown-600 transition-colors"
+                      className="hover:text-yellow-600 transition-colors"
                     >
                       Home
                     </Link>
@@ -482,7 +576,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                   <li>
                     <Link
                       href={`/search?category=${category_name}&_id=${product?.category?._id}`}
-                      className="hover:text-leather-brown-600 transition-colors"
+                      className="hover:text-yellow-600 transition-colors"
                     >
                       {category_name}
                     </Link>
@@ -490,13 +584,13 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                   <li>
                     <FiChevronRight className="w-4 h-4" />
                   </li>
-                  <li className="text-leather-chocolate-800 font-medium truncate max-w-xs">
+                  <li className="text-black font-medium truncate max-w-xs">
                     {showingTranslateValue(product?.title)}
                   </li>
                 </ol>
               </div>
 
-              <div className="w-full rounded-2xl p-6 lg:p-8 bg-white border border-leather-border shadow-leather">
+              <div className="w-full rounded-2xl p-6 lg:p-8 bg-white border border-gray-200 shadow-lg">
                 <div className="flex flex-col xl:flex-row gap-8 lg:gap-12">
                   <div
                     className="flex-shrink-0 xl:pr-10 w-full mx-auto md:w-6/12 lg:w-5/12 xl:w-4/12"
@@ -505,8 +599,8 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                     {mainImage ? (
                       <ImageZoom src={mainImage} alt="Product Image" />
                     ) : (
-                      <div className="w-full h-96 bg-leather-cream-100 flex items-center justify-center rounded-2xl border border-leather-border">
-                        <span className="text-leather-charcoal-400">
+                      <div className="w-full h-96 bg-gray-50 flex items-center justify-center rounded-2xl border border-gray-200">
+                        <span className="text-gray-400">
                           No Image Available
                         </span>
                       </div>
@@ -525,7 +619,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                     <div className="flex flex-col md:flex-row lg:flex-row xl:flex-row">
                       <div className="xl:pr-6 md:pr-6 md:w-2/3 w-full">
                         <div className="mb-6">
-                          <h1 className="text-2xl lg:text-3xl font-bold font-serif text-leather-chocolate-800 mb-2">
+                          <h1 className="text-2xl lg:text-3xl font-bold font-serif text-black mb-2">
                             {showingTranslateValue(product?.title)}
                           </h1>
 
@@ -551,8 +645,8 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                                 ? totalOriginalPrice
                                 : totalPrice
                             }
-                            primaryTextClasses="text-2xl text-leather-brown-600"
-                            secondaryTextClasses="text-lg text-leather-charcoal-400 ml-2"
+                            primaryTextClasses="text-2xl text-yellow-600"
+                            secondaryTextClasses="text-lg text-gray-500 ml-2"
                           />
 
                           <div className="mt-2 flex flex-row items-center">
@@ -561,19 +655,31 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                               price={price}
                               currency={currency}
                               originalPrice={originalPrice}
-                              primaryTextClasses="text-sm text-leather-charcoal-600"
-                              secondaryTextClasses="text-xs text-leather-charcoal-400 ml-1"
+                              primaryTextClasses="text-sm text-gray-700"
+                              secondaryTextClasses="text-xs text-gray-500 ml-1"
                             />
-                            <span className="text-xs text-leather-charcoal-500 ml-1">
+                            <span className="text-xs text-gray-600 ml-1">
                               /per item
                             </span>
                           </div>
                         </div>
 
-                        <div className="mb-6">{variantAttributeSections}</div>
+                        <div className="mb-6">
+                          {hasSizeVariants ? (
+                            <SizeVariantSelector
+                              sizeVariants={sizeVariants}
+                              selectedSize={selectedSize}
+                              selectedTier={selectedTier}
+                              onSizeChange={handleSizeChange}
+                              onTierChange={handleTierChange}
+                            />
+                          ) : (
+                            variantAttributeSections
+                          )}
+                        </div>
 
                         <div>
-                          <div className="text-sm leading-4 text-leather-charcoal-600 ">
+                          <div className="text-sm leading-4 text-gray-700 ">
                             {isReadMore && shouldShowReadMore
                               ? `${productDescription.slice(0, 230)}...`
                               : productDescription}
@@ -590,7 +696,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
 
                           <div className="flex flex-col mt-6">
                             <span className="font-serif font-semibold py-1 text-sm d-block">
-                              <span className="text-leather-chocolate-800">
+                              <span className="text-black">
                                 {t("common:category")}:
                               </span>{" "}
                               <CategoryLink />
@@ -598,20 +704,20 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                             <Tags product={product} />
                           </div>
 
-                          <div className="mt-6 p-4 bg-leather-cream-50 border border-leather-border rounded-lg">
-                            <p className="text-sm text-leather-charcoal-700 font-medium">
+                          <div className="mt-6 p-4 bg-yellow-50 border border-yellow-400 rounded-lg">
+                            <p className="text-sm text-gray-800 font-medium">
                               Call Us To Order By Mobile Number :{" "}
-                              <span className="text-leather-brown-600 font-semibold">
+                              <span className="text-yellow-600 font-semibold">
                                 +0044235234
                               </span>
                             </p>
                           </div>
 
                           <div className="mt-6">
-                            <h3 className="text-base font-semibold mb-2 font-serif text-leather-chocolate-800">
+                            <h3 className="text-base font-semibold mb-2 font-serif text-black">
                               {t("common:shareYourSocial")}
                             </h3>
-                            <p className="font-sans text-sm text-leather-charcoal-600 mb-3">
+                            <p className="font-sans text-sm text-gray-700 mb-3">
                               {t("common:shareYourSocialText")}
                             </p>
                             <ul className="flex space-x-2">
@@ -622,7 +728,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                       </div>
 
                       <div className="w-full xl:w-5/12 lg:w-6/12 md:w-5/12">
-                        <div className="mt-6 md:mt-0 lg:mt-0 bg-leather-cream-50 border border-leather-border p-4 lg:p-6 rounded-xl">
+                        <div className="mt-6 md:mt-0 lg:mt-0 bg-gray-50 border border-gray-200 p-4 lg:p-6 rounded-xl">
                           <Card />
                         </div>
                       </div>
@@ -633,7 +739,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
 
               {relatedProducts?.length >= 2 && (
                 <div className="pt-10 lg:pt-16">
-                  <h3 className="text-xl lg:text-2xl font-bold font-serif text-leather-chocolate-800 mb-6">
+                  <h3 className="text-xl lg:text-2xl font-bold font-serif text-black mb-6">
                     {t("common:relatedProducts")}
                   </h3>
                   <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">

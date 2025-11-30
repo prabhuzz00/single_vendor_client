@@ -19,7 +19,7 @@ const PrivacyPolicy = () => {
             storeCustomizationSetting?.privacy_policy?.title
           )}
         />
-        <div className="bg-leather-white">
+        <div className="bg-white">
           <div className="max-w-screen-2xl mx-auto lg:py-20 py-10 px-4 sm:px-10">
             <div className="max-w-4xl mx-auto">
               <CMSkeleton
@@ -49,14 +49,14 @@ const PrivacyPolicy = () => {
           storeCustomizationSetting?.privacy_policy?.title
         )}
       />
-      <div className="bg-leather-white">
+      <div className="bg-white">
         <div className="max-w-screen-2xl mx-auto lg:py-20 py-10 px-4 sm:px-10">
           <div className="max-w-4xl mx-auto prose prose-lg">
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Information We Collect
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>When you use our leather goods platform, we collect:</p>
                 <ul className="list-disc pl-6 mt-3 space-y-2">
                   <li>Personal information (name, email, shipping address)</li>
@@ -69,10 +69,10 @@ const PrivacyPolicy = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 How We Use Your Information
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>We use your information to:</p>
                 <ul className="list-disc pl-6 mt-3 space-y-2">
                   <li>Process and fulfill your leather product orders</li>
@@ -86,10 +86,10 @@ const PrivacyPolicy = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Data Protection & Security
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>
                   We implement robust security measures to protect your data:
                 </p>
@@ -104,10 +104,10 @@ const PrivacyPolicy = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Cookies & Tracking
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>We use cookies to enhance your shopping experience:</p>
                 <ul className="list-disc pl-6 mt-3 space-y-2">
                   <li>Session cookies for cart functionality</li>
@@ -123,10 +123,10 @@ const PrivacyPolicy = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Third-Party Services
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>We work with trusted partners to provide our services:</p>
                 <ul className="list-disc pl-6 mt-3 space-y-2">
                   <li>Payment processors (Stripe, PayPal)</li>
@@ -143,10 +143,10 @@ const PrivacyPolicy = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Your Rights & Choices
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>You have the right to:</p>
                 <ul className="list-disc pl-6 mt-3 space-y-2">
                   <li>Access and download your personal data</li>
@@ -164,10 +164,10 @@ const PrivacyPolicy = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Data Retention
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>We retain your information only as long as necessary:</p>
                 <ul className="list-disc pl-6 mt-3 space-y-2">
                   <li>Order data: 7 years for tax and legal purposes</li>
@@ -180,10 +180,10 @@ const PrivacyPolicy = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 International Data Transfers
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>
                   As a global leather goods retailer, your data may be
                   transferred internationally with appropriate safeguards:
@@ -198,10 +198,10 @@ const PrivacyPolicy = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Policy Updates
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>
                   We may update this policy to reflect changes in our practices
                   or legal requirements. Significant changes will be
@@ -215,10 +215,10 @@ const PrivacyPolicy = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Contact Us
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>For privacy-related questions or concerns:</p>
                 <ul className="list-none pl-0 mt-3 space-y-2">
                   <li>

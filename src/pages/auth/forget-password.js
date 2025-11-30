@@ -21,16 +21,16 @@ const ForgetPassword = () => {
       <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
         <div className="py-4 flex flex-col lg:flex-row w-full">
           <div className="w-full sm:p-5 lg:p-8">
-            <div className="mx-auto text-left justify-center  w-full max-w-lg px-4 py-8 sm:p-10 overflow-hidden align-middle transition-all transform bg-white shadow-leather rounded-2xl">
+            <div className="mx-auto text-left justify-center  w-full max-w-lg px-4 py-8 sm:p-10 overflow-hidden align-middle transition-all transform bg-white shadow-xl rounded-2xl">
               <div className="overflow-hidden mx-auto">
                 <div className="text-center mb-6">
                   <Link
                     href="/"
-                    className="text-3xl font-bold font-serif text-leather-black"
+                    className="text-3xl font-bold font-serif text-black"
                   >
                     Forget Password
                   </Link>
-                  <p className="text-sm md:text-base text-leather-charcoal-600 mt-2 mb-8 sm:mb-10">
+                  <p className="text-sm md:text-base text-gray-600 mt-2 mb-8 sm:mb-10">
                     Reset Your Password
                   </p>
                 </div>
@@ -55,7 +55,7 @@ const ForgetPassword = () => {
                       <div className="flex ms-auto">
                         <Link
                           href="/auth/login"
-                          className="text-end text-sm text-leather-brown ps-3 underline hover:no-underline focus:outline-none transition-colors"
+                          className="text-end text-sm text-yellow-600 ps-3 underline hover:no-underline focus:outline-none transition-colors"
                         >
                           Login?
                         </Link>
@@ -66,7 +66,7 @@ const ForgetPassword = () => {
                       <button
                         disabled={loading}
                         type="submit"
-                        className="md:text-sm leading-5 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-leather placeholder-white focus-visible:outline-none focus:outline-none bg-leather-brown text-leather-white px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:bg-leather-brown-600 h-12 mt-1 text-sm lg:text-sm w-full"
+                        className="md:text-sm leading-5 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-lg placeholder-white focus-visible:outline-none focus:outline-none bg-black text-white px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:bg-black-600 h-12 mt-1 text-sm lg:text-sm w-full"
                       >
                         <img
                           src="/loader/spinner.gif"
@@ -82,7 +82,7 @@ const ForgetPassword = () => {
                       <button
                         disabled={loading}
                         type="submit"
-                        className="w-full text-center py-3 rounded-leather bg-leather-brown text-leather-white hover:bg-leather-brown-600 transition-all focus:outline-none my-1 h-12 font-medium"
+                        className="w-full text-center py-3 rounded-lg bg-black text-white hover:bg-black-600 transition-all focus:outline-none my-1 h-12 font-medium"
                       >
                         Recover password
                       </button>

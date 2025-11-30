@@ -1,7 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { IoAdd, IoCart, IoRemove, IoEyeOutline } from "react-icons/io5";
+import {
+  IoAdd,
+  IoCart,
+  IoRemove,
+  IoEyeOutline,
+  IoHeartOutline,
+  IoHeart,
+} from "react-icons/io5";
 import { useCart } from "react-use-cart";
 import dynamic from "next/dynamic";
 import Price from "@components/common/Price";
@@ -19,6 +26,7 @@ const ProductCard = ({ product, attributes }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isWishlisted, setIsWishlisted] = useState(false);
   const { items, addItem, updateItemQuantity, inCart } = useCart();
   const { handleIncreaseQuantity } = useAddToCart();
   const { globalSetting } = useGetSetting();
@@ -126,6 +134,11 @@ const ProductCard = ({ product, attributes }) => {
     handleOpenQuickView();
   };
 
+  const handleToggleWishlist = (event) => {
+    event.preventDefault();
+    setIsWishlisted(!isWishlisted);
+  };
+
   const RenderImageIndicators = useCallback(() => {
     return productImages.map((_, index) => (
       <div
@@ -186,111 +199,119 @@ const ProductCard = ({ product, attributes }) => {
       />
 
       <div
-        className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-xl hover:border-gray-200 hover:scale-[1.02] transition-all duration-300 flex flex-col h-full group"
+        className="bg-white rounded-xl overflow-hidden border border-gray-300 hover:border-black hover:shadow-xl transition-all duration-300 flex flex-col h-full group relative"
         onMouseEnter={handleProductCardMouseEnter}
         onMouseLeave={handleProductCardMouseLeave}
       >
-        <div className="relative overflow-hidden flex-shrink-0">
-          <Discount product={product} card={true} />
+        {/* Wishlist Heart Icon */}
+        <button
+          onClick={handleToggleWishlist}
+          className="absolute top-3 right-3 z-20 w-9 h-9 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-sm hover:shadow-md hover:border-yellow-400 transition-all duration-200 hover:scale-110 active:scale-95"
+          aria-label="Add to wishlist"
+        >
+          {isWishlisted ? (
+            <IoHeart className="text-yellow-500 text-lg" />
+          ) : (
+            <IoHeartOutline className="text-gray-600 text-lg" />
+          )}
+        </button>
 
-          <Link href={`/product/${product?.slug || "#"}`} className="block">
-            <div className="relative h-52 w-full bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
-              {currentImage ? (
-                <ImageWithFallback
-                  src={currentImage}
-                  alt={productTitle || "Product"}
-                  fill
-                  className="object-cover group-hover:scale-110 transition-transform duration-500 ease-out"
-                />
-              ) : (
-                <Image
-                  src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
-                  fill
-                  className="object-cover"
-                  alt="product placeholder"
-                />
-              )}
+        {/* Quick View Eye Icon */}
+        <button
+          onClick={handleQuickViewClick}
+          className="absolute top-3 left-3 z-20 w-9 h-9 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-sm hover:shadow-md hover:border-yellow-400 hover:bg-yellow-400 transition-all duration-200 hover:scale-110 active:scale-95 group"
+          aria-label="Quick view"
+        >
+          <IoEyeOutline className="text-gray-600 group-hover:text-black text-lg transition-colors" />
+        </button>
 
-              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
-                <button
-                  onClick={handleQuickViewClick}
-                  disabled={isOutOfStock}
-                  className="opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 bg-white text-gray-800 rounded-full p-3 shadow-xl hover:bg-gray-50 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
-                  aria-label="Quick view"
-                >
-                  <IoEyeOutline size={20} />
-                </button>
+        {/* Product Image */}
+        <Link href={`/product/${product?.slug || "#"}`} className="block">
+          <div
+            className="relative w-full bg-gray-100 overflow-hidden"
+            style={{ paddingTop: "100%" }}
+          >
+            {currentImage ? (
+              <ImageWithFallback
+                src={currentImage}
+                alt={productTitle || "Product"}
+                fill
+                className="object-contain p-4 group-hover:scale-105 transition-transform duration-500 ease-out absolute top-0 left-0"
+              />
+            ) : (
+              <Image
+                src="https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png"
+                fill
+                className="object-contain p-4 absolute top-0 left-0"
+                alt="product placeholder"
+              />
+            )}
+
+            {isOutOfStock && (
+              <div className="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center z-10">
+                <span className="bg-red-500 text-white px-4 py-1.5 rounded-md font-semibold text-sm">
+                  OUT OF STOCK
+                </span>
               </div>
-            </div>
-          </Link>
+            )}
+          </div>
+        </Link>
 
-          {isOutOfStock && (
-            <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center z-10">
-              <span className="bg-red-600 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-lg">
-                OUT OF STOCK
-              </span>
-            </div>
-          )}
-
-          {productImages.length > 1 && (
-            <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-1.5 z-10">
-              <RenderImageIndicators />
-            </div>
-          )}
-        </div>
-
-        <div className="p-4 flex flex-col flex-grow">
-          {categoryName && (
-            <span className="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1.5">
-              {categoryName}
-            </span>
-          )}
-
+        {/* Product Info */}
+        <div className="p-3 flex flex-col flex-grow">
           <Link
             href={`/product/${product?.slug || "#"}`}
-            className="flex-grow-0 mb-0.5"
+            className="flex-grow-0 mb-1"
           >
-            <h2 className="text-base font-semibold text-gray-900 leading-snug line-clamp-1 hover:text-leather-brown-700 transition-colors min-h-[1.5rem]">
+            <h2 className="text-sm font-semibold text-gray-900 leading-tight line-clamp-2 hover:text-gray-700 transition-colors min-h-[2rem]">
               {productTitle || "Untitled Product"}
             </h2>
           </Link>
-          <div className="flex items-center gap-0.5 mb-1.5">
-            <RenderStars rating={5} />
-          </div>
 
           {productDescription && (
-            <p className="text-xs text-gray-500 line-clamp-2 mb-2 leading-4">
+            <p className="text-xs text-gray-600 line-clamp-1 mb-1.5 leading-4">
               {productDescription}
             </p>
           )}
 
-          <div className="mb-3">
-            <Price
-              product={product}
-              price={productPrice.price}
-              originalPrice={productPrice.originalPrice}
-              currency={currency}
-              card={true}
-            />
+          {/* Rating */}
+          <div className="flex items-center gap-1 mb-2">
+            <RenderStars rating={5} />
+            <span className="text-xs text-gray-500 ml-0.5">(121)</span>
           </div>
 
+          {/* Price */}
+          <div className="mb-3 flex items-center gap-2">
+            <span className="text-lg font-bold text-gray-900">
+              {currency}
+              {productPrice.price?.toFixed(2)}
+            </span>
+            {productPrice.hasDiscount && (
+              <span className="text-xs text-gray-400 line-through">
+                {currency}
+                {productPrice.originalPrice?.toFixed(2)}
+              </span>
+            )}
+          </div>
+
+          {/* Add to Cart Button */}
           {isInCart && cartItem ? (
-            <div className="w-full bg-leather-brown-600 text-white flex items-center justify-between h-10 px-4 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+            <div className="w-full bg-black text-white flex items-center justify-between h-9 px-3 rounded-full border-2 border-black hover:border-yellow-500 transition-all shadow-sm">
               <button
                 onClick={handleDecreaseProductQuantity}
                 disabled={isOutOfStock}
-                className="hover:bg-leather-brown-700 rounded-full p-1.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
+                className="hover:bg-yellow-500 hover:text-black rounded-full p-1 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
                 aria-label="Decrease quantity"
               >
                 <IoRemove size={16} />
               </button>
-              <span className="text-sm font-semibold min-w-[2rem] text-center">
+              <span className="text-sm font-semibold min-w-[1.5rem] text-center">
                 {cartItem?.quantity || 0}
               </span>
               <button
                 onClick={handleIncreaseProductQuantity}
                 disabled={isOutOfStock}
-                className="hover:bg-leather-brown-700 rounded-full p-1.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
+                className="hover:bg-yellow-500 hover:text-black rounded-full p-1 transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-95"
                 aria-label="Increase quantity"
               >
                 <IoAdd size={16} />
@@ -300,10 +321,9 @@ const ProductCard = ({ product, attributes }) => {
             <button
               onClick={handleAddCurrentProductToCart}
               disabled={isOutOfStock}
-              className="w-full bg-white border-2 border-leather-brown-600 text-leather-brown-600 py-2.5 px-4 rounded-lg font-semibold text-sm hover:bg-leather-brown-600 hover:text-white transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:text-leather-brown-600 shadow-sm hover:shadow-md active:scale-[0.98]"
+              className="w-full bg-yellow-400 border-2 border-yellow-500 text-black py-2 px-3 rounded-full font-semibold text-xs hover:bg-yellow-500 transition-all duration-200 flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-yellow-400 active:scale-[0.98] shadow-sm hover:shadow-md"
             >
-              <IoCart size={18} />
-              ADD TO CART
+              Add to Cart
             </button>
           )}
         </div>

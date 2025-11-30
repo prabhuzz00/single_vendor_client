@@ -6,7 +6,7 @@ const Stock = ({ stock, card }) => {
   return (
     <>
       {stock <= 0 ? (
-        <span className="bg-red-100 absolute z-10 text-red-700 rounded-leather inline-flex items-center justify-center px-2 py-0 text-xs font-medium font-serif">
+        <span className="bg-red-100 absolute z-10 text-red-700 rounded-lg inline-flex items-center justify-center px-2 py-0 text-xs font-medium font-serif">
           {t("common:stockOut")}
         </span>
       ) : (
@@ -14,8 +14,8 @@ const Stock = ({ stock, card }) => {
           <span
             className={`${
               card
-                ? "bg-leather-tan-100 absolute z-10 text-green-500 rounded-leather text-xs px-2 py-0 font-medium"
-                : "bg-green-100 text-green-500 rounded-leather inline-flex items-center justify-center px-2 py-0 text-xs font-semibold font-serif"
+                ? "bg-yellow-100 absolute z-10 text-green-500 rounded-lg text-xs px-2 py-0 font-medium"
+                : "bg-green-100 text-green-500 rounded-lg inline-flex items-center justify-center px-2 py-0 text-xs font-semibold font-serif"
             }`}
           >
             {t("common:stock")} :

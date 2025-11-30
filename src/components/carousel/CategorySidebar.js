@@ -132,10 +132,10 @@ const CategorySidebar = ({ onPriceRangeChange, priceRange }) => {
 
         <div className="relative pt-6">
           <div className="relative h-2">
-            <div className="absolute w-full h-1 bg-leather-border-light rounded-full"></div>
+            <div className="absolute w-full h-1 bg-gray-200 rounded-full"></div>
 
             <div
-              className="absolute h-1 bg-leather-brown rounded-full"
+              className="absolute h-1 bg-yellow-600 rounded-full"
               style={{
                 left: `${(localPriceRange[0] / 1000) * 100}%`,
                 width: `${
@@ -163,17 +163,17 @@ const CategorySidebar = ({ onPriceRangeChange, priceRange }) => {
             />
 
             <div
-              className="absolute w-4 h-4 bg-leather-brown rounded-full border-2 border-leather-white shadow-leather z-10 transform -translate-y-1.5 -translate-x-2"
+              className="absolute w-4 h-4 bg-yellow-600 rounded-full border-2 border-white shadow-lg z-10 transform -translate-y-1.5 -translate-x-2"
               style={{ left: `${(localPriceRange[0] / 1000) * 100}%` }}
             ></div>
 
             <div
-              className="absolute w-4 h-4 bg-leather-brown rounded-full border-2 border-leather-white shadow-leather z-10 transform -translate-y-1.5 -translate-x-2"
+              className="absolute w-4 h-4 bg-yellow-600 rounded-full border-2 border-white shadow-lg z-10 transform -translate-y-1.5 -translate-x-2"
               style={{ left: `${(localPriceRange[1] / 1000) * 100}%` }}
             ></div>
           </div>
 
-          <div className="flex justify-between text-xs text-leather-charcoal-600 mt-4">
+          <div className="flex justify-between text-xs text-gray-600 mt-4">
             <span className="font-medium">{localPriceRange[0]}</span>
             <span className="font-medium">{localPriceRange[1]}</span>
           </div>

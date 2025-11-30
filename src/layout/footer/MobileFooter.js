@@ -19,20 +19,20 @@ const MobileFooter = () => {
       <div className="flex flex-col h-full justify-between align-middle bg-white rounded cursor-pointer overflow-y-scroll flex-grow scrollbar-hide w-full">
         <CategoryDrawer className="w-6 h-6 drop-shadow-xl" />
       </div>
-      <footer className="lg:hidden fixed z-30 bottom-0 bg-leather-chocolate flex items-center justify-between w-full h-16 px-3 sm:px-10 shadow-leather-up">
+      <footer className="lg:hidden fixed z-30 bottom-0 bg-black flex items-center justify-between w-full h-16 px-3 sm:px-10 shadow-2xl">
         <button
           aria-label="Bar"
           onClick={toggleCategoryDrawer}
-          className="flex items-center justify-center flex-shrink-0 h-auto relative focus:outline-none hover:bg-leather-brown-700 p-2 rounded-lg transition-colors"
+          className="flex items-center justify-center flex-shrink-0 h-auto relative focus:outline-none hover:bg-gray-900 p-2 rounded-lg transition-colors"
         >
-          <span className="text-xl text-leather-cream-100">
+          <span className="text-xl text-white">
             <FiAlignLeft className="w-6 h-6 drop-shadow-xl" />
           </span>
         </button>
 
         <Link
           href="/"
-          className="text-xl text-leather-cream-100 hover:bg-leather-brown-700 p-2 rounded-lg transition-colors"
+          className="text-xl text-white hover:bg-gray-900 p-2 rounded-lg transition-colors"
           rel="noreferrer"
           aria-label="Home"
         >
@@ -41,9 +41,9 @@ const MobileFooter = () => {
 
         <button
           onClick={toggleCartDrawer}
-          className="h-9 w-9 relative whitespace-nowrap inline-flex items-center justify-center text-leather-cream-100 hover:bg-leather-brown-700 p-2 rounded-lg transition-colors"
+          className="h-9 w-9 relative whitespace-nowrap inline-flex items-center justify-center text-white hover:bg-gray-900 p-2 rounded-lg transition-colors"
         >
-          <span className="absolute z-10 top-0 right-0 inline-flex items-center justify-center p-1 h-5 w-5 text-xs font-bold leading-none text-leather-cream-100 transform translate-x-1/2 bg-leather-chocolate-800 rounded-full">
+          <span className="absolute z-10 top-0 right-0 inline-flex items-center justify-center p-1 h-5 w-5 text-xs font-bold leading-none text-white transform translate-x-1/2 bg-black-800 rounded-full">
             {totalItems}
           </span>
           <FiShoppingCart className="w-6 h-6 drop-shadow-xl" />
@@ -52,7 +52,7 @@ const MobileFooter = () => {
         <button
           aria-label="User"
           type="button"
-          className="text-xl text-leather-cream-100 indicator justify-center hover:bg-leather-brown-700 p-2 rounded-lg transition-colors"
+          className="text-xl text-white indicator justify-center hover:bg-gray-900 p-2 rounded-lg transition-colors"
         >
           {userInfo?.image ? (
             <Link href="/user/dashboard" className="relative top-1 w-6 h-6">
@@ -61,13 +61,13 @@ const MobileFooter = () => {
                 height={29}
                 src={userInfo.image}
                 alt="user"
-                className="rounded-full border-2 border-leather-cream-100"
+                className="rounded-full border-2 border-white"
               />
             </Link>
           ) : userInfo?.name ? (
             <Link
               href="/user/dashboard"
-              className="leading-none font-bold font-serif block text-leather-cream-100 hover:text-leather-cream-200"
+              className="leading-none font-bold font-serif block text-white hover:text-yellow-400"
             >
               {userInfo?.name[0]}
             </Link>

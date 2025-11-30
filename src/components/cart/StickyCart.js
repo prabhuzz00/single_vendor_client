@@ -19,16 +19,16 @@ const StickyCart = () => {
 
   return (
     <button aria-label="Cart" onClick={handleCartClick} className="absolute">
-      <div className="right-0 w-35 float-right fixed top-2/4 bottom-2/4 align-middle shadow-leather cursor-pointer z-30 hidden lg:block xl:block">
-        <div className="flex flex-col items-center justify-center bg-leather-cream-100 rounded-tl-lg p-2 text-leather-charcoal-700">
-          <span className="text-2xl mb-1 text-leather-brown">
+      <div className="right-0 w-35 float-right fixed top-2/4 bottom-2/4 align-middle shadow-xl cursor-pointer z-30 hidden lg:block xl:block">
+        <div className="flex flex-col items-center justify-center bg-yellow-50 rounded-tl-lg p-2 text-gray-700">
+          <span className="text-2xl mb-1 text-yellow-600">
             <IoBagHandleOutline />
           </span>
           <span className="px-2 text-sm font-serif font-medium">
             {totalItems} Items
           </span>
         </div>
-        <div className="flex flex-col items-center justify-center bg-leather-brown p-2 text-leather-white text-base font-serif font-medium rounded-bl-lg mx-auto">
+        <div className="flex flex-col items-center justify-center bg-black p-2 text-white text-base font-serif font-medium rounded-bl-lg mx-auto">
           {currency}
           {cartTotal.toFixed(2)}
         </div>

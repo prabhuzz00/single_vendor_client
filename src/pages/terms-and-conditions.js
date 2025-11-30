@@ -23,7 +23,7 @@ const TermAndConditions = () => {
             storeCustomizationSetting?.term_and_condition?.title
           )}
         />
-        <div className="bg-leather-white">
+        <div className="bg-white">
           <div className="max-w-screen-2xl mx-auto lg:py-20 py-10 px-3 sm:px-10">
             <div className="max-w-4xl mx-auto">
               <CMSkeleton
@@ -58,14 +58,14 @@ const TermAndConditions = () => {
           storeCustomizationSetting?.term_and_condition?.title
         )}
       />
-      <div className="bg-leather-white">
+      <div className="bg-white">
         <div className="max-w-screen-2xl mx-auto lg:py-20 py-10 px-3 sm:px-10">
           <div className="max-w-4xl mx-auto prose prose-lg">
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Acceptance of Terms
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>
                   By accessing and purchasing from LeatherCraft, you accept and
                   agree to be bound by these Terms and Conditions. Our
@@ -75,10 +75,10 @@ const TermAndConditions = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Product Information & Authenticity
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>All leather products featured on our platform are:</p>
                 <ul className="list-disc pl-6 mt-3 space-y-2">
                   <li>
@@ -100,10 +100,10 @@ const TermAndConditions = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Ordering & Payment
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>
                   <strong>Order Process:</strong>
                 </p>
@@ -126,10 +126,10 @@ const TermAndConditions = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Shipping & Delivery
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>
                   <strong>Production & Shipping Times:</strong>
                 </p>
@@ -147,10 +147,10 @@ const TermAndConditions = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Returns & Exchanges
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>
                   <strong>30-Day Return Policy:</strong>
                 </p>
@@ -169,10 +169,10 @@ const TermAndConditions = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Leather Care & Maintenance
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>Our leather products require proper care:</p>
                 <ul className="list-disc pl-6 mt-3 space-y-2">
                   <li>Keep away from direct sunlight and heat sources</li>
@@ -187,10 +187,10 @@ const TermAndConditions = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Intellectual Property
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>All content on LeatherCraft is protected:</p>
                 <ul className="list-disc pl-6 mt-3 space-y-2">
                   <li>Product designs are original and copyrighted</li>
@@ -202,10 +202,10 @@ const TermAndConditions = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 User Accounts & Responsibilities
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>When creating an account, you agree to:</p>
                 <ul className="list-disc pl-6 mt-3 space-y-2">
                   <li>Provide accurate and current information</li>
@@ -221,10 +221,10 @@ const TermAndConditions = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Limitation of Liability
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>LeatherCraft shall not be liable for:</p>
                 <ul className="list-disc pl-6 mt-3 space-y-2">
                   <li>Indirect, incidental, or consequential damages</li>
@@ -237,15 +237,15 @@ const TermAndConditions = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Privacy & Data Protection
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>
                   Your privacy is important to us. Please review our{" "}
                   <Link
                     href="/privacy-policy"
-                    className="text-leather-brown hover:text-leather-brown-600 transition-colors"
+                    className="text-yellow-600 hover:text-yellow-700 transition-colors"
                   >
                     Privacy Policy
                   </Link>{" "}
@@ -256,10 +256,10 @@ const TermAndConditions = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Governing Law & Dispute Resolution
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>
                   These terms are governed by the laws of California. Any
                   disputes shall be resolved through arbitration in San
@@ -269,10 +269,10 @@ const TermAndConditions = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Changes to Terms
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>
                   We reserve the right to modify these terms at any time.
                   Continued use of our services constitutes acceptance of
@@ -286,10 +286,10 @@ const TermAndConditions = () => {
             </div>
 
             <div className="mb-8 lg:mb-12 last:mb-0">
-              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-leather-black">
+              <h2 className="text-xl xl:text-2xl xl:leading-7 font-semibold font-serif mb-4 text-black">
                 Contact Information
               </h2>
-              <div className="font-sans leading-7 text-leather-charcoal-700">
+              <div className="font-sans leading-7 text-gray-700">
                 <p>For questions about these Terms & Conditions:</p>
                 <ul className="list-none pl-0 mt-3 space-y-2">
                   <li>
