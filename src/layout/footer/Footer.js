@@ -649,18 +649,26 @@ const Footer = () => {
           {storeCustomizationSetting?.footer?.block4_status && (
             <div className="pb-3.5 sm:pb-0 flex flex-col items-center justify-center">
               <Link href="/" className="inline-block" rel="noreferrer">
-                <div className="relative w-32 h-32 bg-white rounded-full p-3 shadow-lg hover:shadow-yellow-400/50 transition-shadow duration-300 flex items-center justify-center">
-                  <Image
-                    width={100}
-                    height={100}
-                    sizes="100vw"
-                    className="w-auto h-auto max-w-full max-h-full object-contain"
-                    src={
-                      storeCustomizationSetting?.footer?.block4_logo ||
-                      "/logo/logo-color.svg"
-                    }
-                    alt="logo"
-                  />
+                <div className="relative w-32 h-32 bg-white rounded-full shadow-lg hover:shadow-yellow-400/50 transition-shadow duration-300 flex items-center justify-center overflow-hidden p-4">
+                  <div className="relative w-full h-full flex items-center justify-center">
+                    <Image
+                      width={100}
+                      height={100}
+                      sizes="100vw"
+                      className="object-contain"
+                      style={{
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        width: "auto",
+                        height: "auto",
+                      }}
+                      src={
+                        storeCustomizationSetting?.footer?.block4_logo ||
+                        "/logo/logo-color.svg"
+                      }
+                      alt="logo"
+                    />
+                  </div>
                 </div>
               </Link>
             </div>

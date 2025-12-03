@@ -11,144 +11,104 @@ const SizeVariantSelector = ({
   const { showingTranslateValue, currency } = useUtilsFunction();
 
   return (
-    <div className="space-y-6">
-      {/* Size Selection */}
-      <div>
-        <h4 className="text-sm font-semibold text-black mb-3">
-          Select Size:
+    <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
+      {/* Size Selection Section */}
+      <div className="mb-6">
+        <h4 className="text-base font-bold text-gray-900 mb-4">
+          Select a size
         </h4>
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        <div className="space-y-3">
           {sizeVariants.map((variant, index) => (
-            <button
+            <label
               key={variant.id || index}
-              onClick={() => onSizeChange(variant)}
-              className={`relative p-4 rounded-lg border-2 transition-all duration-200 text-left ${
-                selectedSize?.id === variant.id
-                  ? "border-yellow-500 bg-yellow-50 shadow-md"
-                  : "border-gray-300 bg-white hover:border-gray-400 hover:shadow-sm"
-              }`}
+              className="flex items-center cursor-pointer group"
             >
-              <div className="flex flex-col">
-                <span className="text-sm font-semibold text-gray-800">
-                  {variant.combination}
-                </span>
-                <span className="text-xs text-gray-600 mt-1">
-                  {variant.unit}
-                </span>
-              </div>
-              {selectedSize?.id === variant.id && (
-                <div className="absolute top-2 right-2">
-                  <svg
-                    className="w-5 h-5 text-yellow-600"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-              )}
-            </button>
+              <input
+                type="radio"
+                name="size"
+                checked={selectedSize?.id === variant.id}
+                onChange={() => onSizeChange(variant)}
+                className="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500 focus:ring-2 cursor-pointer"
+              />
+              <span className="ml-3 text-base text-gray-800 group-hover:text-gray-900 font-medium">
+                {variant.combination}
+              </span>
+            </label>
           ))}
         </div>
       </div>
 
-      {/* Quantity Tiers Selection */}
+      {/* Quantity Selection Section */}
       {selectedSize && selectedSize.pricingTiers && (
-        <div>
-          <h4 className="text-sm font-semibold text-black mb-3">
-            Select Quantity:
+        <div className="border-t border-gray-200 pt-6">
+          <h4 className="text-base font-bold text-gray-900 mb-4">
+            Select a quantity
           </h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <div className="space-y-3">
             {selectedSize.pricingTiers.map((tier, index) => {
               const totalPrice = (tier.finalPrice * tier.quantity).toFixed(2);
               const hasDiscount = tier.discount > 0;
+              const pricePerSticker = tier.finalPrice.toFixed(2);
 
               return (
-                <button
+                <label
                   key={index}
-                  onClick={() => onTierChange(tier)}
-                  className={`relative p-4 rounded-lg border-2 transition-all duration-200 text-left ${
+                  className={`flex items-center justify-between cursor-pointer group p-4 rounded-lg border transition-all duration-200 ${
                     selectedTier?.quantity === tier.quantity
-                      ? "border-yellow-500 bg-yellow-50 shadow-md"
-                      : "border-gray-300 bg-white hover:border-gray-400 hover:shadow-sm"
+                      ? "border-blue-500 bg-blue-50"
+                      : "border-gray-200 hover:border-gray-300 hover:bg-gray-50"
                   }`}
                 >
-                  <div className="flex flex-col space-y-2">
-                    {/* Quantity */}
-                    <div className="flex items-center justify-between">
-                      <span className="text-base font-bold text-gray-800">
-                        {tier.quantity} pieces
-                      </span>
-                      {selectedTier?.quantity === tier.quantity && (
-                        <svg
-                          className="w-5 h-5 text-yellow-600"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      )}
-                    </div>
-
-                    {/* Discount Badge */}
-                    {hasDiscount && (
-                      <div className="inline-flex items-center px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold w-fit">
-                        <svg
-                          className="w-3 h-3 mr-1"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        {tier.discount}% OFF
-                      </div>
-                    )}
-
-                    {/* Price per piece */}
-                    <div className="flex items-baseline space-x-2">
-                      <span className="text-lg font-bold text-gray-900">
-                        {currency} {tier.finalPrice.toFixed(2)}
-                      </span>
-                      <span className="text-xs text-gray-600">each</span>
-                    </div>
-
-                    {/* Show original price if discounted */}
-                    {hasDiscount && (
-                      <div className="text-xs text-gray-500">
-                        <span className="line-through">
-                          {currency} {tier.basePrice.toFixed(2)}
+                  <div className="flex items-center flex-1">
+                    <input
+                      type="radio"
+                      name="quantity"
+                      checked={selectedTier?.quantity === tier.quantity}
+                      onChange={() => onTierChange(tier)}
+                      className="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500 focus:ring-2 cursor-pointer"
+                    />
+                    <div className="ml-3 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className="text-base font-semibold text-gray-900">
+                          {tier.quantity}
                         </span>
-                        <span className="ml-1">each</span>
-                      </div>
-                    )}
-
-                    {/* Total Price */}
-                    <div className="pt-2 border-t border-gray-200">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-600 font-medium">
-                          Total:
-                        </span>
-                        <span className="text-base font-bold text-yellow-600">
-                          {currency} {totalPrice}
-                        </span>
+                        {hasDiscount && (
+                          <span className="inline-flex items-center px-2 py-0.5 bg-green-100 text-green-700 rounded text-xs font-semibold">
+                            Save {tier.discount}%
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>
-                </button>
+                  <div className="text-right ml-4">
+                    <div className="text-lg font-bold text-gray-900">
+                      {currency}
+                      {totalPrice}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {currency}
+                      {pricePerSticker} / sticker
+                    </div>
+                  </div>
+                </label>
               );
             })}
+          </div>
+        </div>
+      )}
+
+      {/* Price Summary at Bottom */}
+      {selectedSize && selectedTier && (
+        <div className="border-t border-gray-200 mt-6 pt-6">
+          <div className="flex items-center justify-between">
+            <div className="text-2xl font-bold text-gray-900">
+              {currency}
+              {(selectedTier.finalPrice * selectedTier.quantity).toFixed(2)}
+            </div>
+            <div className="text-sm text-gray-500">
+              {currency}
+              {selectedTier.finalPrice.toFixed(2)} / sticker
+            </div>
           </div>
         </div>
       )}

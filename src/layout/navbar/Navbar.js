@@ -253,21 +253,37 @@ const Navbar = () => {
             </button>
 
             <Link href="/" className="flex items-center space-x-3 group">
-              <div className="relative w-36 h-12 lg:w-40 lg:h-14 transition-transform group-hover:scale-105 duration-300">
+              <div className="relative w-32 h-16 sm:w-40 sm:h-20 lg:w-56 lg:h-24 xl:w-58 xl:h-26 transition-transform group-hover:scale-105 duration-300">
                 <Image
-                  width="0"
-                  height="0"
-                  sizes="100vw"
+                  width={630}
+                  height={396}
                   className="w-full h-full object-contain"
                   priority
                   src={
                     storeCustomizationSetting?.navbar?.logo ||
-                    "/logo/logo-light.svg"
+                    "/logo/logo-color.png"
                   }
                   alt="logo"
                 />
               </div>
             </Link>
+            {/* 
+             <Link href="/" className="flex items-center space-x-3">
+              
+              <div className="relative flex-shrink-0 w-28 sm:w-32 lg:w-36 xl:w-40 h-12 sm:h-14 lg:h-16 xl:h-16">
+                <Image
+                  width={630}
+                  height={396}
+                  className="w-full h-full object-contain"
+                  priority
+                  src={
+                    storeCustomizationSetting?.navbar?.logo ||
+                    "/logo/logo-color.png"
+                  }
+                  alt="logo"
+                />
+              </div>
+            </Link>  */}
 
             <div
               className="hidden lg:flex flex-1 max-w-2xl mx-8 xl:mx-12"

@@ -8,14 +8,6 @@ export async function middleware(request) {
     // NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   });
 
-  // console.log(
-  //   "middleware ran>>>>]]]",
-  //   request.nextUrl.pathname,
-
-  //   "userInfo",
-  //   userInfo?.email
-  // );
-
   if (!userInfo) {
     return NextResponse.redirect(new URL(`/auth/login`, request.url));
   }
