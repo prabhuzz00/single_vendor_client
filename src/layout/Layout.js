@@ -9,6 +9,7 @@ import NavBarTop from "./navbar/NavBarTop";
 import FooterTop from "@layout/footer/FooterTop";
 import MobileFooter from "@layout/footer/MobileFooter";
 import FeatureCard from "@components/feature-card/FeatureCard";
+import CookieBanner from "@components/common/CookieBanner";
 
 const Layout = ({ title, description, children }) => {
   return (
@@ -38,6 +39,9 @@ const Layout = ({ title, description, children }) => {
             <Footer />
           </div>
         </div>
+
+        {/* Cookie Consent Banner */}
+        <CookieBanner />
       </div>
     </>
   );

@@ -18,7 +18,6 @@ import {
 } from "react-share";
 
 import Price from "@components/common/Price";
-import Stock from "@components/common/Stock";
 import Tags from "@components/common/Tags";
 import Layout from "@layout/Layout";
 import { notifyError } from "@utils/toast";
@@ -45,26 +44,52 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
   const { t } = useTranslation();
 
   const [selectedValue, setSelectedValue] = useState("");
-  const [price, setPrice] = useState(0);
   const [selectedImage, setSelectedImage] = useState("");
-  const [originalPrice, setOriginalPrice] = useState(0);
-  const [stock, setStock] = useState(0);
-  const [discount, setDiscount] = useState(0);
   const [selectedVariant, setSelectedVariant] = useState({});
   const [isReadMore, setIsReadMore] = useState(true);
   const [selectedVariantAttributes, setSelectedVariantAttributes] = useState(
     {}
   );
   const [variantAttributes, setVariantAttributes] = useState([]);
+
+  // Determine initial size-variant selection synchronously from product prop
+  const initialSizeVariants = (product?.variants || []).filter(
+    (v) => v.variantType === "size"
+  );
+  const initialSelectedSize = initialSizeVariants.length
+    ? initialSizeVariants[0]
+    : null;
+  const initialSelectedTier =
+    initialSelectedSize &&
+    initialSelectedSize.pricingTiers &&
+    initialSelectedSize.pricingTiers.length
+      ? initialSelectedSize.pricingTiers[0]
+      : null;
+
+  const [sizeVariants, setSizeVariants] = useState(initialSizeVariants);
+  const [selectedSize, setSelectedSize] = useState(initialSelectedSize);
+  const [selectedTier, setSelectedTier] = useState(initialSelectedTier);
+  const [hasSizeVariants, setHasSizeVariants] = useState(
+    initialSizeVariants.length > 0
+  );
+  const [customStickerEnabled, setCustomStickerEnabled] = useState(false);
+
+  // Pricing defaults
+  const initialPrice = initialSelectedTier
+    ? getNumber(initialSelectedTier.finalPrice)
+    : getNumber(product?.price);
+  const initialOriginalPrice = initialSelectedTier
+    ? getNumber(initialSelectedTier.basePrice)
+    : getNumber(product?.originalPrice);
+  const initialDiscount = initialSelectedTier
+    ? initialSelectedTier.discount || 0
+    : 0;
+
+  const [price, setPrice] = useState(initialPrice || 0);
+  const [originalPrice, setOriginalPrice] = useState(initialOriginalPrice || 0);
+  const [discount, setDiscount] = useState(initialDiscount || 0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalOriginalPrice, setTotalOriginalPrice] = useState(0);
-
-  // Size variant specific states
-  const [sizeVariants, setSizeVariants] = useState([]);
-  const [selectedSize, setSelectedSize] = useState(null);
-  const [selectedTier, setSelectedTier] = useState(null);
-  const [hasSizeVariants, setHasSizeVariants] = useState(false);
-  const [customStickerEnabled, setCustomStickerEnabled] = useState(false);
 
   const productImages = product?.image || [];
 
@@ -110,7 +135,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
   };
 
   const handleQuantityIncrease = () => {
-    if (stock > item) setItem(item + 1);
+    setItem(item + 1);
   };
 
   const handleInputChange = (event) => {
@@ -127,10 +152,8 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     const parsedValue = parseInt(numericValue, 10);
 
     if (!isNaN(parsedValue)) {
-      if (parsedValue >= 1 && parsedValue <= stock) {
+      if (parsedValue >= 1) {
         setItem(parsedValue);
-      } else if (parsedValue > stock) {
-        setItem(stock);
       } else if (parsedValue < 1) {
         setItem(1);
       }
@@ -162,17 +185,11 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     setOriginalPrice(tier.basePrice);
     const discountPercent = tier.discount || 0;
     setDiscount(discountPercent);
-    setStock(tier.quantity); // Set stock to tier quantity for now
   };
 
   const handleAddToCart = () => {
     if (!product) {
       notifyError("Product not found");
-      return;
-    }
-
-    if (stock <= 0) {
-      notifyError("Insufficient stock");
       return;
     }
 
@@ -302,7 +319,6 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
         setPrice(firstTier.finalPrice);
         setOriginalPrice(firstTier.basePrice);
         setDiscount(firstTier.discount || 0);
-        setStock(firstTier.quantity);
       }
     } else {
       setHasSizeVariants(false);
@@ -351,24 +367,20 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
       );
 
       if (result.length <= 0 || !matchedVariant) {
-        setStock(0);
         return;
       }
 
       setSelectedVariant(matchedVariant);
       setSelectedVariantAttributes(matchedVariant);
       setSelectedImage(matchedVariant?.image || productImages[0]);
-      setStock(matchedVariant?.quantity || 0);
       calculateProductPricing(matchedVariant);
     } else if (product.variants.length > 0) {
       const firstVariant = product.variants[0];
-      setStock(firstVariant?.quantity || 0);
       setSelectedVariant(firstVariant);
       setSelectedVariantAttributes(firstVariant);
       setSelectedImage(firstVariant?.image || productImages[0]);
       calculateProductPricing(firstVariant);
     } else {
-      setStock(product?.stock || 0);
       setSelectedImage(productImages[0] || "");
       calculateProductPricing(product?.prices || {});
     }
@@ -505,7 +517,7 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
 
       <button
         onClick={handleQuantityIncrease}
-        disabled={stock <= item || hasSizeVariants}
+        disabled={hasSizeVariants}
         className="flex items-center justify-center h-full flex-shrink-0 transition ease-in-out duration-300 focus:outline-none w-10 md:w-12 text-gray-700 border-s border-gray-300 hover:text-black hover:bg-yellow-50 disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <FiPlus className="w-4 h-4" />
@@ -522,14 +534,39 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
     </button>
   );
 
-  const CreateYourOwnStickerButton = () => (
-    <button
-      onClick={() => router.push("/create_own_design")}
-      className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-bold text-center justify-center border-0 border-transparent rounded-lg focus-visible:outline-none focus:outline-none px-4 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 w-full h-12 shadow-lg hover:shadow-xl mt-3"
-    >
-      🎨 CLICK TO CREATE YOUR OWN STICKER
-    </button>
-  );
+  const CreateYourOwnStickerButton = () => {
+    const handleContinue = () => {
+      // Prepare product data to pass to custom sticker page
+      const productDataToPass = {
+        id: product._id,
+        title: showingTranslateValue(product.title),
+        slug: product.slug,
+        price: price,
+        originalPrice: originalPrice,
+        quantity: item,
+        selectedSize: selectedSize ? selectedSize.combination : null,
+        sizeLabel: selectedSize ? selectedSize.combination : null,
+        selectedTier: selectedTier,
+        image: selectedImage || product.image?.[0],
+      };
+
+      // Encode product data and navigate
+      const encodedData = encodeURIComponent(JSON.stringify(productDataToPass));
+      router.push(`/custom-sticker/${product.slug}?productData=${encodedData}`);
+    };
+
+    return (
+      <div>
+        <button
+          onClick={handleContinue}
+          className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-bold text-center justify-center border-0 border-transparent rounded-lg focus-visible:outline-none focus:outline-none px-4 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 w-full h-12 shadow-lg hover:shadow-xl"
+        >
+          CONTINUE
+        </button>
+        <p className="text-sm text-gray-600 mt-2">Next step → Upload image</p>
+      </div>
+    );
+  };
 
   const CategoryLink = () => (
     <Link
@@ -653,7 +690,6 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                               product={product}
                               discount={discount}
                             />
-                            <Stock stock={stock} />
                           </div>
                         </div>
 
@@ -711,15 +747,8 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                             {shouldShowReadMore && <ReadMoreButton />}
                           </div>
 
-                          <div className="flex items-center mt-6">
-                            <div className="flex items-center justify-between space-s-3 sm:space-s-4 w-full">
-                              <QuantityCounter />
-                              <AddToCartButton />
-                            </div>
-                          </div>
-
                           {customStickerEnabled && (
-                            <div className="mt-3">
+                            <div className="mt-6">
                               <CreateYourOwnStickerButton />
                             </div>
                           )}

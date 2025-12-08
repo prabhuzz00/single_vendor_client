@@ -63,7 +63,12 @@ const Checkout = () => {
     hasShippingAddress,
     isCouponAvailable,
     handleDefaultShippingAddress,
-  } = useCheckoutSubmit();
+    shippingRates,
+    selectedShippingRate,
+    isLoadingRates,
+    fetchShippingRates,
+    handleShippingRateSelection,
+  } = useCheckoutSubmit(storeSetting);
 
   return (
     <>
@@ -216,56 +221,117 @@ const Checkout = () => {
                         storeCustomizationSetting?.checkout?.shipping_cost
                       )}
                     />
-                    <div className="grid grid-cols-6 gap-6">
-                      <div className="col-span-6 sm:col-span-3">
-                        <InputShipping
-                          currency={currency}
-                          handleShippingCost={handleShippingCost}
-                          register={register}
-                          // value="FedEx"
-                          value={showingTranslateValue(
-                            storeCustomizationSetting?.checkout
-                              ?.shipping_name_two
-                          )}
-                          description={showingTranslateValue(
-                            storeCustomizationSetting?.checkout
-                              ?.shipping_one_desc
-                          )}
-                          // time="Today"
-                          cost={
-                            Number(
-                              storeCustomizationSetting?.checkout
-                                ?.shipping_one_cost
-                            ) || 60
-                          }
-                        />
-                        <Error errorName={errors.shippingOption} />
-                      </div>
 
-                      <div className="col-span-6 sm:col-span-3">
-                        <InputShipping
-                          currency={currency}
-                          handleShippingCost={handleShippingCost}
-                          register={register}
-                          value={showingTranslateValue(
-                            storeCustomizationSetting?.checkout
-                              ?.shipping_name_two
-                          )}
-                          description={showingTranslateValue(
-                            storeCustomizationSetting?.checkout
-                              ?.shipping_two_desc
-                          )}
-                          // time="7 Days"
-                          cost={
-                            Number(
-                              storeCustomizationSetting?.checkout
-                                ?.shipping_two_cost
-                            ) || 20
-                          }
-                        />
-                        <Error errorName={errors.shippingOption} />
-                      </div>
+                    {/* Stallion Express Shipping Integration */}
+                    <div className="mb-6">
+                      <button
+                        type="button"
+                        onClick={() => fetchShippingRates()}
+                        disabled={isLoadingRates}
+                        className="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      >
+                        {isLoadingRates
+                          ? "Loading Rates..."
+                          : "Get Shipping Rates"}
+                      </button>
                     </div>
+
+                    {shippingRates.length > 0 && (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                        {shippingRates.map((rate, index) => (
+                          <div
+                            key={index}
+                            onClick={() => handleShippingRateSelection(rate)}
+                            className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                              selectedShippingRate === rate
+                                ? "border-yellow-500 bg-yellow-50"
+                                : "border-gray-300 hover:border-gray-400"
+                            }`}
+                          >
+                            <div className="flex justify-between items-start mb-2">
+                              <h4 className="font-semibold text-gray-900">
+                                {rate.postage_type ||
+                                  rate.serviceName ||
+                                  rate.service ||
+                                  "Standard Shipping"}
+                              </h4>
+                              <span className="font-bold text-lg">
+                                {rate.currency || currency}
+                                {(
+                                  rate.total ||
+                                  rate.rate ||
+                                  rate.cost ||
+                                  0
+                                ).toFixed(2)}
+                              </span>
+                            </div>
+                            <p className="text-sm text-gray-600 mb-1">
+                              {rate.package_type ||
+                                rate.description ||
+                                "Reliable shipping service"}
+                            </p>
+                            {(rate.delivery_days || rate.estimatedDelivery) && (
+                              <p className="text-xs text-gray-500">
+                                Est. Delivery:{" "}
+                                {rate.delivery_days || rate.estimatedDelivery}{" "}
+                                days
+                              </p>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Fallback to manual shipping cost if rates not loaded */}
+                    {shippingRates.length === 0 && (
+                      <div className="grid grid-cols-6 gap-6">
+                        <div className="col-span-6 sm:col-span-3">
+                          <InputShipping
+                            currency={currency}
+                            handleShippingCost={handleShippingCost}
+                            register={register}
+                            value={showingTranslateValue(
+                              storeCustomizationSetting?.checkout
+                                ?.shipping_name_two
+                            )}
+                            description={showingTranslateValue(
+                              storeCustomizationSetting?.checkout
+                                ?.shipping_one_desc
+                            )}
+                            cost={
+                              Number(
+                                storeCustomizationSetting?.checkout
+                                  ?.shipping_one_cost
+                              ) || 60
+                            }
+                          />
+                          <Error errorName={errors.shippingOption} />
+                        </div>
+
+                        <div className="col-span-6 sm:col-span-3">
+                          <InputShipping
+                            currency={currency}
+                            handleShippingCost={handleShippingCost}
+                            register={register}
+                            value={showingTranslateValue(
+                              storeCustomizationSetting?.checkout
+                                ?.shipping_name_two
+                            )}
+                            description={showingTranslateValue(
+                              storeCustomizationSetting?.checkout
+                                ?.shipping_two_desc
+                            )}
+                            cost={
+                              Number(
+                                storeCustomizationSetting?.checkout
+                                  ?.shipping_two_cost
+                              ) || 20
+                            }
+                          />
+                          <Error errorName={errors.shippingOption} />
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="form-group mt-12">
                     <h2 className="font-semibold text-base text-black pb-3">
@@ -404,9 +470,7 @@ const Checkout = () => {
                     {couponInfo.couponCode ? (
                       <span className="bg-yellow-50 px-4 py-3 leading-tight w-full rounded-lg flex justify-between">
                         {" "}
-                        <p className="text-yellow-600">
-                          Coupon Applied{" "}
-                        </p>{" "}
+                        <p className="text-yellow-600">Coupon Applied </p>{" "}
                         <span className="text-red-500 text-right">
                           {couponInfo.couponCode}
                         </span>

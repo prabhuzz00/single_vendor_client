@@ -7,7 +7,7 @@ import { FiMinus, FiPlus } from "react-icons/fi";
 
 //internal import
 import Price from "@components/common/Price";
-import Stock from "@components/common/Stock";
+// import Stock from "@components/common/Stock";
 import Tags from "@components/common/Tags";
 import { notifyError } from "@utils/toast";
 import useAddToCart from "@hooks/useAddToCart";
@@ -258,7 +258,7 @@ const ProductModal = ({
                     stock <= 0 ? "relative py-1 mb-2" : "relative"
                   }`}
                 >
-                  <Stock stock={stock} />
+                  {/* <Stock stock={stock} /> */}
                 </div>
               </div>
               <p className="text-sm leading-4 text-gray-500 ">

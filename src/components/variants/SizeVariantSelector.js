@@ -18,23 +18,40 @@ const SizeVariantSelector = ({
           Select a size
         </h4>
         <div className="space-y-3">
-          {sizeVariants.map((variant, index) => (
-            <label
-              key={variant.id || index}
-              className="flex items-center cursor-pointer group"
-            >
-              <input
-                type="radio"
-                name="size"
-                checked={selectedSize?.id === variant.id}
-                onChange={() => onSizeChange(variant)}
-                className="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500 focus:ring-2 cursor-pointer"
-              />
-              <span className="ml-3 text-base text-gray-800 group-hover:text-gray-900 font-medium">
-                {variant.combination}
-              </span>
-            </label>
-          ))}
+          {sizeVariants.map((variant, index) => {
+            const raw = variant.combination || "";
+            // Remove parenthesis content (units) first
+            const cleaned = raw.replace(/\(.*?\)/g, "").trim();
+            // Extract numeric parts (e.g. 2, 3, 2.5) and format as 2"x2"
+            const nums = cleaned.match(/\d+(?:\.\d+)?/g);
+            let displaySize = cleaned;
+            if (nums && nums.length >= 2) {
+              displaySize = `${nums[0]}\"x${nums[1]}\"`;
+            } else {
+              // Fallback: remove common unit words and whitespace
+              displaySize = cleaned
+                .replace(/cm|mm|inch|inches|in/gi, "")
+                .replace(/\s+/g, "");
+            }
+
+            return (
+              <label
+                key={variant.id || index}
+                className="flex items-center cursor-pointer group"
+              >
+                <input
+                  type="radio"
+                  name="size"
+                  checked={selectedSize?.id === variant.id}
+                  onChange={() => onSizeChange(variant)}
+                  className="w-5 h-5 text-blue-600 border-gray-300 focus:ring-blue-500 focus:ring-2 cursor-pointer"
+                />
+                <span className="ml-3 text-base text-gray-800 group-hover:text-gray-900 font-medium">
+                  {displaySize || raw}
+                </span>
+              </label>
+            );
+          })}
         </div>
       </div>
 

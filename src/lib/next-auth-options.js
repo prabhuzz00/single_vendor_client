@@ -48,6 +48,26 @@ export const getDynamicAuthOptions = async () => {
       },
       authorize: async (credentials) => {
         try {
+          // Check if this is phone authentication
+          if (
+            credentials.isPhoneAuth === "true" ||
+            credentials.isPhoneAuth === true
+          ) {
+            // For phone auth, the phone-signin page has already verified the OTP
+            // and called the backend loginWithPhone endpoint
+            // We just need to return the user info that was passed
+            return {
+              _id: credentials._id,
+              name: credentials.name,
+              email: credentials.email,
+              phone: credentials.phone,
+              token: credentials.token,
+              image: credentials.image || "",
+              address: credentials.address || "",
+            };
+          }
+
+          // Regular email/password login
           const userInfo = await CustomerServices.loginCustomer(credentials);
           return userInfo;
         } catch (error) {
@@ -95,9 +115,9 @@ export const getDynamicAuthOptions = async () => {
           token.id = user._id;
           token.name = user.name;
           token.email = user.email;
-          token.address = user.address;
+          token.address = user.address || "";
           token.phone = user.phone;
-          token.image = user.image;
+          token.image = user.image || "";
           token.token = user.token;
         }
 
@@ -114,9 +134,9 @@ export const getDynamicAuthOptions = async () => {
         session.user.id = token.id;
         session.user.name = token.name;
         session.user.email = token.email;
-        session.user.address = token.address;
+        session.user.address = token.address || "";
         session.user.phone = token.phone;
-        session.user.image = token.image;
+        session.user.image = token.image || "";
         session.user.token = token.token;
 
         return session;

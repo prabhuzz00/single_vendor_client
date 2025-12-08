@@ -137,6 +137,7 @@
 // export default SignUp;
 
 import Link from "next/link";
+import Image from "next/image";
 import { FiLock, FiMail, FiUser } from "react-icons/fi";
 
 import Layout from "@layout/Layout";
@@ -172,8 +173,14 @@ const SignUp = () => {
             <div className="mx-auto text-left justify-center w-full max-w-lg px-4 py-8 sm:p-10 overflow-hidden align-middle transition-all transform bg-white/95 backdrop-blur-md shadow-2xl rounded-2xl border-2 border-yellow-400">
               <div className="overflow-hidden mx-auto">
                 <div className="text-center mb-6">
-                  <div className="inline-block p-3 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl mb-4 shadow-lg">
-                    <FiUser className="w-8 h-8 text-black" />
+                  <div className="inline-block mb-4">
+                    <Image
+                      src="/logo/logo-color2.png"
+                      alt="Logo"
+                      width={120}
+                      height={120}
+                      className="mx-auto"
+                    />
                   </div>
                   <h2 className="text-3xl font-bold font-serif text-black">
                     Create Account

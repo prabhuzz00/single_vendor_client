@@ -118,7 +118,8 @@
 // export default Login;
 
 import Link from "next/link";
-import { FiLock, FiMail } from "react-icons/fi";
+import Image from "next/image";
+import { FiLock, FiMail, FiPhone } from "react-icons/fi";
 
 import Layout from "@layout/Layout";
 import Error from "@components/form/Error";
@@ -153,8 +154,14 @@ const Login = () => {
             <div className="mx-auto text-left justify-center w-full max-w-lg px-4 py-8 sm:p-10 overflow-hidden align-middle transition-all transform bg-white/95 backdrop-blur-md shadow-2xl rounded-2xl border-2 border-yellow-400">
               <div className="overflow-hidden mx-auto">
                 <div className="text-center mb-6">
-                  <div className="inline-block p-3 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl mb-4 shadow-lg">
-                    <FiLock className="w-8 h-8 text-black" />
+                  <div className="inline-block mb-4">
+                    <Image
+                      src="/logo/logo-color2.png"
+                      alt="Logo"
+                      width={120}
+                      height={120}
+                      className="mx-auto"
+                    />
                   </div>
                   <h2 className="text-3xl font-bold font-serif text-black">
                     Welcome Back
@@ -233,8 +240,28 @@ const Login = () => {
                     )}
                   </div>
                 </form>
+
+                {/* Phone Sign In Option */}
+                <div className="text-center mt-6">
+                  <div className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-gray-300"></div>
+                    </div>
+                    <div className="relative flex justify-center text-sm">
+                      <span className="px-2 bg-white/95 text-gray-500">OR</span>
+                    </div>
+                  </div>
+                  <Link
+                    href="/auth/phone-signin"
+                    className="mt-4 w-full inline-flex items-center justify-center gap-2 py-3 px-4 border-2 border-yellow-400 rounded-xl text-black font-semibold hover:bg-yellow-50 transition-all"
+                  >
+                    <FiPhone className="w-5 h-5" />
+                    Sign in with Phone Number
+                  </Link>
+                </div>
+
                 <BottomNavigation
-                  or={true}
+                  or={false}
                   route={"/auth/signup"}
                   pageName={"Sign Up"}
                   loginTitle="Login"

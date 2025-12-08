@@ -44,13 +44,43 @@ const ProductCard = ({ product, attributes }) => {
   const productImages = product?.image || [];
   const isOutOfStock = product?.stock < 1;
 
+  // Derive price for product card:
+  // - If product has size-type variants with pricing tiers, use first tier of first size variant
+  // - Else if product is combination, use first variant prices
+  // - Else fallback to product.prices
+  const initialSizeVariants = (product?.variants || []).filter(
+    (v) => v.variantType === "size"
+  );
+
+  let derivedPrice = 0;
+  let derivedOriginalPrice = 0;
+
+  if (initialSizeVariants.length > 0) {
+    const firstSize = initialSizeVariants[0];
+    const firstTier =
+      firstSize?.pricingTiers && firstSize.pricingTiers.length
+        ? firstSize.pricingTiers[0]
+        : null;
+
+    if (firstTier) {
+      derivedPrice = getNumber(firstTier.finalPrice);
+      derivedOriginalPrice = getNumber(firstTier.basePrice);
+    } else {
+      // fallback to product prices
+      derivedPrice = getNumber(product?.prices?.price);
+      derivedOriginalPrice = getNumber(product?.prices?.originalPrice);
+    }
+  } else if (product?.isCombination && product?.variants?.length > 0) {
+    derivedPrice = getNumber(product?.variants?.[0]?.price);
+    derivedOriginalPrice = getNumber(product?.variants?.[0]?.originalPrice);
+  } else {
+    derivedPrice = getNumber(product?.prices?.price);
+    derivedOriginalPrice = getNumber(product?.prices?.originalPrice);
+  }
+
   const productPrice = {
-    price: product?.isCombination
-      ? getNumber(product?.variants?.[0]?.price)
-      : getNumber(product?.prices?.price),
-    originalPrice: product?.isCombination
-      ? getNumber(product?.variants?.[0]?.originalPrice)
-      : getNumber(product?.prices?.originalPrice),
+    price: derivedPrice,
+    originalPrice: derivedOriginalPrice,
   };
 
   productPrice.hasDiscount =

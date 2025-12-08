@@ -260,30 +260,13 @@ const Navbar = () => {
                   className="w-full h-full object-contain"
                   priority
                   src={
-                    storeCustomizationSetting?.navbar?.logo ||
-                    "/logo/logo-color.png"
+                    "/logo/logo-color.png" ||
+                    storeCustomizationSetting?.navbar?.logo
                   }
                   alt="logo"
                 />
               </div>
             </Link>
-            {/* 
-             <Link href="/" className="flex items-center space-x-3">
-              
-              <div className="relative flex-shrink-0 w-28 sm:w-32 lg:w-36 xl:w-40 h-12 sm:h-14 lg:h-16 xl:h-16">
-                <Image
-                  width={630}
-                  height={396}
-                  className="w-full h-full object-contain"
-                  priority
-                  src={
-                    storeCustomizationSetting?.navbar?.logo ||
-                    "/logo/logo-color.png"
-                  }
-                  alt="logo"
-                />
-              </div>
-            </Link>  */}
 
             <div
               className="hidden lg:flex flex-1 max-w-2xl mx-8 xl:mx-12"

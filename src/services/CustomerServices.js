@@ -5,6 +5,10 @@ const CustomerServices = {
     return requests.post("/customer/login", body);
   },
 
+  loginWithPhone: async (body) => {
+    return requests.post("/customer/login-with-phone", body);
+  },
+
   verifyEmailAddress: async (body) => {
     return requests.post("/customer/verify-email", body);
   },

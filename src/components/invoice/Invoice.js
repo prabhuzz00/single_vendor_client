@@ -45,7 +45,7 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
                 <Image
                   width={110}
                   height={40}
-                  src="/logo/logo-color.svg"
+                  src="/logo/logo-color2.png"
                   alt="logo"
                 />
               </Link>
@@ -174,6 +174,56 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
             </span>
           </div>
         </div>
+
+        {/* Shipment Tracking Information */}
+        {data.shipment && data.shipment.trackingId && (
+          <div className="mt-6 pt-6 border-t border-gray-200">
+            <h3 className="font-bold font-serif text-base uppercase text-gray-700 mb-4">
+              Shipment Tracking
+            </h3>
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
+              <div className="flex flex-col">
+                <span className="mb-1 font-semibold text-sm text-gray-600">
+                  Carrier
+                </span>
+                <span className="text-sm text-gray-700">
+                  {data.shipment.provider || "Stallion Express"}
+                </span>
+              </div>
+              <div className="flex flex-col">
+                <span className="mb-1 font-semibold text-sm text-gray-600">
+                  Tracking Number
+                </span>
+                <span className="text-sm font-semibold text-emerald-600">
+                  {data.shipment.trackingId}
+                </span>
+              </div>
+              <div className="flex flex-col">
+                <span className="mb-1 font-semibold text-sm text-gray-600">
+                  Status
+                </span>
+                <span className="text-sm text-gray-700 capitalize">
+                  {data.shipment.status || "Processing"}
+                </span>
+              </div>
+              {data.shipment.trackingUrl && (
+                <div className="flex flex-col lg:col-span-3">
+                  <span className="mb-1 font-semibold text-sm text-gray-600">
+                    Track Your Package
+                  </span>
+                  <a
+                    href={data.shipment.trackingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-blue-600 hover:text-blue-800 underline"
+                  >
+                    Click here to track your shipment
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ import CouponServices from "@services/CouponServices";
 import { notifyError, notifySuccess } from "@utils/toast";
 import CustomerServices from "@services/CustomerServices";
 import NotificationServices from "@services/NotificationServices";
+import ShippingServices from "@services/ShippingServices";
 
 const useCheckoutSubmit = (storeSetting) => {
   const { dispatch } = useContext(UserContext);
@@ -33,6 +34,9 @@ const useCheckoutSubmit = (storeSetting) => {
   const [isCouponApplied, setIsCouponApplied] = useState(false);
   const [useExistingAddress, setUseExistingAddress] = useState(false);
   const [isCouponAvailable, setIsCouponAvailable] = useState(false);
+  const [shippingRates, setShippingRates] = useState([]);
+  const [selectedShippingRate, setSelectedShippingRate] = useState(null);
+  const [isLoadingRates, setIsLoadingRates] = useState(false);
 
   const router = useRouter();
   const stripe = useStripe();
@@ -64,6 +68,7 @@ const useCheckoutSubmit = (storeSetting) => {
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm();
 
@@ -174,6 +179,42 @@ const useCheckoutSubmit = (storeSetting) => {
 
   const handleOrderSuccess = async (orderResponse, orderInfo) => {
     try {
+      // Create shipment after successful payment
+      if (selectedShippingRate && orderResponse?._id) {
+        try {
+          const shipmentPayload = {
+            orderId: orderResponse._id,
+            service:
+              selectedShippingRate.service || selectedShippingRate.serviceType,
+            destination: {
+              name: orderInfo.user_info.name,
+              address1: orderInfo.user_info.address,
+              city: orderInfo.user_info.city,
+              province: orderInfo.user_info.country, // Or state if you have it
+              postalCode: orderInfo.user_info.zipCode,
+              country: orderInfo.user_info.country,
+              phone: orderInfo.user_info.contact,
+              email: orderInfo.user_info.email,
+            },
+            parcels: items.map((item) => ({
+              weight: item.weight || 0.5,
+              length: item.length || 10,
+              width: item.width || 10,
+              height: item.height || 5,
+              quantity: item.quantity || 1,
+            })),
+            reference: `Order-${orderResponse._id}`,
+          };
+
+          await ShippingServices.createShipment(shipmentPayload);
+          console.log("Shipment created successfully");
+        } catch (shipmentError) {
+          console.error("Failed to create shipment:", shipmentError);
+          // Don't fail the order if shipment creation fails
+          // Admin can retry from dashboard
+        }
+      }
+
       const notificationInfo = {
         orderId: orderResponse?._id,
         message: `${
@@ -323,6 +364,87 @@ const useCheckoutSubmit = (storeSetting) => {
     setShippingCost(Number(value));
   };
 
+  // Fetch shipping rates when address is complete
+  const fetchShippingRates = async (destination) => {
+    // If no destination provided, read from form values
+    if (!destination) {
+      const values = getValues();
+      destination = {
+        address: values?.address,
+        city: values?.city,
+        zipCode: values?.zipCode,
+        country: values?.country,
+      };
+    }
+
+    if (
+      !destination?.address ||
+      !destination?.city ||
+      !destination?.zipCode ||
+      !destination?.country
+    ) {
+      notifyError(
+        "Please fill in complete shipping address before fetching rates."
+      );
+      return;
+    }
+
+    setIsLoadingRates(true);
+    try {
+      const ratePayload = {
+        destination: {
+          name: destination.name || "Customer",
+          address1: destination.address,
+          city: destination.city,
+          province: destination.state || "",
+          state: destination.state || "",
+          postalCode: destination.zipCode,
+          country: destination.country,
+        },
+        parcels: items.map((item) => ({
+          weight: item.weight || 0.5,
+          length: item.length || 10,
+          width: item.width || 10,
+          height: item.height || 5,
+          quantity: item.quantity || 1,
+        })),
+      };
+
+      const response = await ShippingServices.getRates(ratePayload);
+
+      if (response.success && response.rates) {
+        // Extract rates array from nested structure
+        const ratesArray = response.rates.rates || response.rates;
+        setShippingRates(ratesArray);
+
+        // Auto-select cheapest rate
+        if (ratesArray.length > 0) {
+          const cheapest = ratesArray.reduce((prev, curr) =>
+            (prev.total || prev.rate || prev.cost) <
+            (curr.total || curr.rate || curr.cost)
+              ? prev
+              : curr
+          );
+          setSelectedShippingRate(cheapest);
+          setShippingCost(
+            Number(cheapest.total || cheapest.rate || cheapest.cost || 0)
+          );
+        }
+      }
+    } catch (error) {
+      console.error("Failed to fetch shipping rates:", error);
+      notifyError("Failed to load shipping rates. Please try again.");
+    } finally {
+      setIsLoadingRates(false);
+    }
+  };
+
+  // Handle shipping rate selection
+  const handleShippingRateSelection = (rate) => {
+    setSelectedShippingRate(rate);
+    setShippingCost(Number(rate.total || rate.rate || rate.cost || 0));
+  };
+
   //handle default shipping address
   const handleDefaultShippingAddress = (value) => {
     // console.log("handle default shipping", value);
@@ -427,6 +549,11 @@ const useCheckoutSubmit = (storeSetting) => {
     hasShippingAddress,
     isCouponAvailable,
     handleDefaultShippingAddress,
+    shippingRates,
+    selectedShippingRate,
+    isLoadingRates,
+    fetchShippingRates,
+    handleShippingRateSelection,
   };
 };
 
