@@ -43,8 +43,20 @@ const CreateOwnDesign = () => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        notifyError("Image size should be less than 5MB");
+      // Validate file type
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "application/pdf",
+      ];
+      if (!allowedTypes.includes(file.type)) {
+        notifyError("Please upload only JPG, PNG, or PDF files");
+        return;
+      }
+
+      if (file.size > 10 * 1024 * 1024) {
+        notifyError("File size should be less than 10MB");
         return;
       }
 
@@ -64,9 +76,17 @@ const CreateOwnDesign = () => {
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith("image/")) {
+    const allowedTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "application/pdf",
+    ];
+    if (file && allowedTypes.includes(file.type)) {
       const fakeEvent = { target: { files: [file] } };
       handleImageUpload(fakeEvent);
+    } else if (file) {
+      notifyError("Please upload only JPG, PNG, or PDF files");
     }
   };
 
@@ -108,6 +128,9 @@ const CreateOwnDesign = () => {
         shape: selectedShape,
         size: selectedSize.dimensions,
         uploadedImage: imagePreview,
+        isCustomProduct: true,
+        fileType: uploadedImage?.type,
+        fileName: uploadedImage?.name,
       },
     };
 
@@ -172,12 +195,27 @@ const CreateOwnDesign = () => {
                   >
                     {imagePreview ? (
                       <div className="relative w-32 h-32 mx-auto">
-                        <Image
-                          src={imagePreview}
-                          alt="Preview"
-                          fill
-                          className="object-contain"
-                        />
+                        {uploadedImage?.type === "application/pdf" ? (
+                          <div className="w-full h-full flex flex-col items-center justify-center bg-red-50 rounded-lg border-2 border-red-200">
+                            <svg
+                              className="w-16 h-16 text-red-600"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" />
+                            </svg>
+                            <p className="text-xs text-red-600 mt-1 font-medium">
+                              PDF
+                            </p>
+                          </div>
+                        ) : (
+                          <Image
+                            src={imagePreview}
+                            alt="Preview"
+                            fill
+                            className="object-contain"
+                          />
+                        )}
                       </div>
                     ) : (
                       <div>
@@ -185,18 +223,24 @@ const CreateOwnDesign = () => {
                         <p className="text-gray-600 font-medium mb-2">
                           Drag & drop zone
                         </p>
+                        <p className="text-sm text-gray-500">
+                          Supported formats: JPG, PNG, PDF
+                        </p>
                       </div>
                     )}
                     <input
                       ref={fileInputRef}
                       type="file"
-                      accept="image/*"
+                      accept="image/jpeg,image/jpg,image/png,application/pdf"
                       onChange={handleImageUpload}
                       className="hidden"
                     />
                     <button className="mt-4 px-6 py-3 bg-black text-white rounded-full hover:bg-gray-800 transition-all font-semibold">
                       Choose File
                     </button>
+                    <p className="mt-3 text-xs text-gray-500">
+                      Max file size: 10MB
+                    </p>
                   </div>
                 </div>
 
@@ -312,12 +356,27 @@ const CreateOwnDesign = () => {
                           transform: "perspective(1000px) rotateY(-5deg)",
                         }}
                       >
-                        <Image
-                          src={imagePreview}
-                          alt="Sticker Preview"
-                          fill
-                          className="object-cover"
-                        />
+                        {uploadedImage?.type === "application/pdf" ? (
+                          <div className="w-full h-full flex flex-col items-center justify-center bg-red-50 border-4 border-red-200">
+                            <svg
+                              className="w-24 h-24 text-red-600"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" />
+                            </svg>
+                            <p className="text-sm text-red-600 mt-2 font-bold">
+                              PDF File
+                            </p>
+                          </div>
+                        ) : (
+                          <Image
+                            src={imagePreview}
+                            alt="Sticker Preview"
+                            fill
+                            className="object-cover"
+                          />
+                        )}
                         <div className="absolute bottom-2 right-2 w-8 h-8 bg-white/80 rounded-full shadow-lg"></div>
                       </div>
                     ) : (

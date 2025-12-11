@@ -2,7 +2,6 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef } from "react";
 import { useCart } from "react-use-cart";
-import Image from "next/image";
 import { FiUpload, FiShoppingCart } from "react-icons/fi";
 import Layout from "@layout/Layout";
 import { notifySuccess, notifyError } from "@utils/toast";
@@ -16,12 +15,40 @@ const CustomStickerDesign = () => {
 
   const [uploadedImage, setUploadedImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [cloudinaryUrl, setCloudinaryUrl] = useState(null);
+  const [cloudinaryPreviewUrl, setCloudinaryPreviewUrl] = useState(null);
+  const [cloudinaryConfig, setCloudinaryConfig] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef(null);
 
   // Get product data from URL query params
   const [productData, setProductData] = useState(null);
+
+  // Fetch Cloudinary configuration on mount
+  useEffect(() => {
+    const fetchCloudinaryConfig = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/setting/cloudinary/config`
+        );
+        if (response.ok) {
+          const config = await response.json();
+          setCloudinaryConfig(config);
+        } else {
+          console.error("Cloudinary config not available");
+          notifyError(
+            "Cloudinary configuration not enabled. Please contact admin."
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching Cloudinary config:", error);
+        notifyError("Failed to load upload configuration");
+      }
+    };
+    fetchCloudinaryConfig();
+  }, []);
 
   useEffect(() => {
     if (router.query.productData) {
@@ -37,20 +64,75 @@ const CustomStickerDesign = () => {
     }
   }, [router.query]);
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        notifyError("Image size should be less than 5MB");
+      // Validate file type
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "application/pdf",
+      ];
+      if (!allowedTypes.includes(file.type)) {
+        notifyError("Please upload only JPG, PNG, or PDF files");
         return;
       }
 
+      if (file.size > 10 * 1024 * 1024) {
+        notifyError("File size should be less than 10MB");
+        return;
+      }
+
+      // Show preview immediately
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
-        setUploadedImage(file);
       };
       reader.readAsDataURL(file);
+      setUploadedImage(file);
+
+      // Upload to Cloudinary
+      setIsUploading(true);
+      try {
+        if (!cloudinaryConfig || !cloudinaryConfig.enabled) {
+          notifyError("Cloudinary is not configured. Please contact admin.");
+          setIsUploading(false);
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", cloudinaryConfig.uploadPreset);
+
+        // Determine resource type: raw for PDFs, image for JPG/PNG
+        const isPDF = file.type === "application/pdf";
+        const resourceType = isPDF ? "raw" : "image";
+
+        const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloudinaryConfig.cloudName}/${resourceType}/upload`;
+        const response = await fetch(cloudinaryUrl, {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await response.json();
+        if (data.secure_url) {
+          // For PDFs uploaded as raw, we cannot create preview transformations
+          // Store original URL for download
+          let previewUrl = data.secure_url;
+
+          setCloudinaryUrl(data.secure_url); // Original URL for download
+          setCloudinaryPreviewUrl(previewUrl); // Preview URL (same as original for PDFs)
+          notifySuccess("File uploaded successfully!");
+        } else {
+          notifyError("Failed to upload file");
+        }
+      } catch (error) {
+        console.error("Error uploading to Cloudinary:", error);
+        notifyError("Failed to upload image");
+      } finally {
+        setIsUploading(false);
+      }
     }
   };
 
@@ -61,9 +143,17 @@ const CustomStickerDesign = () => {
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith("image/")) {
+    const allowedTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "application/pdf",
+    ];
+    if (file && allowedTypes.includes(file.type)) {
       const fakeEvent = { target: { files: [file] } };
       handleImageUpload(fakeEvent);
+    } else if (file) {
+      notifyError("Please upload only JPG, PNG, or PDF files");
     }
   };
 
@@ -75,8 +165,8 @@ const CustomStickerDesign = () => {
   };
 
   const handleAddToCart = () => {
-    if (!uploadedImage) {
-      notifyError("Please upload an image");
+    if (!uploadedImage || !cloudinaryUrl) {
+      notifyError("Please wait for image upload to complete");
       return;
     }
 
@@ -90,13 +180,17 @@ const CustomStickerDesign = () => {
       title: productData.title,
       name: productData.title,
       price: productData.price,
-      image: imagePreview,
+      image: cloudinaryUrl, // Use Cloudinary URL instead of base64
       quantity: quantity,
       customData: {
         productId: productData.id,
         selectedSize: productData.selectedSize,
         selectedTier: productData.selectedTier,
-        uploadedImage: imagePreview,
+        uploadedImage: cloudinaryUrl, // Store original Cloudinary URL for download
+        uploadedImagePreview: cloudinaryPreviewUrl || cloudinaryUrl, // Preview URL (converted for PDFs)
+        isCustomProduct: true,
+        fileType: uploadedImage.type, // Store file type
+        fileName: uploadedImage.name, // Store file name
       },
     };
 
@@ -156,12 +250,31 @@ const CustomStickerDesign = () => {
                   >
                     {imagePreview ? (
                       <div className="relative w-32 h-32 mx-auto">
-                        <Image
-                          src={imagePreview}
-                          alt="Preview"
-                          fill
-                          className="object-contain"
-                        />
+                        {uploadedImage?.type === "application/pdf" ? (
+                          <div className="w-full h-full flex flex-col items-center justify-center bg-red-50 rounded-lg border-2 border-red-200">
+                            <svg
+                              className="w-16 h-16 text-red-600"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" />
+                            </svg>
+                            <p className="text-xs text-red-600 mt-1 font-medium">
+                              PDF
+                            </p>
+                          </div>
+                        ) : (
+                          <img
+                            src={imagePreview}
+                            alt="Preview"
+                            className="w-full h-full object-contain"
+                          />
+                        )}
+                        {isUploading && (
+                          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded">
+                            <div className="animate-spin rounded-full h-8 w-8 border-4 border-yellow-400 border-t-transparent"></div>
+                          </div>
+                        )}
                       </div>
                     ) : (
                       <div>
@@ -169,18 +282,24 @@ const CustomStickerDesign = () => {
                         <p className="text-gray-600 font-medium mb-2">
                           Drag & drop zone
                         </p>
+                        <p className="text-sm text-gray-500">
+                          Supported formats: JPG, PNG, PDF
+                        </p>
                       </div>
                     )}
                     <input
                       ref={fileInputRef}
                       type="file"
-                      accept="image/*"
+                      accept="image/jpeg,image/jpg,image/png,application/pdf"
                       onChange={handleImageUpload}
                       className="hidden"
                     />
                     <button className="mt-4 px-6 py-3 bg-black text-white rounded-full hover:bg-gray-800 transition-all font-semibold">
                       Choose File
                     </button>
+                    <p className="mt-3 text-xs text-gray-500">
+                      Max file size: 10MB
+                    </p>
                   </div>
                 </div>
 
@@ -225,12 +344,26 @@ const CustomStickerDesign = () => {
                   <div className="bg-gray-100 rounded-xl p-8 aspect-square flex items-center justify-center">
                     {imagePreview ? (
                       <div className="relative w-64 h-64">
-                        <Image
-                          src={imagePreview}
-                          alt="Sticker Preview"
-                          fill
-                          className="object-contain"
-                        />
+                        {uploadedImage?.type === "application/pdf" ? (
+                          <div className="w-full h-full flex flex-col items-center justify-center bg-red-50 rounded-lg border-4 border-red-200">
+                            <svg
+                              className="w-24 h-24 text-red-600"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" />
+                            </svg>
+                            <p className="text-sm text-red-600 mt-2 font-bold">
+                              PDF File
+                            </p>
+                          </div>
+                        ) : (
+                          <img
+                            src={imagePreview}
+                            alt="Sticker Preview"
+                            className="w-full h-full object-contain"
+                          />
+                        )}
                       </div>
                     ) : (
                       <div className="text-center">
@@ -280,11 +413,16 @@ const CustomStickerDesign = () => {
 
                   <button
                     onClick={handleAddToCart}
-                    disabled={!uploadedImage || isLoading}
+                    disabled={
+                      !uploadedImage ||
+                      !cloudinaryUrl ||
+                      isLoading ||
+                      isUploading
+                    }
                     className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-black font-bold py-4 rounded-full transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
                   >
                     <FiShoppingCart className="w-5 h-5" />
-                    <span>ADD TO CART</span>
+                    <span>{isUploading ? "Uploading..." : "ADD TO CART"}</span>
                   </button>
                 </div>
               </div>

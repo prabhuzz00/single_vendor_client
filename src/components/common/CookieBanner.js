@@ -28,10 +28,117 @@ const CookieBanner = () => {
     }
   }, [showBanner]);
 
-  const handleAcceptAll = () => {
+  // Generate simple session ID
+  const generateSessionId = () => {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+  };
+
+  // Get or create session ID
+  const getSessionId = () => {
+    let sessionId = sessionStorage.getItem("cookieSessionId");
+    if (!sessionId) {
+      sessionId = generateSessionId();
+      sessionStorage.setItem("cookieSessionId", sessionId);
+    }
+    return sessionId;
+  };
+
+  // Detect device type
+  const getDeviceType = () => {
+    const ua = navigator.userAgent;
+    if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+      return "tablet";
+    }
+    if (
+      /Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(
+        ua
+      )
+    ) {
+      return "mobile";
+    }
+    return "desktop";
+  };
+
+  // Detect browser
+  const getBrowser = () => {
+    const ua = navigator.userAgent;
+    if (ua.indexOf("Chrome") > -1) return "Chrome";
+    if (ua.indexOf("Safari") > -1) return "Safari";
+    if (ua.indexOf("Firefox") > -1) return "Firefox";
+    if (ua.indexOf("MSIE") > -1 || ua.indexOf("Trident/") > -1) return "IE";
+    if (ua.indexOf("Edge") > -1) return "Edge";
+    return "Unknown";
+  };
+
+  // Detect OS
+  const getOS = () => {
+    const ua = navigator.userAgent;
+    if (ua.indexOf("Win") > -1) return "Windows";
+    if (ua.indexOf("Mac") > -1) return "MacOS";
+    if (ua.indexOf("Linux") > -1) return "Linux";
+    if (ua.indexOf("Android") > -1) return "Android";
+    if (ua.indexOf("iOS") > -1) return "iOS";
+    return "Unknown";
+  };
+
+  // Save consent to database
+  const saveCookieConsent = async (consentType, cookiePreferences) => {
+    try {
+      const consentData = {
+        sessionId: getSessionId(),
+        consentType,
+        cookiePreferences,
+        userAgent: navigator.userAgent,
+        browser: getBrowser(),
+        device: getDeviceType(),
+        os: getOS(),
+        referrer: document.referrer || "direct",
+        pageUrl: window.location.href,
+      };
+
+      console.log("Sending cookie consent to API:", consentData);
+
+      const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/cookie-consent/`;
+      console.log("API URL:", apiUrl);
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(consentData),
+      });
+
+      if (!response.ok) {
+        console.error(
+          "Failed to save cookie consent. Status:",
+          response.status
+        );
+        const errorText = await response.text();
+        console.error("Error response:", errorText);
+      } else {
+        const result = await response.json();
+        console.log("Cookie consent saved successfully:", result);
+      }
+    } catch (error) {
+      console.error("Error saving cookie consent:", error);
+    }
+  };
+
+  const handleAcceptAll = async () => {
+    const cookiePreferences = {
+      necessary: true,
+      analytics: true,
+      marketing: true,
+      functional: true,
+    };
+
     // Save preference to localStorage
     localStorage.setItem("cookiePreference", "accepted");
     localStorage.setItem("cookiePreferenceDate", new Date().toISOString());
+
+    // Save to database
+    await saveCookieConsent("accepted", cookiePreferences);
 
     // Enable all cookies/tracking
     // Add your analytics, marketing cookies initialization here
@@ -40,10 +147,20 @@ const CookieBanner = () => {
     setShowBanner(false);
   };
 
-  const handleRejectNonEssential = () => {
+  const handleRejectNonEssential = async () => {
+    const cookiePreferences = {
+      necessary: true,
+      analytics: false,
+      marketing: false,
+      functional: false,
+    };
+
     // Save preference to localStorage
     localStorage.setItem("cookiePreference", "rejected");
     localStorage.setItem("cookiePreferenceDate", new Date().toISOString());
+
+    // Save to database
+    await saveCookieConsent("rejected", cookiePreferences);
 
     // Disable non-essential cookies/tracking
     // Keep only necessary cookies
@@ -51,10 +168,23 @@ const CookieBanner = () => {
     setShowBanner(false);
   };
 
-  const handleCustomize = () => {
+  const handleCustomize = async () => {
     // Optional: Open a detailed cookie settings modal
-    // For now, we'll just treat it as reject
-    handleRejectNonEssential();
+    // For now, we'll treat it as customized (only necessary)
+    const cookiePreferences = {
+      necessary: true,
+      analytics: false,
+      marketing: false,
+      functional: false,
+    };
+
+    localStorage.setItem("cookiePreference", "customized");
+    localStorage.setItem("cookiePreferenceDate", new Date().toISOString());
+
+    // Save to database
+    await saveCookieConsent("customized", cookiePreferences);
+
+    setShowBanner(false);
   };
 
   if (!showBanner) {

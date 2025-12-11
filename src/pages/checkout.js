@@ -100,9 +100,14 @@ const Checkout = () => {
                       <div className="col-span-6 sm:col-span-3">
                         <InputArea
                           register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.first_name
-                          )}
+                          label={
+                            <>
+                              {showingTranslateValue(
+                                storeCustomizationSetting?.checkout?.first_name
+                              )}
+                              <span className="text-red-500 ml-1">*</span>
+                            </>
+                          }
                           name="firstName"
                           type="text"
                           placeholder="John"
@@ -127,9 +132,15 @@ const Checkout = () => {
                       <div className="col-span-6 sm:col-span-3">
                         <InputArea
                           register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.email_address
-                          )}
+                          label={
+                            <>
+                              {showingTranslateValue(
+                                storeCustomizationSetting?.checkout
+                                  ?.email_address
+                              )}
+                              <span className="text-red-500 ml-1">*</span>
+                            </>
+                          }
                           name="email"
                           type="email"
                           readOnly={false}
@@ -141,9 +152,15 @@ const Checkout = () => {
                       <div className="col-span-6 sm:col-span-3">
                         <InputArea
                           register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.checkout_phone
-                          )}
+                          label={
+                            <>
+                              {showingTranslateValue(
+                                storeCustomizationSetting?.checkout
+                                  ?.checkout_phone
+                              )}
+                              <span className="text-red-500 ml-1">*</span>
+                            </>
+                          }
                           name="contact"
                           type="tel"
                           placeholder="+062-6532956"
@@ -166,9 +183,15 @@ const Checkout = () => {
                       <div className="col-span-6">
                         <InputArea
                           register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.street_address
-                          )}
+                          label={
+                            <>
+                              {showingTranslateValue(
+                                storeCustomizationSetting?.checkout
+                                  ?.street_address
+                              )}
+                              <span className="text-red-500 ml-1">*</span>
+                            </>
+                          }
                           name="address"
                           type="text"
                           placeholder="123 Boulevard Rd, Beverley Hills"
@@ -179,9 +202,14 @@ const Checkout = () => {
                       <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                         <InputArea
                           register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.city
-                          )}
+                          label={
+                            <>
+                              {showingTranslateValue(
+                                storeCustomizationSetting?.checkout?.city
+                              )}
+                              <span className="text-red-500 ml-1">*</span>
+                            </>
+                          }
                           name="city"
                           type="text"
                           placeholder="Los Angeles"
@@ -192,9 +220,14 @@ const Checkout = () => {
                       <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                         <InputArea
                           register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.country
-                          )}
+                          label={
+                            <>
+                              {showingTranslateValue(
+                                storeCustomizationSetting?.checkout?.country
+                              )}
+                              <span className="text-red-500 ml-1">*</span>
+                            </>
+                          }
                           name="country"
                           type="text"
                           placeholder="United States"
@@ -205,9 +238,14 @@ const Checkout = () => {
                       <div className="col-span-6 sm:col-span-3 lg:col-span-2">
                         <InputArea
                           register={register}
-                          label={showingTranslateValue(
-                            storeCustomizationSetting?.checkout?.zip_code
-                          )}
+                          label={
+                            <>
+                              {showingTranslateValue(
+                                storeCustomizationSetting?.checkout?.zip_code
+                              )}
+                              <span className="text-red-500 ml-1">*</span>
+                            </>
+                          }
                           name="zipCode"
                           type="text"
                           placeholder="2345"
@@ -284,52 +322,9 @@ const Checkout = () => {
 
                     {/* Fallback to manual shipping cost if rates not loaded */}
                     {shippingRates.length === 0 && (
-                      <div className="grid grid-cols-6 gap-6">
-                        <div className="col-span-6 sm:col-span-3">
-                          <InputShipping
-                            currency={currency}
-                            handleShippingCost={handleShippingCost}
-                            register={register}
-                            value={showingTranslateValue(
-                              storeCustomizationSetting?.checkout
-                                ?.shipping_name_two
-                            )}
-                            description={showingTranslateValue(
-                              storeCustomizationSetting?.checkout
-                                ?.shipping_one_desc
-                            )}
-                            cost={
-                              Number(
-                                storeCustomizationSetting?.checkout
-                                  ?.shipping_one_cost
-                              ) || 60
-                            }
-                          />
-                          <Error errorName={errors.shippingOption} />
-                        </div>
-
-                        <div className="col-span-6 sm:col-span-3">
-                          <InputShipping
-                            currency={currency}
-                            handleShippingCost={handleShippingCost}
-                            register={register}
-                            value={showingTranslateValue(
-                              storeCustomizationSetting?.checkout
-                                ?.shipping_name_two
-                            )}
-                            description={showingTranslateValue(
-                              storeCustomizationSetting?.checkout
-                                ?.shipping_two_desc
-                            )}
-                            cost={
-                              Number(
-                                storeCustomizationSetting?.checkout
-                                  ?.shipping_two_cost
-                              ) || 20
-                            }
-                          />
-                          <Error errorName={errors.shippingOption} />
-                        </div>
+                      <div className="text-gray-500 text-sm py-4">
+                        Click "Get Shipping Rates" to see available shipping
+                        options
                       </div>
                     )}
                   </div>
