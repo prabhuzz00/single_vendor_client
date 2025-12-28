@@ -6,7 +6,16 @@ class MyDocument extends Document {
     const initialProps = await Document.getInitialProps(ctx);
 
     // Fetch general metadata from backend API
-    const setting = await SettingServices.getStoreSeoSetting();
+    // During build/export, the API might not be available, so we catch errors
+    let setting = null;
+    try {
+      setting = await SettingServices.getStoreSeoSetting();
+    } catch (error) {
+      // Silently fail during build - the render method has fallback values
+      if (process.env.NODE_ENV === "development") {
+        console.warn("Failed to fetch store settings:", error.message);
+      }
+    }
 
     return { ...initialProps, setting };
   }

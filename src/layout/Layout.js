@@ -20,11 +20,11 @@ const Layout = ({ title, description, children }) => {
         <Head>
           <title>
             {title
-              ? `InfotechIndia | ${title}`
-              : "InfotechIndia - React Grocery & Organic Food Store e-commerce Template"}
+              ? `StickersRhino | ${title}`
+              : "StickersRhino - Custom Stickers & Decals Online"}
           </title>
           {description && <meta name="description" content={description} />}
-          <link ref="icon" href="/favicon.png" />
+          <link rel="icon" href="/favicon.png" />
         </Head>
         {/* <NavBarTop /> */}
         <Navbar />
