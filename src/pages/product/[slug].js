@@ -8,25 +8,59 @@ import { useContext, useEffect, useState } from "react";
 import { FiChevronRight, FiMinus, FiPlus } from "react-icons/fi";
 
 // Lazy load heavy social sharing components
-const FacebookIcon = dynamic(() => import("react-share").then(mod => mod.FacebookIcon), { ssr: false });
-const FacebookShareButton = dynamic(() => import("react-share").then(mod => mod.FacebookShareButton), { ssr: false });
-const LinkedinIcon = dynamic(() => import("react-share").then(mod => mod.LinkedinIcon), { ssr: false });
-const LinkedinShareButton = dynamic(() => import("react-share").then(mod => mod.LinkedinShareButton), { ssr: false });
-const RedditIcon = dynamic(() => import("react-share").then(mod => mod.RedditIcon), { ssr: false });
-const RedditShareButton = dynamic(() => import("react-share").then(mod => mod.RedditShareButton), { ssr: false });
-const TwitterIcon = dynamic(() => import("react-share").then(mod => mod.TwitterIcon), { ssr: false });
-const TwitterShareButton = dynamic(() => import("react-share").then(mod => mod.TwitterShareButton), { ssr: false });
-const WhatsappIcon = dynamic(() => import("react-share").then(mod => mod.WhatsappIcon), { ssr: false });
-const WhatsappShareButton = dynamic(() => import("react-share").then(mod => mod.WhatsappShareButton), { ssr: false });
+const FacebookIcon = dynamic(
+  () => import("react-share").then((mod) => mod.FacebookIcon),
+  { ssr: false },
+);
+const FacebookShareButton = dynamic(
+  () => import("react-share").then((mod) => mod.FacebookShareButton),
+  { ssr: false },
+);
+const LinkedinIcon = dynamic(
+  () => import("react-share").then((mod) => mod.LinkedinIcon),
+  { ssr: false },
+);
+const LinkedinShareButton = dynamic(
+  () => import("react-share").then((mod) => mod.LinkedinShareButton),
+  { ssr: false },
+);
+const RedditIcon = dynamic(
+  () => import("react-share").then((mod) => mod.RedditIcon),
+  { ssr: false },
+);
+const RedditShareButton = dynamic(
+  () => import("react-share").then((mod) => mod.RedditShareButton),
+  { ssr: false },
+);
+const TwitterIcon = dynamic(
+  () => import("react-share").then((mod) => mod.TwitterIcon),
+  { ssr: false },
+);
+const TwitterShareButton = dynamic(
+  () => import("react-share").then((mod) => mod.TwitterShareButton),
+  { ssr: false },
+);
+const WhatsappIcon = dynamic(
+  () => import("react-share").then((mod) => mod.WhatsappIcon),
+  { ssr: false },
+);
+const WhatsappShareButton = dynamic(
+  () => import("react-share").then((mod) => mod.WhatsappShareButton),
+  { ssr: false },
+);
 
 import Price from "@components/common/Price";
 import Tags from "@components/common/Tags";
 import Layout from "@layout/Layout";
 import { notifyError } from "@utils/toast";
-const Card = dynamic(() => import("@components/slug-card/Card"), { ssr: false });
+const Card = dynamic(() => import("@components/slug-card/Card"), {
+  ssr: false,
+});
 import useAddToCart from "@hooks/useAddToCart";
 import Loading from "@components/preloader/Loading";
-const ProductCard = dynamic(() => import("@components/product/ProductCard"), { ssr: true });
+const ProductCard = dynamic(() => import("@components/product/ProductCard"), {
+  ssr: true,
+});
 import VariantList from "@components/variants/VariantList";
 import SizeVariantSelector from "@components/variants/SizeVariantSelector";
 import { SidebarContext } from "@context/SidebarContext";
@@ -695,196 +729,192 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
                   )}
                 </div>
 
-                  <div className="w-full">
-                    <div className="flex flex-col md:flex-row lg:flex-row xl:flex-row">
-                      <div className="xl:pr-6 md:pr-6 md:w-2/3 w-full">
-                        <div className="mb-6">
-                          <h1 className="text-2xl lg:text-3xl font-bold font-serif text-black mb-2">
-                            {showingTranslateValue(product?.title)}
-                          </h1>
+                <div className="w-full">
+                  <div className="flex flex-col md:flex-row lg:flex-row xl:flex-row">
+                    <div className="xl:pr-6 md:pr-6 md:w-2/3 w-full">
+                      <div className="mb-6">
+                        <h1 className="text-2xl lg:text-3xl font-bold font-serif text-black mb-2">
+                          {showingTranslateValue(product?.title)}
+                        </h1>
 
-                          {/* Star Rating */}
-                          {product?.rating > 0 && (
-                            <div className="flex items-center gap-2 mb-3">
-                              <div className="flex items-center">
-                                {[...Array(5)].map((_, i) => {
-                                  const starValue = i + 1;
-                                  const isFull = product.rating >= starValue;
-                                  const isHalf =
-                                    !isFull &&
-                                    product.rating > i &&
-                                    product.rating < starValue;
+                        {/* Star Rating */}
+                        {product?.rating > 0 && (
+                          <div className="flex items-center gap-2 mb-3">
+                            <div className="flex items-center">
+                              {[...Array(5)].map((_, i) => {
+                                const starValue = i + 1;
+                                const isFull = product.rating >= starValue;
+                                const isHalf =
+                                  !isFull &&
+                                  product.rating > i &&
+                                  product.rating < starValue;
 
-                                  return (
-                                    <svg
-                                      key={i}
-                                      className="w-5 h-5"
+                                return (
+                                  <svg
+                                    key={i}
+                                    className="w-5 h-5"
+                                    fill={
+                                      isFull || isHalf ? "#F59E0B" : "#E5E7EB"
+                                    }
+                                    viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                  >
+                                    {isHalf ? (
+                                      <defs>
+                                        <linearGradient id={`half-detail-${i}`}>
+                                          <stop
+                                            offset="50%"
+                                            stopColor="#F59E0B"
+                                          />
+                                          <stop
+                                            offset="50%"
+                                            stopColor="#E5E7EB"
+                                          />
+                                        </linearGradient>
+                                      </defs>
+                                    ) : null}
+                                    <path
                                       fill={
-                                        isFull || isHalf ? "#F59E0B" : "#E5E7EB"
+                                        isHalf
+                                          ? `url(#half-detail-${i})`
+                                          : undefined
                                       }
-                                      viewBox="0 0 20 20"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      {isHalf ? (
-                                        <defs>
-                                          <linearGradient
-                                            id={`half-detail-${i}`}
-                                          >
-                                            <stop
-                                              offset="50%"
-                                              stopColor="#F59E0B"
-                                            />
-                                            <stop
-                                              offset="50%"
-                                              stopColor="#E5E7EB"
-                                            />
-                                          </linearGradient>
-                                        </defs>
-                                      ) : null}
-                                      <path
-                                        fill={
-                                          isHalf
-                                            ? `url(#half-detail-${i})`
-                                            : undefined
-                                        }
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-                                      />
-                                    </svg>
-                                  );
-                                })}
-                              </div>
-                              <span className="text-sm text-gray-700 font-semibold">
-                                {product.rating.toFixed(1)}
+                                      d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                                    />
+                                  </svg>
+                                );
+                              })}
+                            </div>
+                            <span className="text-sm text-gray-700 font-semibold">
+                              {product.rating.toFixed(1)}
+                            </span>
+                            {product?.reviewCount > 0 && (
+                              <span className="text-sm text-gray-500">
+                                (
+                                {product.reviewCount >= 1000
+                                  ? `${(product.reviewCount / 1000).toFixed(1)}K`
+                                  : product.reviewCount}{" "}
+                                Reviews)
                               </span>
-                              {product?.reviewCount > 0 && (
-                                <span className="text-sm text-gray-500">
-                                  (
-                                  {product.reviewCount >= 1000
-                                    ? `${(product.reviewCount / 1000).toFixed(1)}K`
-                                    : product.reviewCount}{" "}
-                                  Reviews)
-                                </span>
-                              )}
-                            </div>
-                          )}
-
-                          <div className="flex flex-row items-center gap-2">
-                            <Discount
-                              slug
-                              product={product}
-                              discount={discount}
-                            />
+                            )}
                           </div>
-                        </div>
+                        )}
 
-                        <div className="mb-6">
-                          <Price
+                        <div className="flex flex-row items-center gap-2">
+                          <Discount
+                            slug
                             product={product}
-                            price={totalPrice}
-                            currency={currency}
-                            showPropOriginalPrice={true}
-                            showPropPrice={true}
-                            originalPrice={
-                              originalPrice > price
-                                ? totalOriginalPrice
-                                : totalPrice
-                            }
-                            primaryTextClasses="text-2xl text-yellow-600"
-                            secondaryTextClasses="text-lg text-gray-500 ml-2"
+                            discount={discount}
                           />
-
-                          <div className="mt-2 flex flex-row items-center">
-                            <Price
-                              product={product}
-                              price={price}
-                              currency={currency}
-                              originalPrice={originalPrice}
-                              primaryTextClasses="text-sm text-gray-700"
-                              secondaryTextClasses="text-xs text-gray-500 ml-1"
-                            />
-                            <span className="text-xs text-gray-600 ml-1">
-                              /per item
-                            </span>
-                          </div>
-                        </div>
-
-                        <div className="mb-6">
-                          <div className="text-sm leading-4 text-gray-700 ">
-                            {isReadMore && shouldShowReadMore
-                              ? `${productDescription.slice(0, 230)}...`
-                              : productDescription}
-
-                            {shouldShowReadMore && <ReadMoreButton />}
-                          </div>
-                        </div>
-
-                        <div className="mb-6">
-                          {hasSizeVariants ? (
-                            <SizeVariantSelector
-                              sizeVariants={sizeVariants}
-                              selectedSize={selectedSize}
-                              selectedTier={selectedTier}
-                              onSizeChange={handleSizeChange}
-                              onTierChange={handleTierChange}
-                              onContinue={handleAddToCart}
-                            />
-                          ) : (
-                            variantAttributeSections
-                          )}
-                        </div>
-
-                        <div>
-                          <div className="text-sm leading-4 text-gray-700 "></div>
-
-                          {customStickerEnabled && (
-                            <div className="mt-6">
-                              <CreateYourOwnStickerButton />
-                            </div>
-                          )}
-
-                          <div className="flex flex-col mt-6">
-                            <span className="font-serif font-semibold py-1 text-sm d-block">
-                              <span className="text-black">
-                                {t("common:category")}:
-                              </span>{" "}
-                              <CategoryLink />
-                            </span>
-                            <Tags product={product} />
-                          </div>
-
-                          <div className="mt-6">
-                            <h3 className="text-base font-semibold mb-2 font-serif text-black">
-                              {t("common:shareYourSocial")}
-                            </h3>
-                            <p className="font-sans text-sm text-gray-700 mb-3">
-                              {t("common:shareYourSocialText")}
-                            </p>
-                            <ul className="flex space-x-2">
-                              {socialShareIcons}
-                            </ul>
-                          </div>
                         </div>
                       </div>
 
-                      <div className="w-full xl:w-5/12 lg:w-6/12 md:w-5/12"></div>
+                      <div className="mb-6">
+                        <Price
+                          product={product}
+                          price={totalPrice}
+                          currency={currency}
+                          showPropOriginalPrice={true}
+                          showPropPrice={true}
+                          originalPrice={
+                            originalPrice > price
+                              ? totalOriginalPrice
+                              : totalPrice
+                          }
+                          primaryTextClasses="text-2xl text-yellow-600"
+                          secondaryTextClasses="text-lg text-gray-500 ml-2"
+                        />
+
+                        <div className="mt-2 flex flex-row items-center">
+                          <Price
+                            product={product}
+                            price={price}
+                            currency={currency}
+                            originalPrice={originalPrice}
+                            primaryTextClasses="text-sm text-gray-700"
+                            secondaryTextClasses="text-xs text-gray-500 ml-1"
+                          />
+                          <span className="text-xs text-gray-600 ml-1">
+                            /per item
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="mb-6">
+                        <div className="text-sm leading-4 text-gray-700 ">
+                          {isReadMore && shouldShowReadMore
+                            ? `${productDescription.slice(0, 230)}...`
+                            : productDescription}
+
+                          {shouldShowReadMore && <ReadMoreButton />}
+                        </div>
+                      </div>
+
+                      <div className="mb-6">
+                        {hasSizeVariants ? (
+                          <SizeVariantSelector
+                            sizeVariants={sizeVariants}
+                            selectedSize={selectedSize}
+                            selectedTier={selectedTier}
+                            onSizeChange={handleSizeChange}
+                            onTierChange={handleTierChange}
+                            onContinue={handleAddToCart}
+                          />
+                        ) : (
+                          variantAttributeSections
+                        )}
+                      </div>
+
+                      <div>
+                        <div className="text-sm leading-4 text-gray-700 "></div>
+
+                        {customStickerEnabled && (
+                          <div className="mt-6">
+                            <CreateYourOwnStickerButton />
+                          </div>
+                        )}
+
+                        <div className="flex flex-col mt-6">
+                          <span className="font-serif font-semibold py-1 text-sm d-block">
+                            <span className="text-black">
+                              {t("common:category")}:
+                            </span>{" "}
+                            <CategoryLink />
+                          </span>
+                          <Tags product={product} />
+                        </div>
+
+                        <div className="mt-6">
+                          <h3 className="text-base font-semibold mb-2 font-serif text-black">
+                            {t("common:shareYourSocial")}
+                          </h3>
+                          <p className="font-sans text-sm text-gray-700 mb-3">
+                            {t("common:shareYourSocialText")}
+                          </p>
+                          <ul className="flex space-x-2">{socialShareIcons}</ul>
+                        </div>
+                      </div>
                     </div>
+
+                    <div className="w-full xl:w-5/12 lg:w-6/12 md:w-5/12"></div>
                   </div>
                 </div>
               </div>
-
-              {relatedProducts?.length >= 2 && (
-                <div className="pt-10 lg:pt-16">
-                  <h3 className="text-xl lg:text-2xl font-bold font-serif text-black mb-6">
-                    {t("common:relatedProducts")}
-                  </h3>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                    {relatedProductCards}
-                  </div>
-                </div>
-              )}
             </div>
+
+            {relatedProducts?.length >= 2 && (
+              <div className="pt-10 lg:pt-16">
+                <h3 className="text-xl lg:text-2xl font-bold font-serif text-black mb-6">
+                  {t("common:relatedProducts")}
+                </h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                  {relatedProductCards}
+                </div>
+              </div>
+            )}
           </div>
-        </Layout>
+        </div>
+      </Layout>
     </>
   );
 };

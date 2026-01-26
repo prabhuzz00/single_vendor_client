@@ -217,7 +217,8 @@ const ProductCard = ({ product, attributes }) => {
 
   const currentImage = productImages[currentImageIndex] || productImages[0];
 
-  const imgSrc = showingImage(currentImage) ||
+  const imgSrc =
+    showingImage(currentImage) ||
     "https://res.cloudinary.com/ahossain/image/upload/v1655097002/placeholder_kvepfp.png";
 
   return (

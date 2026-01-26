@@ -6,8 +6,12 @@ import { ToastContainer } from "react-toastify";
 
 const Navbar = dynamic(() => import("@layout/navbar/Navbar"), { ssr: true });
 const Footer = dynamic(() => import("@layout/footer/Footer"), { ssr: true });
-const MobileFooter = dynamic(() => import("@layout/footer/MobileFooter"), { ssr: true });
-const CookieBanner = dynamic(() => import("@components/common/CookieBanner"), { ssr: false });
+const MobileFooter = dynamic(() => import("@layout/footer/MobileFooter"), {
+  ssr: true,
+});
+const CookieBanner = dynamic(() => import("@components/common/CookieBanner"), {
+  ssr: false,
+});
 
 const Layout = ({ title, description, children }) => {
   return (

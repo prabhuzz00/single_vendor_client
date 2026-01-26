@@ -74,7 +74,10 @@ const ProductGrid = ({ products, attributes, limit, loading, error }) => {
         const start = index * columns;
         const items = visibleProducts.slice(start, start + columns);
         return (
-          <div style={style} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4 lg:gap-4">
+          <div
+            style={style}
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4 lg:gap-4"
+          >
             {items.map((product) => (
               <ProductCard
                 key={product._id}
@@ -140,12 +143,7 @@ const Home = ({
         <div className="bg-white border-b border-gray-200">
           {heroImage && (
             <Head>
-              <link
-                rel="preload"
-                as="image"
-                href={heroImage}
-                crossOrigin=""
-              />
+              <link rel="preload" as="image" href={heroImage} crossOrigin="" />
             </Head>
           )}
           <div className="mx-auto py-6 max-w-screen-2xl px-3 sm:px-10">
@@ -266,7 +264,11 @@ export const getServerSideProps = async (context) => {
     const sc = await storeCustomization.default.getStoreCustomizationSetting();
     heroImage = sc?.hero?.image || null;
     // if Cloudinary url exists, try to add auto-format/quality/width
-    if (heroImage && heroImage.includes("res.cloudinary.com") && heroImage.includes("/upload/")) {
+    if (
+      heroImage &&
+      heroImage.includes("res.cloudinary.com") &&
+      heroImage.includes("/upload/")
+    ) {
       const transform = "f_auto,q_auto,c_fill,w_1200";
       const parts = heroImage.split("/upload/");
       if (parts.length >= 2) {

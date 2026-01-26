@@ -20,7 +20,9 @@ import { useQuery } from "@tanstack/react-query";
 
 //internal import
 import Layout from "@layout/Layout";
-const Card = dynamic(() => import("@components/order-card/Card"), { ssr: false });
+const Card = dynamic(() => import("@components/order-card/Card"), {
+  ssr: false,
+});
 import OrderServices from "@services/OrderServices";
 import RecentOrder from "@pages/user/recent-order";
 import { SidebarContext } from "@context/SidebarContext";
@@ -61,7 +63,7 @@ const Dashboard = ({ title, description, children }) => {
   const userSidebar = [
     {
       title: showingTranslateValue(
-        storeCustomizationSetting?.dashboard?.dashboard_title
+        storeCustomizationSetting?.dashboard?.dashboard_title,
       ),
       href: "/user/dashboard",
       icon: FiGrid,
@@ -69,7 +71,7 @@ const Dashboard = ({ title, description, children }) => {
 
     {
       title: showingTranslateValue(
-        storeCustomizationSetting?.dashboard?.my_order
+        storeCustomizationSetting?.dashboard?.my_order,
       ),
       href: "/user/my-orders",
       icon: FiList,
@@ -82,14 +84,14 @@ const Dashboard = ({ title, description, children }) => {
 
     {
       title: showingTranslateValue(
-        storeCustomizationSetting?.dashboard?.update_profile
+        storeCustomizationSetting?.dashboard?.update_profile,
       ),
       href: "/user/update-profile",
       icon: FiSettings,
     },
     {
       title: showingTranslateValue(
-        storeCustomizationSetting?.dashboard?.change_password
+        storeCustomizationSetting?.dashboard?.change_password,
       ),
       href: "/user/change-password",
       icon: FiFileText,
@@ -135,7 +137,7 @@ const Dashboard = ({ title, description, children }) => {
                       className="inline-flex items-center justify-between text-sm font-medium w-full hover:text-emerald-600"
                     >
                       {showingTranslateValue(
-                        storeCustomizationSetting?.navbar?.logout
+                        storeCustomizationSetting?.navbar?.logout,
                       )}
                     </button>
                   </span>
@@ -146,13 +148,13 @@ const Dashboard = ({ title, description, children }) => {
                   <div className="overflow-hidden">
                     <h2 className="text-xl font-serif font-semibold mb-5">
                       {showingTranslateValue(
-                        storeCustomizationSetting?.dashboard?.dashboard_title
+                        storeCustomizationSetting?.dashboard?.dashboard_title,
                       )}
                     </h2>
                     <div className="grid gap-4 mb-8 md:grid-cols-2 xl:grid-cols-4">
                       <Card
                         title={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.total_order
+                          storeCustomizationSetting?.dashboard?.total_order,
                         )}
                         Icon={FiShoppingCart}
                         quantity={data?.totalDoc}
@@ -160,7 +162,7 @@ const Dashboard = ({ title, description, children }) => {
                       />
                       <Card
                         title={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.pending_order
+                          storeCustomizationSetting?.dashboard?.pending_order,
                         )}
                         Icon={FiRefreshCw}
                         quantity={data?.pending}
@@ -168,7 +170,8 @@ const Dashboard = ({ title, description, children }) => {
                       />
                       <Card
                         title={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.processing_order
+                          storeCustomizationSetting?.dashboard
+                            ?.processing_order,
                         )}
                         Icon={FiTruck}
                         quantity={data?.processing}
@@ -176,7 +179,7 @@ const Dashboard = ({ title, description, children }) => {
                       />
                       <Card
                         title={showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.complete_order
+                          storeCustomizationSetting?.dashboard?.complete_order,
                         )}
                         Icon={FiCheck}
                         quantity={data?.delivered}

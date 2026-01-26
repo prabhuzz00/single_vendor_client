@@ -25,7 +25,11 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="" />
+          <link
+            rel="preconnect"
+            href="https://res.cloudinary.com"
+            crossOrigin=""
+          />
           <link rel="icon" href={setting?.favicon || "/favicon.png"} />
           <meta
             property="og:title"

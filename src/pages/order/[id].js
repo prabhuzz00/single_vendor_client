@@ -4,7 +4,10 @@ import { IoCloudDownloadOutline, IoPrintOutline } from "react-icons/io5";
 import { useQuery } from "@tanstack/react-query";
 
 // Lazy load heavy PDF components
-const PDFDownloadLink = dynamic(() => import("@react-pdf/renderer").then(mod => mod.PDFDownloadLink), { ssr: false });
+const PDFDownloadLink = dynamic(
+  () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
+  { ssr: false },
+);
 const ReactToPrint = dynamic(() => import("react-to-print"), { ssr: false });
 
 //internal import
@@ -15,7 +18,10 @@ import Invoice from "@components/invoice/Invoice";
 import Loading from "@components/preloader/Loading";
 import OrderServices from "@services/OrderServices";
 import useUtilsFunction from "@hooks/useUtilsFunction";
-const InvoiceForDownload = dynamic(() => import("@components/invoice/InvoiceForDownload"), { ssr: false });
+const InvoiceForDownload = dynamic(
+  () => import("@components/invoice/InvoiceForDownload"),
+  { ssr: false },
+);
 
 const Order = ({ params }) => {
   const printRef = useRef();
@@ -42,13 +48,13 @@ const Order = ({ params }) => {
           <div className="bg-yellow-50 rounded-lg mb-5 px-4 py-3">
             <label>
               {showingTranslateValue(
-                storeCustomizationSetting?.dashboard?.invoice_message_first
+                storeCustomizationSetting?.dashboard?.invoice_message_first,
               )}{" "}
               <span className="font-bold text-yellow-600">
                 {data?.user_info?.name},
               </span>{" "}
               {showingTranslateValue(
-                storeCustomizationSetting?.dashboard?.invoice_message_last
+                storeCustomizationSetting?.dashboard?.invoice_message_last,
               )}
             </label>
           </div>
@@ -78,7 +84,7 @@ const Order = ({ params }) => {
                     ) : (
                       <button className="mb-3 sm:mb-0 md:mb-0 lg:mb-0 flex items-center justify-center bg-black text-white transition-all font-serif text-sm font-semibold h-10 py-2 px-5 rounded-lg hover:bg-gray-900">
                         {showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.download_button
+                          storeCustomizationSetting?.dashboard?.download_button,
                         )}{" "}
                         <span className="ml-2 text-base">
                           <IoCloudDownloadOutline />
@@ -92,7 +98,7 @@ const Order = ({ params }) => {
                   trigger={() => (
                     <button className="mb-3 sm:mb-0 md:mb-0 lg:mb-0 flex items-center justify-center bg-black text-white transition-all font-serif text-sm font-semibold h-10 py-2 px-5 rounded-lg hover:bg-gray-900">
                       {showingTranslateValue(
-                        storeCustomizationSetting?.dashboard?.print_button
+                        storeCustomizationSetting?.dashboard?.print_button,
                       )}{" "}
                       <span className="ml-2">
                         <IoPrintOutline />

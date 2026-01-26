@@ -21,7 +21,7 @@ const useNearScreen = (rootMargin = "300px") => {
           }
         });
       },
-      { rootMargin }
+      { rootMargin },
     );
 
     observer.observe(ref.current);

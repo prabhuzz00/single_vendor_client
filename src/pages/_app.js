@@ -79,8 +79,7 @@ function MyApp({ Component, pageProps }) {
             });
           }, 1000);
         }
-      } catch (error) {
-      }
+      } catch (error) {}
     };
 
     fetchStoreSettings();

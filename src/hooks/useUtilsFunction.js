@@ -50,7 +50,12 @@ const useUtilsFunction = () => {
     // If it's an object, try common keys
     if (typeof data === "object") {
       return (
-        data.url || data.src || data.path || data.secure_url || data.publicUrl || null
+        data.url ||
+        data.src ||
+        data.path ||
+        data.secure_url ||
+        data.publicUrl ||
+        null
       );
     }
     return null;
