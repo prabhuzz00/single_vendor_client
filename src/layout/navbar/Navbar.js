@@ -311,12 +311,18 @@ const Navbar = () => {
                             }`}
                           >
                             <div className="relative w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-gray-800">
-                              <Image
-                                src={showingImage(product?.image)}
-                                alt={showingTranslateValue(product?.title)}
-                                fill
-                                className="object-cover"
-                              />
+                              {showingImage(product?.image) ? (
+                                <Image
+                                  src={showingImage(product?.image)}
+                                  alt={showingTranslateValue(product?.title)}
+                                  fill
+                                  className="object-cover"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-gray-600">
+                                  <IoSearchOutline className="w-6 h-6" />
+                                </div>
+                              )}
                             </div>
                             <div className="flex-1 min-w-0">
                               <h4 className="text-white font-medium truncate">
@@ -433,12 +439,18 @@ const Navbar = () => {
                             }`}
                           >
                             <div className="relative w-12 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-gray-800">
-                              <Image
-                                src={showingImage(product?.image)}
-                                alt={showingTranslateValue(product?.title)}
-                                fill
-                                className="object-cover"
-                              />
+                              {showingImage(product?.image) ? (
+                                <Image
+                                  src={showingImage(product?.image)}
+                                  alt={showingTranslateValue(product?.title)}
+                                  fill
+                                  className="object-cover"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-gray-600">
+                                  <IoSearchOutline className="w-6 h-6" />
+                                </div>
+                              )}
                             </div>
                             <div className="flex-1 min-w-0">
                               <h4 className="text-white text-sm font-medium truncate">

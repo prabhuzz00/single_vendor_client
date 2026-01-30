@@ -5,6 +5,8 @@ import PageHeader from "@components/header/PageHeader";
 import CMSkeleton from "@components/preloader/CMSkeleton";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import PageServices from "@services/PageServices";
+import PageTableOfContents from "@components/page/PageTableOfContents";
+import PageContentWithTOC from "@components/page/PageContentWithTOC";
 
 const DynamicPage = ({ page, error }) => {
   const { showingTranslateValue } = useUtilsFunction();
@@ -53,12 +55,17 @@ const DynamicPage = ({ page, error }) => {
     >
       <PageHeader headerBg={page?.headerBg} title={pageTitle} />
       <div className="bg-white">
-        <div className="max-w-screen-2xl mx-auto lg:py-20 py-10 px-4 sm:px-10">
-          <div className="max-w-4xl mx-auto prose prose-lg">
-            <div
-              className="dynamic-page-content"
-              dangerouslySetInnerHTML={{ __html: pageContent }}
-            />
+        <div className="max-w-7xl mx-auto lg:py-20 py-10 px-4 sm:px-6 lg:px-8">
+          <div className="lg:flex lg:gap-8">
+            {/* Desktop TOC Sidebar */}
+            <PageTableOfContents htmlContent={pageContent} />
+
+            {/* Main Content */}
+            <div className="flex-1 min-w-0">
+              <div className="max-w-3xl mx-auto lg:mx-0 prose prose-lg">
+                <PageContentWithTOC htmlContent={pageContent} />
+              </div>
+            </div>
           </div>
         </div>
       </div>
