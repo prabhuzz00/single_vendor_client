@@ -28,17 +28,7 @@ const Category = () => {
   return (
     <div className="flex flex-col w-full h-full bg-white cursor-pointer scrollbar-hide">
       {categoryDrawerOpen && (
-        <div className="w-full flex justify-between items-center h-16 px-6 py-4 bg-black text-white border-b border-gray-200">
-          <h2 className="font-semibold font-serif text-lg m-0 text-white flex align-center">
-            <Link href="/" className="mr-10">
-              <Image
-                width={100}
-                height={38}
-                src="/logo/logo-color.svg"
-                alt="logo"
-              />
-            </Link>
-          </h2>
+        <div className="w-full flex justify-end items-center h-16 px-6 py-4 bg-black text-white border-b border-gray-200">
           <button
             onClick={handleCloseDrawer}
             className="flex text-xl items-center justify-center w-8 h-8 rounded-full bg-white text-gray-600 p-2 focus:outline-none transition-all hover:bg-gray-100 hover:text-gray-800"
