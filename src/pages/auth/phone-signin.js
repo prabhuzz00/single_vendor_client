@@ -86,7 +86,9 @@ const PhoneSignin = () => {
       const fullPhone = selectedCountryCode + raw;
 
       if (!fullPhone.startsWith("+")) {
-        notifyError("Phone number must include country code (e.g., +1234567890)");
+        notifyError(
+          "Phone number must include country code (e.g., +1234567890)",
+        );
         setLoading(false);
         return;
       }
@@ -261,7 +263,9 @@ const PhoneSignin = () => {
                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center">
                             <select
                               value={selectedCountryCode}
-                              onChange={(e) => setSelectedCountryCode(e.target.value)}
+                              onChange={(e) =>
+                                setSelectedCountryCode(e.target.value)
+                              }
                               className="bg-transparent outline-none border-none text-sm"
                             >
                               {countryCodes && countryCodes.length > 0 ? (
