@@ -241,7 +241,7 @@ const BestSellingShowcase = ({
               </p>
 
               <Link
-                href="/search"
+                href={showcaseSettings?.right_button_url || "/search"}
                 className="inline-flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold text-sm sm:text-base px-6 sm:px-8 py-2.5 sm:py-3.5 rounded-md transition-all duration-300 shadow-lg hover:shadow-xl uppercase tracking-wide"
               >
                 {showingTranslateValue(showcaseSettings?.right_button_text) ||

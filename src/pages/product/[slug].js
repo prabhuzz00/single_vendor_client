@@ -216,8 +216,19 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
 
   const handleSizeChange = (size) => {
     setSelectedSize(size);
-    setSelectedTier(null); // Reset tier when size changes
-    setItem(1); // Reset quantity
+
+    // Auto-select the first tier of the new size
+    if (size?.pricingTiers && size.pricingTiers.length > 0) {
+      const firstTier = size.pricingTiers[0];
+      setSelectedTier(firstTier);
+      setItem(firstTier.quantity);
+      setPrice(firstTier.finalPrice);
+      setOriginalPrice(firstTier.basePrice);
+      setDiscount(firstTier.discount || 0);
+    } else {
+      setSelectedTier(null);
+      setItem(1);
+    }
   };
 
   const handleTierChange = (tier) => {
