@@ -485,7 +485,7 @@ const Navbar = () => {
                 <div className="space-y-2">
                   <MobileMenuLink href="/" text="Home" />
                   <MobileMenuLink
-                    href="http://localhost:3000/search?category=custom-stickers&_id=696d94aa23ec812e339bfa90"
+                    href="https://stickersrhino.com/search?category=custom-stickers&_id=696d94aa23ec812e339bfa90"
                     text="Shop"
                   />
                   {/* Removed About and Notifications from mobile menu per request */}
