@@ -511,11 +511,12 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
   const socialShareIcons = socialShareButtons.map((socialButton, index) => {
     const ButtonComp = socialButton.Component;
     const IconComp = socialButton.Icon;
-    const baseUrl = process.env.NEXT_PUBLIC_STORE_DOMAIN || 
-                    process.env.NEXT_PUBLIC_SITE_URL || 
-                    (typeof window !== 'undefined' ? window.location.origin : '');
-    const shareUrl = `${baseUrl.replace(/\/$/, '')}/product/${router.query.slug}`;
-    
+    const baseUrl =
+      process.env.NEXT_PUBLIC_STORE_DOMAIN ||
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      (typeof window !== "undefined" ? window.location.origin : "");
+    const shareUrl = `${baseUrl.replace(/\/$/, "")}/product/${router.query.slug}`;
+
     return (
       <li key={index}>
         <ButtonComp
