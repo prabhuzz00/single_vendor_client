@@ -51,9 +51,10 @@ const Dashboard = ({ title, description, children }) => {
   });
 
   const handleLogOut = () => {
-    signOut();
     Cookies.remove("couponInfo");
-    router.push("/");
+    const domain =
+      process.env.NEXT_PUBLIC_STORE_DOMAIN || "https://stickersrhino.com";
+    signOut({ callbackUrl: domain });
   };
 
   useEffect(() => {

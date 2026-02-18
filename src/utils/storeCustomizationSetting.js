@@ -60,7 +60,7 @@ export const storeCustomization = {
       de: "Kasse",
     },
     phone: "+965 505 631288",
-    logo: "https://res.cloudinary.com/ahossain/image/upload/v1697687802/settings/logo-light_hls14v.svg",
+    logo: "",
   },
   home: {
     coupon_status: true,
@@ -75,25 +75,25 @@ export const storeCustomization = {
     discount_coupon_code: ["WINTER21", "OCTOBER21"],
     place_holder_img: "",
     discount_title: {
-      en: "Latest Super Discount Active Coupon Code",
-      de: "Neuester aktiver Super-Rabatt-Gutscheincode",
+      en: "Latest Stickers Rhino Discount Codes",
+      de: "Neueste Stickers Rhino Rabattcodes",
     },
     promotion_title: {
-      en: "100% Natural Quality Organic Product",
-      de: "100 % natürliches Bio-Qualitätsprodukt",
+      en: "Custom Stickers — High Quality, Fast Turnaround",
+      de: "Individuelle Aufkleber — Hohe Qualität, schnelle Lieferung",
     },
     promotion_description: {
-      en: "See Our latest discounted products from here and get a special discount product",
-      de: "Sehen Sie sich hier unsere neuesten reduzierten Produkte an und sichern Sie sich ein spezielles Rabattprodukt",
+      en: "Browse our custom stickers and labels collection — order custom sizes and shapes with fast production and shipping.",
+      de: "Durchsuchen Sie unsere Kollektion maßgefertigter Aufkleber und Etiketten – bestellen Sie individuelle Größen und Formen mit schneller Produktion und Versand.",
     },
     promotion_button_name: {
-      en: "Shop Now",
-      de: "Jetzt einkaufen",
+      en: "Shop Stickers",
+      de: "Jetzt Aufkleber",
     },
-    promotion_button_link: "/search?category=breakfast",
+    promotion_button_link: "/search?category=stickers",
     feature_title: {
-      en: "Featured Categories",
-      de: "Beliebte Kategorien",
+      en: "Featured Sticker Categories",
+      de: "Beliebte Sticker-Kategorien",
     },
     feature_description: {
       en: "Choose your necessary products from this feature categories.",
@@ -118,16 +118,15 @@ export const storeCustomization = {
       de: "Schnelle Lieferung zu Ihnen nach Hause",
     },
     quick_delivery_description: {
-      en: "There are many products you will find in our shop, Choose your daily necessary product from our InfotechIndia shop and get some special offers. See Our latest discounted products from here and get a special discount.",
-      de: "Es gibt viele Produkte, die Sie in unserem Shop finden. Wählen Sie Ihr täglich benötigtes Produkt aus unserem InfotechIndia-Shop und erhalten Sie einige Sonderangebote. Sehen Sie sich hier unsere neuesten reduzierten Produkte an und sichern Sie sich einen Sonderrabatt.",
+      en: "There are many products you will find in our shop, Choose your daily necessary product from our Stickers Rhino shop and get some special offers. See Our latest discounted products from here and get a special discount.",
+      de: "Es gibt viele Produkte, die Sie in unserem Shop finden. Wählen Sie Ihr täglich benötigtes Produkt aus unserem Stickers Rhino-Shop und erhalten Sie einige Sonderangebote. Sehen Sie sich hier unsere neuesten reduzierten Produkte an und sichern Sie sich einen Sonderrabatt.",
     },
     quick_delivery_button: {
       en: "Download App",
       de: "Lade App herunter",
     },
     quick_delivery_link: "#",
-    quick_delivery_img:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697688032/settings/delivery-boy_rluuoq.webp",
+    quick_delivery_img: "",
     latest_discount_title: {
       en: "Latest Discounted Products",
       de: "Neueste reduzierte Produkte",
@@ -138,24 +137,20 @@ export const storeCustomization = {
     },
     latest_discount_product_limit: 18,
     daily_need_title: {
-      en: "Get Your Daily Needs From Our InfotechIndia Store",
+      en: "Get Your Daily Needs From Our Stickers Rhino Store",
       de: "Holen Sie sich Ihren täglichen Bedarf in Ihrem CloudCleaver-Shop",
     },
     daily_need_description: {
-      en: "There are many products you will find in our shop, Choose your daily necessary product from our InfotechIndia shop and get some special offers.",
-      de: "Es gibt viele Produkte, die Sie in unserem Shop finden. Wählen Sie Ihr täglich benötigtes Produkt aus unserem InfotechIndia-Shop und erhalten Sie einige Sonderangebote.",
+      en: "There are many products you will find in our shop, Choose your daily necessary product from our Stickers Rhino shop and get some special offers.",
+      de: "Es gibt viele Produkte, die Sie in unserem Shop finden. Wählen Sie Ihr täglich benötigtes Produkt aus unserem Stickers Rhino-Shop und erhalten Sie einige Sonderangebote.",
     },
     daily_need_app_link: "https://www.apple.com/app-store/",
     daily_need_google_link:
       "https://play.google.com/store/games?utm_source=apac_med&utm_medium=hasem&utm_content=Jun0122&utm_campaign=Evergreen&pcampaignid=MKT-EDR-apac-lk-1003227-med-hasem-py-Evergreen-Jun0122-Text_Search_BKWS-BKWS%7CONSEM_kwid_43700071429441653_creativeid_600975795576_device_c&gclid=CjwKCAjwwo-WBhAMEiwAV4dybdy60tnQqCSnQ-cXShNnEcxmaBx2I6iwwc_WEqoA5sN9YSLJEXh9fBoC3u4QAvD_BwE&gclsrc=aw.ds",
-    daily_need_img_left:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697688091/settings/app-download-img-left_s5n2zf.webp",
-    daily_need_img_right:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697688091/settings/app-download-img_c7xqg4.webp",
-    button1_img:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697688165/settings/app-store_cyyc0f.svg",
-    button2_img:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697688167/settings/play-store_cavwua.svg",
+    daily_need_img_left: "",
+    daily_need_img_right: "",
+    button1_img: "",
+    button2_img: "",
   },
   about_us: {
     header_status: true,
@@ -163,31 +158,22 @@ export const storeCustomization = {
     content_right_status: true,
     content_middle_status: true,
     founder_status: true,
-    header_bg:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697439245/settings/yw3cd2xupqwqpqcbxv9l.jpg",
-    content_right_img:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697439245/settings/v7g6gowiju0wanpwx70f.jpg",
-    content_middle_Img:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697439195/settings/sl8vzvzm54jgzq6sphn2.jpg",
-    founder_one_img:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697439688/settings/team-1_acjmv7.webp",
-    founder_two_img:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697439689/settings/team-2_dw7zs1.webp",
-    founder_three_img:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697439689/settings/team-3_ld3323.webp",
-    founder_four_img:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697439689/settings/team-4_i7jvx7.webp",
-    founder_five_img:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697439689/settings/team-5_ylyklw.webp",
-    founder_six_img:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697439689/settings/team-6_gmlts4.webp",
+    header_bg: "",
+    content_right_img: "",
+    content_middle_Img: "",
+    founder_one_img: "",
+    founder_two_img: "",
+    founder_three_img: "",
+    founder_four_img: "",
+    founder_five_img: "",
+    founder_six_img: "",
     title: {
       en: "About Us",
       de: "Über uns",
     },
     top_title: {
-      en: "Welcome to our InfotechIndia shop",
-      de: "Willkommen in unserem InfotechIndia-Shop",
+      en: "Welcome to our Stickers Rhino shop",
+      de: "Willkommen in unserem Stickers Rhino-Shop",
     },
     top_description: {
       en: "Holisticly seize parallel metrics and functional ROI.Seamlessly revolutionize error-free internal or organic sources before effective scenarios. Progressively incentivize state of the art applications for efficient intellectual capital. Credibly leverage existing distinctive mindshare through cutting-edge schemas. Proactively procrastinate team building paradigms coordinate client-centric total transparent internal.\n\nDynamically embrace diverse customer service and installed base paradigms. Credibly seize enterprise-wide experiences for end-to-end data. Professionally brand flexible alignments and cost effective architectures. Enthusiastically incentivize seamless communities with seamlessly facilitate revolutionary metrics with strategic theme areas.",
@@ -289,10 +275,8 @@ export const storeCustomization = {
     address_box_status: true,
     left_col_status: true,
     form_status: true,
-    header_bg:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697439245/settings/yw3cd2xupqwqpqcbxv9l.jpg",
-    left_col_img:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697472924/settings/contact-us_zvwn2n.png",
+    header_bg: "",
+    left_col_img: "",
     title: {
       en: "Contact Us",
       de: "Kontaktiere uns",
@@ -302,8 +286,8 @@ export const storeCustomization = {
       de: "Schreiben Sie uns eine E-Mail",
     },
     email_box_email: {
-      en: "info@InfotechIndia.com ",
-      de: "info@InfotechIndia.com",
+      en: "support@stickrsrhino.com ",
+      de: "support@stickrsrhino.com",
     },
     email_box_text: {
       en: "Interactively grow empowered for process-centric total linkage. ",
@@ -348,8 +332,7 @@ export const storeCustomization = {
   },
   offers: {
     header_status: true,
-    header_bg:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697439245/settings/yw3cd2xupqwqpqcbxv9l.jpg",
+    header_bg: "",
     title: {
       en: "Mega Offer",
       de: "Mega Angebot",
@@ -358,43 +341,39 @@ export const storeCustomization = {
   },
   privacy_policy: {
     status: true,
-    header_bg:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697439245/settings/yw3cd2xupqwqpqcbxv9l.jpg",
+    header_bg: "",
     title: {
       en: "Privacy Policy",
       de: "Datenschutz-Bestimmungen",
     },
     description: {
-      en: "<h1><strong>Last updated: February 15, 2022</strong></h1>\n<p>At InfotechIndia, accessible from InfotechIndia dot com, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by InfotechIndia and how we use it. If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us.we may receive additional information about you such as your name, email address, phone number, the contents of the message and/or attachments you may send us, and any other information you may choose to provide. When you register for an Account, we may ask for your contact information, including items such as name, company name, address, email address, and telephone number.</p>\n<p>This Privacy Policy applies only to our online activities and is valid for visitors to our website with regards to the information that they shared and/or collect in InfotechIndia.we may receive additional information about you such as your name, email address, phone number, the contents of the message and/or attachments you may send us, we may ask for your contact information, including items such as name, company name, address, email address, and telephone number. This policy is not applicable to any information collected offline or via channels other than this website. Our Privacy Policy was created with the help of the Free Privacy Policy Generator.</p>\n<h1><strong>Consent</strong></h1>\n<p>By using our website, you hereby consent to our Privacy Policy and agree to its terms.</p>\n<h1><strong>Information we collect</strong></h1>\n<p>The personal information that you are asked to provide, and the reasons why you are asked to provide it, will be made clear to you at the point we ask you to provide your personal information. If you contact us directly, we may receive additional information about you such may choose to provide. When you register for an Account, we may ask for your contact information, including items such as name, company name, address, email address, and telephone number.</p>\n<p>Please note that the Company will not ask you to share any sensitive data or information via email or telephone. If you receive any such request by email or telephone, please do not respond/divulge any sensitive data or information and forward the information relating to the same to</p>\n<h1><strong>How we use your information</strong></h1>\n<p>We use the information we collect in various ways, including to:</p>\n<ol>\n<li>1. Provide, operate, and maintain our website, to provide you with updates and other information.</li>\n<li>2. Improve, personalize, and expand our website,and other information relating to the website.</li>\n<li>3. Understand and analyze how you use our website, to provide you with updates and other information relating to the website.</li>\n<li>4. Develop new products, services, features, and functionality,and other information relating to the website.</li>\n<li>5. Communicate with you, either directly or through one of our partners, including for customer service, to provide you with updates.</li>\n<li>6. Send you emails. To provide you with updates and other information relating to the website, and for marketing and promotional purposes</li>\n<li>7. Find and prevent fraud. To provide you with updates and other information relating to the website, and for marketing and promotional purposes</li>\n</ol>\n<h1><strong>Log Files</strong></h1>\n<p>InfotechIndia follows a standard procedure of using log files. These files log visitors when they visit websites. All hosting companies do this and a part of hosting. The information collected by log files include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable. The purpose of the information is for analyzing trends, administering the site, tracking users' movement on the website, and gathering demographic information.</p>\n<h1><strong>Advertising Partners Privacy Policies</strong></h1>\n<p>You may consult this list to find the Privacy Policy for each of the advertising partners of InfotechIndia. Third-party ad servers or ad networks uses technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on InfotechIndia, which are sent directly to users' browser. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit. Note that InfotechIndia has no access to or control over these cookies that are used by third-party advertisers.</p>\n<h1><strong>Third Party Privacy Policies</strong></h1>\n<p>Third-party ad servers or ad networks uses technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on InfotechIndia, which are sent directly to users' browser. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit. Note that InfotechIndia has no access to or control over these cookies that are used by third-party advertisers.</p>\n<p>InfotechIndia's Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to consult the respective Privacy Policies of these third-party ad servers for more detailed information. It may include their practices and instructions about how to opt-out of certain options. You can choose to disable cookies through your individual browser options. To know more detailed information about cookie management with specific web browsers, it can be found at the browsers' respective websites.</p>\n<h1><strong>CCPA Privacy Rights</strong></h1>\n<p>Under the CCPA, among other rights, California consumers have the right to: Request that a business that collects a consumer's personal data disclose the categories and specific pieces of personal data that a business has collected about consumers. Request that a business delete any personal data about the consumer that a business has collected. Request that a business that sells a consumer's personal data, not sell the consumer's personal data. If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please contact us.</p>\n<h1><strong>Children's Information</strong></h1>\n<p>Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians to observe, participate in, and/or monitor and guide their online activity.Request that a business delete any personal data about the consumer that a business has collected. If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please contact us.</p>\n<p>InfotechIndia does not knowingly collect any Personal Identifiable Information from children under the age of 13. If you think that your child provided this kind of information on our website, we strongly encourage you to contact us immediately and we will do our best efforts to promptly remove such information from our records.</p>\n",
+      en: "",
     },
   },
   term_and_condition: {
     status: true,
-    header_bg:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697439245/settings/yw3cd2xupqwqpqcbxv9l.jpg",
+    header_bg: "",
     title: {
       en: "Terms & Conditions",
       de: "Terms & Bedingungen",
     },
     description: {
-      en: '<h1><strong>Welcome to InfotechIndia!</strong></h1>\n<p>These terms and conditions outline the rules and regulations for the use of InfotechIndia\'s Website, located at https://InfotechIndia.com/. By accessing this website we assume you accept these terms and conditions. Do not continue to use InfotechIndia if you do not agree to take all of the terms and conditions stated on this page.</p>\n<p>The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all Agreements: Client, You and Your refers to you, the person log on this website and compliant to the Company’s terms and conditions. The Company, refers to our CompanyPartParties or Us refers to both the Client and ourselves. All terms refer to the offer, acceptance and consideration of payment necessary to undertake the process of our assistance to the Client in the most appropriate manner for the express purpose of meeting the Client’s needs in respect of provision of the Company’s stated services, in accordance with and subject to, prevailing law of Netherlands. Any use of the above terminology or other words in the singular, plural, capitalization and/or he/she or they, are taken as interchangeable and therefore as referring to same.</p>\n<h1><strong>Cookies</strong></h1>\n<p>We employ the use of cookies. By accessing InfotechIndia, you agreed to use cookies in agreement with the InfotechIndia\'s Privacy Policy. Most interactive websites use cookies to let us retrieve the user’s details for each visit. Cookies are used by our website to enable the functionality of certain areas to make it easier for people visiting our website. Some of our affiliate/advertising partners may also use cookies.</p>\n<h1><strong>License</strong></h1>\n<p>Unless otherwise stated, InfotechIndia and/or its licensors own the intellectual property rights for all material on InfotechIndia. All intellectual property rights are reserved. You may access this from InfotechIndia for your own personal use subjected to restrictions set in these terms and conditions.This Agreement shall begin on the date hereof. Our Terms and Conditions were created with the help of the Terms And Conditions Generator.<strong>You must not:</strong></p>\n<ul>\n<li>1. Identifiers (e.g. name, mailing address, email address, phone number, credit/debit card number)</li>\n<li>2. Characteristics of protected classifications (e.g. gender, age)</li>\n<li>3. Commercial information (e.g. products or services purchased, purchase history)</li>\n<li>4. Internet or other electronic network activity (e.g. browse or search history)</li>\n<li>5. Geo location data (e.g. latitude or longitude)</li>\n<li>6. Audio, electronic, visual, or similar information (e.g. recording of Guest service calls)</li>\n<li>7. Inferences drawn from any of the above (e.g. preferences or characteristics)</li>\n</ul>\n<p>Parts of this website offer an opportunity for users to post and exchange opinions and information in certain areas of the website. InfotechIndia does not filter, edit, publish or review Comments prior to their presence on the website. Comments do not reflect the views and opinions of InfotechIndia,its agents and/or affiliates. Comments reflect the views and opinions of the person who post their views and opinions. To the extent permitted by applicable laws, InfotechIndia shall not be liable for the Comments or for any liability, damages or expenses caused and/or suffered as a result of any use of and/or posting of and/or appearance of the Comments on this website.</p>\n<h1><strong>Content Liability</strong></h1>\n<p>We shall not be hold responsible for any content that appears on your Website. You agree to protect and defend us against all claims that is rising on your Website. No link(s) should appear on any Website that may be interpreted as libelous, obscene or criminal, or which infringes, otherwise violates, or advocates the infringement or other violation of, any third party rights.Without prior approval and written permission, you may not create frames around our Webpages that alter in any way the visual presentation or appearance of our Website.</p>\n<h1><strong>Your Privacy</strong></h1>\n<p>Please read <a href="https://InfotechIndia-store.vercel.app/privacy-policy" target="_self">Privacy Policy</a></p>\n<h1><strong>Reservation of Rights</strong></h1>\n<p>We reserve the right to request that you remove all links or any particular link to our Website. You approve to immediately remove all links to our Website upon request. We also reserve the right to amen these terms and conditions and it’s linking policy at any time. By continuously linking to our Website, you agree to be bound to and follow these linking terms and conditions.</p>\n<h1><strong>Disclaimer</strong></h1>\n<p>To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and the use of this website. Nothing in this disclaimer will:</p>\n<ul>\n<li>1. limit or exclude our or your liability for death or personal injury;</li>\n<li>2. limit or exclude our or your liability for fraud or fraudulent misrepresentation;</li>\n<li>3. limit any of our or your liabilities in any way that is not permitted under applicable law; or</li>\n<li>4. exclude any of our or your liabilities that may not be excluded under applicable law.</li>\n</ul>\n<p>The limitations and prohibitions of liability set in this Section and elsewhere in this disclaimer: (a) are subject to the preceding paragraph; and (b) govern all liabilities arising under the disclaimer, including liabilities arising in contract, in tort and for breach of statutory duty. As long as the website and the information and services on the website are provided free of charge, we will not be liable for any loss or damage of any nature.</p>\n',
+      en: "",
     },
   },
   faq: {
     page_status: true,
     leftcol_status: true,
     rightcol_status: true,
-    header_bg:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697439245/settings/yw3cd2xupqwqpqcbxv9l.jpg",
-    left_img:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697687955/settings/faq_qr1y1h.svg",
+    header_bg: "",
+    left_img: "",
     title: {
       en: "FAQs",
       de: "Häufig gestellte Fragen",
     },
     faq_one: {
-      en: "How does the InfotechIndia work?",
-      de: "Wie funktioniert der InfotechIndia?",
+      en: "How does Stickers Rhino work?",
+      de: "Wie funktioniert Stickers Rhino?",
     },
     description_one: {
       en: "Yes. You can cancel your subscription anytime. Your subscription will continue to be active until the end of your current term (month or year) but it will not auto-renew. Unless you delete your account manually, your account and all data will be deleted 60 days from the day your subscription becomes inactive.",
@@ -425,16 +404,16 @@ export const storeCustomization = {
       de: "Continually impact seamless imperatives for best-of-breed\nbest practices. Phosfluorescently facilitate parallel\n                      applications with unique imperatives. Proactively\n                      plagiarize functionalized deliverables via inexpensive\n                      solutions. Collaboratively embrace web-enabled\n                      infomediaries rather than diverse testing procedures.",
     },
     faq_five: {
-      en: "What is InfotechIndia EC2 auto scaling?",
-      de: "Was ist die automatische Skalierung von InfotechIndia EC2?",
+      en: "What is Stickers Rhino EC2 auto scaling?",
+      de: "Was ist die automatische Skalierung von Stickers Rhino EC2?",
     },
     description_five: {
       en: "Continually impact seamless imperatives for best-of-breed best practices. Phosfluorescently facilitate parallel applications with unique imperatives. Proactively plagiarize functionalized deliverables via inexpensive solutions. Collaboratively embrace web-enabled infomediaries rather than diverse testing procedures.",
       de: "Kontinuierliche Umsetzung nahtloser Anforderungen für Best-of-Breed-Best Practices. Phosfluoreszierend erleichtert parallele Anwendungen mit einzigartigen Anforderungen. Plagiieren Sie proaktiv funktionalisierte Ergebnisse mit kostengünstigen Lösungen. Nutzen Sie gemeinsam webbasierte Infomediaries anstelle verschiedener Testverfahren.",
     },
     faq_six: {
-      en: "What are the benefits of using InfotechIndia affliate?",
-      de: "Welche Vorteile bietet die Nutzung eines Cloud Clever-Partners?",
+      en: "What are the benefits of using Stickers Rhino affiliate?",
+      de: "Welche Vorteile bietet die Nutzung eines Stickers Rhino-Partners?",
     },
     description_six: {
       en: "Continually impact seamless imperatives for best-of-breed best practices. Phosfluorescently facilitate parallel applications with unique imperatives. Proactively plagiarize functionalized deliverables via inexpensive solutions. Collaboratively embrace web-enabled infomediaries rather than diverse testing procedures.",
@@ -496,8 +475,7 @@ export const storeCustomization = {
       de: "Jetzt einkaufen",
     },
     first_link: "/search?category=milk-dairy",
-    second_img:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697688491/settings/slider-2_o6aezc.jpg",
+    second_img: "",
     second_title: {
       en: "Best Different Type of Grocery Store",
       de: "Bestes anderes Lebensmittelgeschäft",
@@ -511,8 +489,7 @@ export const storeCustomization = {
       de: "Jetzt einkaufen",
     },
     second_link: "/search?category=fish-meat",
-    third_img:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697688492/settings/slider-3_iw4nnf.jpg",
+    third_img: "",
     third_title: {
       en: "Quality Freshness Guaranteed!",
       de: "Qualitätsfrische garantiert!",
@@ -540,8 +517,7 @@ export const storeCustomization = {
       de: "Jetzt einkaufen",
     },
     four_link: "/search?category=fruits-vegetable",
-    five_img:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697688491/settings/slider-2_o6aezc.jpg",
+    five_img: "",
     five_title: {
       en: "Best Different Type of Grocery Store",
       de: "Bestes anderes Lebensmittelgeschäft",
@@ -843,8 +819,7 @@ export const storeCustomization = {
     social_pinterest: "https://www.pinterest.com/",
     social_linkedin: "https://www.linkedin.com/",
     social_whatsapp: "https://web.whatsapp.com/",
-    payment_method_img:
-      "https://res.cloudinary.com/ahossain/image/upload/v1697688607/settings/payment-logo_qhslgz.webp",
+    payment_method_img: "",
     bottom_contact: "+6599887766",
   },
   slug: {
@@ -879,12 +854,10 @@ export const storeCustomization = {
     },
   },
   seo: {
-    favicon:
-      "https://res.cloudinary.com/ahossain/image/upload/v1700903173/undefined/favicon.png",
+    favicon: "",
     meta_description:
       "StickersRhino - Custom Stickers, Labels, Decals & More Online Store",
-    meta_img:
-      "https://res.cloudinary.com/de4q84ga3/image/upload/v1769362173/undefined/hro.jpg",
+    meta_img: "",
     meta_keywords: "e-commerce, online store",
     meta_title:
       "StickersRhino - Custom Stickers, Labels, Decals & More Online Store",

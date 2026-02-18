@@ -36,9 +36,41 @@ function generateSiteMap(products, categories, pages, options = {}) {
   parts.push('<?xml version="1.0" encoding="UTF-8"?>');
   parts.push('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
 
+  // prepare normalized exclusion set (supports full URLs, leading slash paths, and bare slugs)
+  const rawExclusions = (options.exclusion_list || "")
+    .split(/\r?\n/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  const normalize = (input) => {
+    if (!input) return null;
+    let u = input.trim();
+    // if input is full URL starting with SITE_URL, strip origin
+    if (u.startsWith(SITE_URL)) u = u.slice(SITE_URL.length);
+    // try to parse as URL relative to SITE_URL
+    try {
+      const url = new URL(u, SITE_URL);
+      u = url.pathname + (url.search || "");
+    } catch (e) {
+      // leave as-is
+    }
+    if (!u.startsWith("/")) u = "/" + u;
+    // remove trailing slash for consistency (keep root as '/')
+    if (u.length > 1 && u.endsWith("/")) u = u.slice(0, -1);
+    return u.toLowerCase();
+  };
+
+  const exclusionSet = new Set(rawExclusions.map(normalize).filter(Boolean));
+
   // static pages
   if (options.include_static_pages) {
     staticPages.forEach((page) => {
+      const staticPath = `/${page}`.replace(/\/+/g, "/");
+      const normalizedStatic = normalize(
+        staticPath === "//" ? "/" : staticPath,
+      );
+      if (normalizedStatic && exclusionSet.has(normalizedStatic)) return;
+
       parts.push("  <url>");
       parts.push(`    <loc>${SITE_URL}/${page}</loc>`);
       parts.push("    <changefreq>weekly</changefreq>");
@@ -50,16 +82,20 @@ function generateSiteMap(products, categories, pages, options = {}) {
 
   // products
   if (options.include_products) {
-    const exclusionLines = (options.exclusion_list || "")
-      .split(/\r?\n/)
-      .map((s) => s.trim())
-      .filter(Boolean);
     products.forEach((product) => {
-      // exclusion by slug or id
+      // exclusion by slug, id, or full url
       const slugPath = `/product/${product.slug}`;
       const idStr = product._id || product.id || product.productId || "";
-      if (exclusionLines.includes(slugPath) || exclusionLines.includes(idStr))
-        return;
+      const candidates = [
+        slugPath,
+        `/${product.slug}`,
+        idStr,
+        `${SITE_URL}${slugPath}`,
+        `${SITE_URL}/${product.slug}`,
+      ]
+        .map(normalize)
+        .filter(Boolean);
+      if (candidates.some((c) => exclusionSet.has(c))) return;
       // exclude out of stock if requested - best-effort: skip if status not 'show'
       if (
         options.exclude_out_of_stock &&
@@ -98,11 +134,16 @@ function generateSiteMap(products, categories, pages, options = {}) {
     pages.forEach((p) => {
       const iso = isoSafe(p.updatedAt || p.createdAt || p.publishedAt);
       const pagePath = `/pages/${p.slug}`;
-      const exclusionLines = (options.exclusion_list || "")
-        .split(/\r?\n/)
-        .map((s) => s.trim())
+      const candidates = [
+        pagePath,
+        `/${p.slug}`,
+        `/${p.slug}`.replace(/\/+/g, "/"),
+        `${SITE_URL}${pagePath}`,
+        `${SITE_URL}/${p.slug}`,
+      ]
+        .map(normalize)
         .filter(Boolean);
-      if (exclusionLines.includes(pagePath)) return;
+      if (candidates.some((c) => exclusionSet.has(c))) return;
       parts.push("  <url>");
       parts.push(`    <loc>${SITE_URL}/pages/${p.slug}</loc>`);
       if (iso) parts.push(`    <lastmod>${iso}</lastmod>`);

@@ -348,14 +348,6 @@ const Navbar = () => {
 
             <div className="hidden lg:flex items-center space-x-6">
               <button
-                className="relative text-white hover:text-yellow-400 transition-all group"
-                aria-label="Notifications"
-              >
-                <FiBell className="w-6 h-6 group-hover:animate-pulse" />
-                <span className="absolute -top-1 -right-1 w-2 h-2 bg-yellow-400 rounded-full"></span>
-              </button>
-
-              <button
                 onClick={toggleCartDrawer}
                 className="relative text-white hover:text-yellow-400 transition-all group"
                 aria-label="Shopping Cart"

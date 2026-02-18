@@ -19,9 +19,10 @@ const NavBarTop = () => {
   const { showingTranslateValue } = useUtilsFunction();
 
   const handleLogOut = () => {
-    signOut();
     Cookies.remove("couponInfo");
-    router.push("/");
+    const domain =
+      process.env.NEXT_PUBLIC_STORE_DOMAIN || "https://stickersrhino.com";
+    signOut({ callbackUrl: domain });
   };
 
   const handleTokenExpiration = () => {
@@ -58,7 +59,7 @@ const NavBarTop = () => {
           <span className="flex items-center">
             <FiPhoneCall className="mr-2" />
             {showingTranslateValue(
-              storeCustomizationSetting?.navbar?.help_text
+              storeCustomizationSetting?.navbar?.help_text,
             )}
             <a
               href={`tel:${
@@ -74,19 +75,19 @@ const NavBarTop = () => {
             {storeCustomizationSetting?.navbar?.about_menu_status &&
               renderNavItem(
                 "/about-us",
-                storeCustomizationSetting?.navbar?.about_us
+                storeCustomizationSetting?.navbar?.about_us,
               )}
             {storeCustomizationSetting?.navbar?.contact_menu_status &&
               renderNavItem(
                 "/contact-us",
-                storeCustomizationSetting?.navbar?.contact_us
+                storeCustomizationSetting?.navbar?.contact_us,
               )}
             <Link
               href="/user/my-account"
               className="font-medium hover:text-yellow-600"
             >
               {showingTranslateValue(
-                storeCustomizationSetting?.navbar?.my_account
+                storeCustomizationSetting?.navbar?.my_account,
               )}
             </Link>
             <span className="mx-2">|</span>
@@ -99,7 +100,7 @@ const NavBarTop = () => {
                   <IoLockOpenOutline />
                 </span>
                 {showingTranslateValue(
-                  storeCustomizationSetting?.navbar?.logout
+                  storeCustomizationSetting?.navbar?.logout,
                 )}
               </button>
             ) : (
@@ -111,7 +112,7 @@ const NavBarTop = () => {
                   <FiUser />
                 </span>
                 {showingTranslateValue(
-                  storeCustomizationSetting?.navbar?.login
+                  storeCustomizationSetting?.navbar?.login,
                 )}
               </Link>
             )}

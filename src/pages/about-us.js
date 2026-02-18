@@ -17,7 +17,7 @@ const AboutUs = () => {
       <PageHeader
         headerBg={storeCustomizationSetting?.about_us?.header_bg}
         title={showingTranslateValue(
-          storeCustomizationSetting?.about_us?.title
+          storeCustomizationSetting?.about_us?.title,
         )}
       />
 
@@ -58,18 +58,18 @@ const AboutUs = () => {
                     <>
                       <span className="text-3xl block font-extrabold font-serif mb-4 text-gray-800">
                         {showingTranslateValue(
-                          storeCustomizationSetting?.about_us?.card_two_title
+                          storeCustomizationSetting?.about_us?.card_two_title,
                         )}
                       </span>
                       <h4 className="text-lg font-serif font-bold mb-1">
                         {showingTranslateValue(
-                          storeCustomizationSetting?.about_us?.card_two_sub
+                          storeCustomizationSetting?.about_us?.card_two_sub,
                         )}
                       </h4>
                       <p className="mb-0 opacity-90 leading-7">
                         {showingTranslateValue(
                           storeCustomizationSetting?.about_us
-                            ?.card_two_description
+                            ?.card_two_description,
                         )}
                       </p>
                     </>
@@ -87,18 +87,18 @@ const AboutUs = () => {
                     <>
                       <span className="text-3xl block font-extrabold font-serif mb-4 text-gray-800">
                         {showingTranslateValue(
-                          storeCustomizationSetting?.about_us?.card_one_title
+                          storeCustomizationSetting?.about_us?.card_one_title,
                         )}
                       </span>
                       <h4 className="text-lg font-serif font-bold mb-1">
                         {showingTranslateValue(
-                          storeCustomizationSetting?.about_us?.card_one_sub
+                          storeCustomizationSetting?.about_us?.card_one_sub,
                         )}
                       </h4>
                       <p className="mb-0 opacity-90 leading-7">
                         {showingTranslateValue(
                           storeCustomizationSetting?.about_us
-                            ?.card_one_description
+                            ?.card_one_description,
                         )}
                       </p>
                     </>
@@ -195,12 +195,12 @@ const AboutUs = () => {
                 <div className="py-4">
                   <h5 className="text-lg font-semibold font-serif">
                     {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_one_name
+                      storeCustomizationSetting?.about_us?.founder_one_name,
                     )}
                   </h5>
                   <span className="opacity-75 text-sm">
                     {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_one_sub
+                      storeCustomizationSetting?.about_us?.founder_one_sub,
                     )}
                   </span>
                 </div>
@@ -219,12 +219,12 @@ const AboutUs = () => {
                 <div className="py-4">
                   <h5 className="text-lg font-semibold font-serif">
                     {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_two_name
+                      storeCustomizationSetting?.about_us?.founder_two_name,
                     )}
                   </h5>
                   <span className="opacity-75 text-sm">
                     {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_two_sub
+                      storeCustomizationSetting?.about_us?.founder_two_sub,
                     )}
                   </span>
                 </div>
@@ -243,12 +243,12 @@ const AboutUs = () => {
                 <div className="py-4">
                   <h5 className="text-lg font-semibold font-serif">
                     {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_three_name
+                      storeCustomizationSetting?.about_us?.founder_three_name,
                     )}
                   </h5>
                   <span className="opacity-75 text-sm">
                     {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_three_sub
+                      storeCustomizationSetting?.about_us?.founder_three_sub,
                     )}
                   </span>
                 </div>
@@ -267,12 +267,12 @@ const AboutUs = () => {
                 <div className="py-4">
                   <h5 className="text-lg font-semibold font-serif">
                     {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_four_name
+                      storeCustomizationSetting?.about_us?.founder_four_name,
                     )}
                   </h5>
                   <span className="opacity-75 text-sm">
                     {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_four_sub
+                      storeCustomizationSetting?.about_us?.founder_four_sub,
                     )}
                   </span>
                 </div>
@@ -291,12 +291,12 @@ const AboutUs = () => {
                 <div className="py-4">
                   <h5 className="text-lg font-semibold font-serif">
                     {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_five_name
+                      storeCustomizationSetting?.about_us?.founder_five_name,
                     )}
                   </h5>
                   <span className="opacity-75 text-sm">
                     {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_five_sub
+                      storeCustomizationSetting?.about_us?.founder_five_sub,
                     )}
                   </span>
                 </div>
@@ -315,12 +315,12 @@ const AboutUs = () => {
                 <div className="py-4">
                   <h5 className="text-lg font-semibold font-serif">
                     {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_six_name
+                      storeCustomizationSetting?.about_us?.founder_six_name,
                     )}
                   </h5>
                   <span className="opacity-75 text-sm">
                     {showingTranslateValue(
-                      storeCustomizationSetting?.about_us?.founder_six_sub
+                      storeCustomizationSetting?.about_us?.founder_six_sub,
                     )}
                   </span>
                 </div>
