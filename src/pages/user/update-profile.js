@@ -1,22 +1,19 @@
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import React, { useEffect, useState, useCallback } from "react";
-import { FiUser, FiMapPin, FiPhone, FiMail, FiCamera } from "react-icons/fi";
+import { FiUser, FiMapPin, FiPhone, FiMail } from "react-icons/fi";
 import { useRouter, useSearchParams } from "next/navigation";
 
 //internal import
-import Label from "@components/form/Label";
 import Error from "@components/form/Error";
 import Dashboard from "@pages/user/dashboard";
 import InputArea from "@components/form/InputArea";
 import useGetSetting from "@hooks/useGetSetting";
 import CustomerServices from "@services/CustomerServices";
-import Uploader from "@components/image-uploader/Uploader";
 import { notifySuccess, notifyError } from "@utils/toast";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 
 const UpdateProfile = () => {
-  const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const { data: session, update } = useSession();
   const router = useRouter();
@@ -42,15 +39,14 @@ const UpdateProfile = () => {
     },
   });
 
-  const watchedValues = watch();
-
   const initializeForm = useCallback(() => {
     if (session?.user) {
-      setValue("name", session.user.name || "");
-      setValue("email", session.user.email || "");
-      setValue("address", session.user.address || "");
-      setValue("phone", session.user.phone || "");
-      setImageUrl(session.user.image || "");
+      setValue("name", session.user.name || "", { shouldValidate: true });
+      setValue("email", session.user.email || "", { shouldValidate: true });
+      setValue("address", session.user.address || "", {
+        shouldValidate: false,
+      });
+      setValue("phone", session.user.phone || "", { shouldValidate: false });
     }
   }, [session?.user, setValue]);
 
@@ -67,13 +63,12 @@ const UpdateProfile = () => {
       email: data.email?.trim(),
       address: data.address?.trim(),
       phone: data.phone?.trim(),
-      image: imageUrl,
     };
 
     try {
       const res = await CustomerServices.updateCustomer(
         session?.user?.id,
-        userData
+        userData,
       );
 
       // Update session with new data including the new token
@@ -95,7 +90,7 @@ const UpdateProfile = () => {
       }
     } catch (error) {
       notifyError(
-        error?.response?.data?.message || error?.message || "Update failed"
+        error?.response?.data?.message || error?.message || "Update failed",
       );
     } finally {
       setLoading(false);
@@ -108,6 +103,13 @@ const UpdateProfile = () => {
       minLength: {
         value: 2,
         message: "Name must be at least 2 characters",
+      },
+    },
+    email: {
+      required: "Email is required",
+      pattern: {
+        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+        message: "Invalid email address",
       },
     },
     address: {
@@ -133,7 +135,7 @@ const UpdateProfile = () => {
   return (
     <Dashboard
       title={showingTranslateValue(
-        storeCustomizationSetting?.dashboard?.update_profile
+        storeCustomizationSetting?.dashboard?.update_profile,
       )}
       description="Update your personal information"
     >
@@ -166,23 +168,6 @@ const UpdateProfile = () => {
                   className="flex flex-col justify-center"
                 >
                   <div className="space-y-6">
-                    {/* Profile Photo Section */}
-                    <div className="text-center">
-                      <Label
-                        label="Profile Photo"
-                        className="text-black font-medium mb-3"
-                      />
-                      <div className="flex justify-center">
-                        <Uploader
-                          imageUrl={imageUrl}
-                          setImageUrl={setImageUrl}
-                        />
-                      </div>
-                      <p className="mt-2 text-sm text-gray-600">
-                        JPG, PNG or WebP. Max 5MB.
-                      </p>
-                    </div>
-
                     {/* Personal Information */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {/* Name */}
@@ -210,15 +195,13 @@ const UpdateProfile = () => {
                           register={register}
                           name="email"
                           type="email"
-                          readOnly={true}
                           label="Email Address"
                           placeholder="Your email address"
                           Icon={FiMail}
-                          className="bg-gray-50 cursor-not-allowed"
+                          validation={validationRules.email}
+                          disabled={loading}
                         />
-                        <p className="mt-1 text-xs text-gray-600">
-                          Email cannot be changed
-                        </p>
+                        <Error errorName={errors.email} />
                       </div>
 
                       {/* Phone */}
@@ -270,7 +253,9 @@ const UpdateProfile = () => {
                     <div className="flex flex-col sm:flex-row gap-3 justify-between pt-4">
                       <button
                         type="button"
-                        onClick={initializeForm}
+                        onClick={() => {
+                          initializeForm();
+                        }}
                         disabled={loading || !isDirty}
                         className="px-6 py-3 border border-gray-300 rounded-lg text-sm font-medium text-gray-600 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-yellow-600 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
                       >

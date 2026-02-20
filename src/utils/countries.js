@@ -1,6 +1,7 @@
 const countries = [
   {
     name: "Bangladesh",
+    code: "BD",
     cities: [
       {
         name: "Dhaka",
@@ -133,6 +134,7 @@ const countries = [
   },
   {
     name: "United States",
+    code: "US",
     cities: [
       {
         name: "New York",
@@ -163,6 +165,7 @@ const countries = [
 
   {
     name: "Canada",
+    code: "CA",
     cities: [
       {
         name: "Toronto",
@@ -192,6 +195,7 @@ const countries = [
   },
   {
     name: "United Kingdom",
+    code: "GB",
     cities: [
       {
         name: "London",
@@ -209,6 +213,7 @@ const countries = [
   },
   {
     name: "Australia",
+    code: "AU",
     cities: [
       {
         name: "Sydney",
@@ -232,6 +237,7 @@ const countries = [
   },
   {
     name: "Germany",
+    code: "DE",
     cities: [
       {
         name: "Berlin",
@@ -255,6 +261,7 @@ const countries = [
   },
   {
     name: "India",
+    code: "IN",
     cities: [
       {
         name: "Mumbai",
@@ -278,6 +285,7 @@ const countries = [
   },
   {
     name: "China",
+    code: "CN",
     cities: [
       {
         name: "Beijing",
@@ -295,6 +303,7 @@ const countries = [
   },
   {
     name: "Japan",
+    code: "JP",
     cities: [
       {
         name: "Tokyo",
@@ -312,6 +321,7 @@ const countries = [
   },
   {
     name: "Brazil",
+    code: "BR",
     cities: [
       {
         name: "São Paulo",
@@ -335,6 +345,7 @@ const countries = [
   },
   {
     name: "South Africa",
+    code: "ZA",
     cities: [
       {
         name: "Johannesburg",
@@ -358,6 +369,7 @@ const countries = [
   },
   {
     name: "Russia",
+    code: "RU",
     cities: [
       {
         name: "Moscow",
@@ -393,6 +405,7 @@ const countries = [
   },
   {
     name: "France",
+    code: "FR",
     cities: [
       {
         name: "Paris",
@@ -428,6 +441,7 @@ const countries = [
   },
   {
     name: "Italy",
+    code: "IT",
     cities: [
       {
         name: "Rome",

@@ -47,17 +47,51 @@ const PhoneSignin = () => {
 
     // Initialize reCAPTCHA when component mounts
     if (step === 1 && !recaptchaInitialized) {
+      // Helper: wait for element to exist
+      const waitForElement = (id, timeout = 2000) =>
+        new Promise((resolve, reject) => {
+          const interval = 100;
+          let waited = 0;
+          const iv = setInterval(() => {
+            const el = document.getElementById(id);
+            if (el) {
+              clearInterval(iv);
+              resolve(el);
+            } else if (waited >= timeout) {
+              clearInterval(iv);
+              reject(new Error("Element not found"));
+            }
+            waited += interval;
+          }, interval);
+        });
+
       const initRecaptcha = async () => {
         try {
+          // Wait for container to be present in DOM
+          await waitForElement("recaptcha-container", 3000);
+
           // Clear any existing verifier first
-          if (window.recaptchaVerifier) {
+          if (
+            window.recaptchaVerifier &&
+            typeof window.recaptchaVerifier.clear === "function"
+          ) {
             try {
               window.recaptchaVerifier.clear();
-            } catch (e) {}
+            } catch (e) {
+              // ignore
+            }
           }
 
           const verifier = initializeRecaptcha("recaptcha-container");
-          await verifier.render();
+          // render can sometimes fail if grecaptcha not ready; retry once
+          try {
+            await verifier.render();
+          } catch (err) {
+            // small delay and retry
+            await new Promise((r) => setTimeout(r, 300));
+            await verifier.render();
+          }
+
           setRecaptchaInitialized(true);
         } catch (error) {
           console.error("Failed to initialize reCAPTCHA:", error);
@@ -67,12 +101,7 @@ const PhoneSignin = () => {
         }
       };
 
-      // Small delay to ensure DOM is ready
-      const timer = setTimeout(() => {
-        initRecaptcha();
-      }, 100);
-
-      return () => clearTimeout(timer);
+      initRecaptcha();
     }
   }, [step, recaptchaInitialized]);
 

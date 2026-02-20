@@ -23,6 +23,7 @@ const AddShippingAddress = () => {
     selectedValue,
     isSubmitting,
     handleInputChange,
+    zipLookupStatus,
   } = useShippingAddressSubmit(id);
 
   //   console.log("selectedValues", selectedValue);
@@ -89,22 +90,57 @@ const AddShippingAddress = () => {
                           register={register}
                           label="Email"
                           name="email"
-                          type="tel"
+                          type="email"
                           placeholder="Email"
-                          readOnly={true}
                         />
 
                         <Error errorName={errors.email} />
                       </div>
 
                       <div className="col-span-6 sm:col-span-3">
+                        <InputArea
+                          register={register}
+                          label="Zip Code"
+                          name="zipCode"
+                          type="text"
+                          placeholder="Enter zip / postal code to auto-fill"
+                          required={false}
+                        />
+                        <Error errorName={errors.zipCode} />
+                        {zipLookupStatus === "loading" && (
+                          <p className="mt-1 text-xs text-cyan-600">
+                            Looking up zip code…
+                          </p>
+                        )}
+                        {zipLookupStatus === "found" && (
+                          <p className="mt-1 text-xs text-green-600">
+                            ✓ Country, city &amp; area auto-filled
+                          </p>
+                        )}
+                        {zipLookupStatus === "partial" && (
+                          <p className="mt-1 text-xs text-amber-600">
+                            ⚠ Partially matched — please select remaining fields
+                            manually
+                          </p>
+                        )}
+                        {zipLookupStatus === "not-found" && (
+                          <p className="mt-1 text-xs text-gray-500">
+                            Zip code not recognised — please fill fields
+                            manually
+                          </p>
+                        )}
+                        {zipLookupStatus === "error" && (
+                          <p className="mt-1 text-xs text-red-500">
+                            Lookup failed — please fill fields manually
+                          </p>
+                        )}
+                      </div>
+
+                      <div className="col-span-6 sm:col-span-3">
                         <SelectOption
                           name="country"
                           label="Country"
-                          //   register={register}
-                          //   required={true}
-                          //   setValue={setValue}
-                          options={countries?.map((country) => country?.name)}
+                          options={countries?.map((country) => country?.code)}
                           onChange={handleInputChange}
                           value={selectedValue?.country}
                         />
@@ -114,9 +150,6 @@ const AddShippingAddress = () => {
                         <SelectOption
                           name="city"
                           label="City"
-                          //   register={register}
-                          //   required={true}
-                          //   setValue={setValue}
                           options={cities?.map((city) => city?.name)}
                           onChange={handleInputChange}
                           value={selectedValue?.city}
@@ -128,25 +161,10 @@ const AddShippingAddress = () => {
                           name="area"
                           label="Area"
                           options={areas?.map((area) => area)}
-                          //   register={register}
-                          //   required={true}
-                          //   setValue={setValue}
                           onChange={handleInputChange}
                           value={selectedValue?.area}
                         />
                         <Error errorName={errors.area} />
-                      </div>
-                      <div className="col-span-6 sm:col-span-3">
-                        <InputArea
-                          register={register}
-                          label="Zip Code"
-                          name="zipCode"
-                          type="text"
-                          placeholder="Zip Code"
-                          required={false}
-                        />
-
-                        <Error errorName={errors.zipCode} />
                       </div>
                     </div>
                     <div className="col-span-6 sm:col-span-3 mt-5 text-right">

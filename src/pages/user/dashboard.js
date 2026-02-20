@@ -54,7 +54,7 @@ const Dashboard = ({ title, description, children }) => {
     Cookies.remove("couponInfo");
     const domain =
       process.env.NEXT_PUBLIC_STORE_DOMAIN || "https://stickersrhino.com";
-    signOut({ callbackUrl: domain });
+    signOut({ callbackUrl: "https://stickersrhino.com" });
   };
 
   useEffect(() => {

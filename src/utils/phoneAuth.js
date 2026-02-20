@@ -14,20 +14,42 @@ import { auth } from "@config/firebase";
  */
 export const initializeRecaptcha = (containerId = "recaptcha-container") => {
   try {
-    // Clear any existing reCAPTCHA
-    if (window.recaptchaVerifier) {
-      window.recaptchaVerifier.clear();
+    // Clear any existing reCAPTCHA if possible (guard against destroyed instances)
+    try {
+      if (
+        window.recaptchaVerifier &&
+        typeof window.recaptchaVerifier.clear === "function"
+      ) {
+        window.recaptchaVerifier.clear();
+      }
+    } catch (clearErr) {
+      // If clearing fails because the verifier is already destroyed, remove the ref and continue.
+      console.warn(
+        "reCAPTCHA clear() failed, resetting verifier reference:",
+        clearErr,
+      );
+      try {
+        delete window.recaptchaVerifier;
+      } catch (e) {
+        // ignore
+      }
     }
 
-    window.recaptchaVerifier = new RecaptchaVerifier(auth, containerId, {
-      size: "normal",
-      callback: (response) => {
-        // reCAPTCHA solved - allow signInWithPhoneNumber
-      },
-      "expired-callback": () => {
-        // Response expired. Ask user to solve reCAPTCHA again.
-      },
-    });
+    // Create a new verifier. Wrap creation in try/catch because grecaptcha may not be ready yet
+    try {
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, containerId, {
+        size: "normal",
+        callback: (response) => {
+          // reCAPTCHA solved - allow signInWithPhoneNumber
+        },
+        "expired-callback": () => {
+          // Response expired. Ask user to solve reCAPTCHA again.
+        },
+      });
+    } catch (createErr) {
+      console.error("Error creating RecaptchaVerifier:", createErr);
+      throw createErr;
+    }
 
     return window.recaptchaVerifier;
   } catch (error) {
