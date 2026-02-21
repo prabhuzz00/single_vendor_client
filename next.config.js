@@ -1,4 +1,3 @@
-const runtimeCaching = require("next-pwa/cache");
 const nextTranslate = require("next-translate-plugin");
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
@@ -7,7 +6,6 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 const withPWA = require("next-pwa")({
   dest: "public",
   register: true,
-  runtimeCaching,
   buildExcludes: [/middleware-manifest\.json$/],
   scope: "/",
   sw: "service-worker.js",
