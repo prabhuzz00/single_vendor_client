@@ -52,9 +52,36 @@ const Dashboard = ({ title, description, children }) => {
 
   const handleLogOut = () => {
     Cookies.remove("couponInfo");
-    const domain =
-      process.env.NEXT_PUBLIC_STORE_DOMAIN || "https://stickersrhino.com";
-    signOut({ callbackUrl: "https://stickersrhino.com" });
+    const rawEnv = process.env.NEXT_PUBLIC_STORE_DOMAIN || "";
+
+    const normalize = (d) => {
+      if (!d) return "";
+      // remove surrounding quotes and trailing slashes
+      return d
+        .replace(/^\s*\"|\"\s*$/g, "")
+        .replace(/\"/g, "")
+        .replace(/\/+$/, "");
+    };
+
+    let domain = normalize(rawEnv) || "";
+
+    // If env points to localhost or is empty, prefer current origin when available
+    const isLocal = (u) => /localhost|127\.0\.0\.1/.test(u);
+
+    try {
+      const origin = typeof window !== "undefined" && window.location?.origin;
+      if (!domain || isLocal(domain)) {
+        if (origin && !isLocal(origin)) {
+          domain = origin;
+        } else {
+          domain = "https://stickersrhino.com";
+        }
+      }
+    } catch (e) {
+      domain = domain || "https://stickersrhino.com";
+    }
+
+    signOut({ callbackUrl: domain });
   };
 
   useEffect(() => {
