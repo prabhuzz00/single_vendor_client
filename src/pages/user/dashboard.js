@@ -126,19 +126,26 @@ const Dashboard = ({ title, description, children }) => {
     },
   ];
 
-  const handleRedirectToStore = () => {
-    if (typeof window !== "undefined") {
+  const handleRedirectToStore = async () => {
+    if (typeof window === "undefined") return;
+    try {
+      // remove app cookie(s)
+      Cookies.remove("couponInfo");
+      // remove common NextAuth cookies (names vary by setup)
+      Cookies.remove("next-auth.session-token");
+      Cookies.remove("next-auth.csrf-token");
+      // ask NextAuth to sign out server-side without redirecting (prevent localhost callback)
+      await signOut({ redirect: false });
+      // optional: clear localStorage flags if you use any
       try {
-        Cookies.remove("couponInfo");
-        // optional: remove auth-related cookies if needed
-        // Cookies.remove("next-auth.session-token");
-        // Cookies.remove("next-auth.csrf-token");
-      } catch (e) {
-        // ignore
-      }
-      window.location.href = "https://stickersrhino.com";
+        localStorage.removeItem("auth");
+      } catch (e) {}
+    } catch (e) {
+      /* ignore */
     }
+    window.location.href = "https://stickersrhino.com";
   };
+  // ...existing code...
 
   return (
     <>
