@@ -81,18 +81,33 @@ const PhoneSignin = () => {
               // ignore
             }
           }
+          // Try initializing multiple times with small backoff
+          let attempts = 0;
+          const maxAttempts = 3;
+          let success = false;
+          let lastErr = null;
 
-          const verifier = initializeRecaptcha("recaptcha-container");
-          // render can sometimes fail if grecaptcha not ready; retry once
-          try {
-            await verifier.render();
-          } catch (err) {
-            // small delay and retry
-            await new Promise((r) => setTimeout(r, 300));
-            await verifier.render();
+          while (attempts < maxAttempts && !success) {
+            attempts += 1;
+            try {
+              await initializeRecaptcha("recaptcha-container");
+              success = true;
+              setRecaptchaInitialized(true);
+              break;
+            } catch (err) {
+              lastErr = err;
+              // small exponential backoff
+              await new Promise((r) => setTimeout(r, 200 * attempts));
+            }
           }
 
-          setRecaptchaInitialized(true);
+          if (!success) {
+            console.error(
+              "Failed to initialize reCAPTCHA after retries:",
+              lastErr,
+            );
+            throw lastErr;
+          }
         } catch (error) {
           console.error("Failed to initialize reCAPTCHA:", error);
           notifyError(

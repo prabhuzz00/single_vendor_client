@@ -371,7 +371,11 @@ const Checkout = () => {
                     </h2>
                     {showCard && (
                       <div className="mb-3">
-                        <CardElement />{" "}
+                        <CardElement
+                          options={{
+                            hidePostalCode: true,
+                          }}
+                        />{" "}
                         <p className="text-red-400 text-sm mt-1">{error}</p>
                       </div>
                     )}

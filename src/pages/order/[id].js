@@ -1,13 +1,8 @@
 import dynamic from "next/dynamic";
 import { useRef } from "react";
-import { IoCloudDownloadOutline, IoPrintOutline } from "react-icons/io5";
+import { IoPrintOutline } from "react-icons/io5";
 import { useQuery } from "@tanstack/react-query";
 
-// Lazy load heavy PDF components
-const PDFDownloadLink = dynamic(
-  () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
-  { ssr: false },
-);
 const ReactToPrint = dynamic(() => import("react-to-print"), { ssr: false });
 
 //internal import
@@ -18,10 +13,6 @@ import Invoice from "@components/invoice/Invoice";
 import Loading from "@components/preloader/Loading";
 import OrderServices from "@services/OrderServices";
 import useUtilsFunction from "@hooks/useUtilsFunction";
-const InvoiceForDownload = dynamic(
-  () => import("@components/invoice/InvoiceForDownload"),
-  { ssr: false },
-);
 
 const Order = ({ params }) => {
   const printRef = useRef();
@@ -32,7 +23,7 @@ const Order = ({ params }) => {
     queryFn: async () => await OrderServices.getOrderById(orderId),
   });
 
-  const { showingTranslateValue, getNumberTwo, currency } = useUtilsFunction();
+  const { showingTranslateValue, currency } = useUtilsFunction();
   const { storeCustomizationSetting, globalSetting } = useGetSetting();
 
   return (
@@ -67,33 +58,6 @@ const Order = ({ params }) => {
             />
             <div className="bg-white p-8 rounded-b-xl">
               <div className="flex lg:flex-row md:flex-row sm:flex-row flex-col justify-between invoice-btn">
-                <PDFDownloadLink
-                  document={
-                    <InvoiceForDownload
-                      data={data}
-                      currency={currency}
-                      globalSetting={globalSetting}
-                      getNumberTwo={getNumberTwo}
-                    />
-                  }
-                  fileName="Invoice"
-                >
-                  {({ blob, url, loading, error }) =>
-                    loading ? (
-                      "Loading..."
-                    ) : (
-                      <button className="mb-3 sm:mb-0 md:mb-0 lg:mb-0 flex items-center justify-center bg-black text-white transition-all font-serif text-sm font-semibold h-10 py-2 px-5 rounded-lg hover:bg-gray-900">
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.dashboard?.download_button,
-                        )}{" "}
-                        <span className="ml-2 text-base">
-                          <IoCloudDownloadOutline />
-                        </span>
-                      </button>
-                    )
-                  }
-                </PDFDownloadLink>
-
                 <ReactToPrint
                   trigger={() => (
                     <button className="mb-3 sm:mb-0 md:mb-0 lg:mb-0 flex items-center justify-center bg-black text-white transition-all font-serif text-sm font-semibold h-10 py-2 px-5 rounded-lg hover:bg-gray-900">

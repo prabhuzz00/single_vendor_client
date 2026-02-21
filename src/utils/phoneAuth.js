@@ -12,7 +12,9 @@ import { auth } from "@config/firebase";
  * @param {string} containerId - The ID of the container element for reCAPTCHA
  * @returns {RecaptchaVerifier} The initialized reCAPTCHA verifier
  */
-export const initializeRecaptcha = (containerId = "recaptcha-container") => {
+export const initializeRecaptcha = async (
+  containerId = "recaptcha-container",
+) => {
   try {
     // Clear any existing reCAPTCHA if possible (guard against destroyed instances)
     try {
@@ -35,19 +37,81 @@ export const initializeRecaptcha = (containerId = "recaptcha-container") => {
       }
     }
 
-    // Create a new verifier. Wrap creation in try/catch because grecaptcha may not be ready yet
+    // Wait for grecaptcha to be ready before creating the verifier
+    const waitForGrecaptcha = (timeout = 5000) =>
+      new Promise((resolve, reject) => {
+        const interval = 150;
+        let waited = 0;
+        const iv = setInterval(() => {
+          if (
+            window.grecaptcha &&
+            typeof window.grecaptcha.render === "function"
+          ) {
+            clearInterval(iv);
+            resolve(true);
+          } else if (waited >= timeout) {
+            clearInterval(iv);
+            reject(new Error("grecaptcha not available"));
+          }
+          waited += interval;
+        }, interval);
+      });
+
+    try {
+      await waitForGrecaptcha(6000);
+    } catch (gcErr) {
+      console.warn("grecaptcha not ready after timeout:", gcErr);
+      // proceed — RecaptchaVerifier may still work but log for debugging
+    }
+
+    // Create the verifier and ensure it's rendered before returning
     try {
       window.recaptchaVerifier = new RecaptchaVerifier(auth, containerId, {
         size: "normal",
-        callback: (response) => {
-          // reCAPTCHA solved - allow signInWithPhoneNumber
+        callback: () => {
+          // reCAPTCHA solved
         },
         "expired-callback": () => {
-          // Response expired. Ask user to solve reCAPTCHA again.
+          // Response expired
         },
       });
+
+      // Try rendering with a small retry loop to handle grecaptcha race
+      const renderWithRetry = async (attempts = 3, delay = 300) => {
+        let lastErr;
+        for (let i = 0; i < attempts; i++) {
+          try {
+            // RecaptchaVerifier.render() may return a promise or number
+            const r = window.recaptchaVerifier.render();
+            if (r && typeof r.then === "function") await r;
+            return true;
+          } catch (err) {
+            lastErr = err;
+            await new Promise((r) => setTimeout(r, delay));
+            delay *= 1.5;
+          }
+        }
+        throw lastErr;
+      };
+
+      await renderWithRetry(4, 250);
     } catch (createErr) {
-      console.error("Error creating RecaptchaVerifier:", createErr);
+      console.error(
+        "Error creating or rendering RecaptchaVerifier:",
+        createErr,
+      );
+      // Try to clean up a partially created verifier
+      try {
+        if (
+          window.recaptchaVerifier &&
+          typeof window.recaptchaVerifier.clear === "function"
+        ) {
+          window.recaptchaVerifier.clear();
+        }
+        delete window.recaptchaVerifier;
+      } catch (e) {
+        // ignore
+      }
       throw createErr;
     }
 

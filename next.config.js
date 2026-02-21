@@ -19,13 +19,19 @@ const baseConfig = withPWA({
   reactStrictMode: true,
   compress: true,
   poweredByHeader: false,
-  eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: true,
-  },
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
+  },
+  webpack: (config, { isServer }) => {
+    // Add fallback for scheduler module
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        "scheduler/tracing": false,
+      };
+    }
+
+    return config;
   },
   async headers() {
     return [
