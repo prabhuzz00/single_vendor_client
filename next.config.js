@@ -3,17 +3,19 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
 
-const withPWA = require("next-pwa")({
-  dest: "public",
-  register: true,
-  buildExcludes: [/middleware-manifest\.json$/],
-  scope: "/",
-  sw: "service-worker.js",
-  skipWaiting: true,
-  disable: process.env.NODE_ENV === "development",
-});
+// Temporarily disable PWA due to compatibility issues
+// const withPWAInit = require("next-pwa");
+// const withPWA = withPWAInit({
+//   dest: "public",
+//   register: true,
+//   buildExcludes: [/middleware-manifest\.json$/],
+//   scope: "/",
+//   sw: "service-worker.js",
+//   skipWaiting: true,
+//   disable: process.env.NODE_ENV === "development",
+// });
 
-const baseConfig = withPWA({
+const config = {
   reactStrictMode: true,
   compress: true,
   poweredByHeader: false,
@@ -83,7 +85,6 @@ const baseConfig = withPWA({
     deviceSizes: [320, 420, 768, 1024, 1200, 1600],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 512],
   },
+};
 
-  ...nextTranslate(),
-});
-module.exports = withBundleAnalyzer(baseConfig);
+module.exports = withBundleAnalyzer(nextTranslate(config));
