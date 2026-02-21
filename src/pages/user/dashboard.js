@@ -65,8 +65,8 @@ const Dashboard = ({ title, description, children }) => {
 
     let domain = normalize(rawEnv) || "";
 
-    // If env points to localhost or is empty, prefer current origin when available
-    const isLocal = (u) => /localhost|127\.0\.0\.1/.test(u);
+    // // If env points to localhost or is empty, prefer current origin when available
+    // const isLocal = (u) => /localhost|127\.0\.0\.1/.test(u);
 
     try {
       const origin = typeof window !== "undefined" && window.location?.origin;
@@ -126,6 +126,20 @@ const Dashboard = ({ title, description, children }) => {
     },
   ];
 
+  const handleRedirectToStore = () => {
+    if (typeof window !== "undefined") {
+      try {
+        Cookies.remove("couponInfo");
+        // optional: remove auth-related cookies if needed
+        // Cookies.remove("next-auth.session-token");
+        // Cookies.remove("next-auth.csrf-token");
+      } catch (e) {
+        // ignore
+      }
+      window.location.href = "https://stickersrhino.com";
+    }
+  };
+
   return (
     <>
       {isLoading ? (
@@ -156,12 +170,25 @@ const Dashboard = ({ title, description, children }) => {
                       </Link>
                     </span>
                   ))}
-                  <span className="p-2 flex font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-emerald-600">
+                  {/* <span className="p-2 flex font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-emerald-600">
                     <span className="mr-2">
                       <IoLockOpenOutline />
                     </span>{" "}
                     <button
                       onClick={handleLogOut}
+                      className="inline-flex items-center justify-between text-sm font-medium w-full hover:text-emerald-600"
+                    >
+                      {showingTranslateValue(
+                        storeCustomizationSetting?.navbar?.logout,
+                      )}
+                    </button>
+                  </span> */}
+                  <span className="p-2 flex font-serif items-center rounded-md hover:bg-gray-50 w-full hover:text-emerald-600">
+                    <span className="mr-2">
+                      <IoLockOpenOutline />
+                    </span>{" "}
+                    <button
+                      onClick={handleRedirectToStore}
                       className="inline-flex items-center justify-between text-sm font-medium w-full hover:text-emerald-600"
                     >
                       {showingTranslateValue(
