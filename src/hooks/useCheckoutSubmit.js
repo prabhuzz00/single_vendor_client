@@ -133,6 +133,7 @@ const useCheckoutSubmit = (storeSetting) => {
         address: data.address,
         country: data.country,
         city: data.city,
+        state: data.state || "",
         zipCode: data.zipCode,
       };
 
@@ -190,19 +191,23 @@ const useCheckoutSubmit = (storeSetting) => {
               name: orderInfo.user_info.name,
               address1: orderInfo.user_info.address,
               city: orderInfo.user_info.city,
-              province: orderInfo.user_info.country, // Or state if you have it
+              province: orderInfo.user_info.state || "", // Use state if available, otherwise empty
               postalCode: orderInfo.user_info.zipCode,
               country: orderInfo.user_info.country,
               phone: orderInfo.user_info.contact,
               email: orderInfo.user_info.email,
             },
-            parcels: items.map((item) => ({
-              weight: item.weight || 0.5,
-              length: item.length || 10,
-              width: item.width || 10,
-              height: item.height || 5,
-              quantity: item.quantity || 1,
-            })),
+            parcels: items.map((item) => {
+              const parcel = {
+                quantity: item.quantity || 1,
+              };
+              // Only include dimensions if they exist, otherwise let backend apply defaults
+              if (item.weight || item.productWeight) parcel.weight = item.weight || item.productWeight;
+              if (item.length) parcel.length = item.length;
+              if (item.width) parcel.width = item.width;
+              if (item.height) parcel.height = item.height;
+              return parcel;
+            }),
             reference: `Order-${orderResponse._id}`,
           };
 
@@ -370,6 +375,7 @@ const useCheckoutSubmit = (storeSetting) => {
       destination = {
         address: values?.address,
         city: values?.city,
+        state: values?.state,
         zipCode: values?.zipCode,
         country: values?.country,
       };
@@ -395,20 +401,20 @@ const useCheckoutSubmit = (storeSetting) => {
 
       const parcels = [];
       items.forEach((item, idx) => {
-        const quantity = item.quantity || 1;
-        // Weight is per-item in GRAMS - convert to kg (1g = 0.001kg)
-        // If product doesn't have weight, assume 1 gram per item (extremely light)
-        const itemWeightInGrams = item.weight || 1; // 1 gram per item as default
-        const itemWeightInKg = itemWeightInGrams / 1000; // Convert to kg
-        const itemLength = item.length || 10;
-        const itemWidth = item.width || 10;
-        const itemHeight = item.height || 5;
+        const quantity = item.quantity;
+        
+        // Get weight from product or use undefined to let backend apply defaults
+        // Weight might be in grams or kg depending on product data
+        const itemWeight = item.weight || item.productWeight || undefined;
+        const itemLength = item.length || item.productLength || undefined;
+        const itemWidth = item.width || item.productWidth || undefined;
+        const itemHeight = item.height || item.productHeight || undefined;
 
         console.log(`Item ${idx}:`, {
           title: item.title || item.name,
           quantity: quantity,
-          weightPerItem_grams: itemWeightInGrams,
-          weightPerItem_kg: itemWeightInKg,
+          weight: itemWeight,
+          dimensions: `${itemLength}x${itemWidth}x${itemHeight}`,
           isCustomProduct: item.isCustomProduct || false,
         });
 
@@ -421,25 +427,28 @@ const useCheckoutSubmit = (storeSetting) => {
           for (let i = 0; i < numParcels; i++) {
             const parcelQuantity =
               i < remainder ? baseQuantity + 1 : baseQuantity;
-            parcels.push({
-              weight: itemWeightInKg,
-              length: itemLength,
-              width: itemWidth,
-              height: itemHeight,
-              quantity: parcelQuantity,
-            });
+            
+            // Build parcel object, only include properties with valid values
+            const parcel = { quantity: parcelQuantity };
+            if (itemWeight !== undefined && itemWeight !== null) parcel.weight = itemWeight;
+            if (itemLength !== undefined && itemLength !== null) parcel.length = itemLength;
+            if (itemWidth !== undefined && itemWidth !== null) parcel.width = itemWidth;
+            if (itemHeight !== undefined && itemHeight !== null) parcel.height = itemHeight;
+            
+            parcels.push(parcel);
           }
           console.log(
             `Split item into ${numParcels} parcels of max ${MAX_ITEMS_PER_PARCEL} items each`,
           );
         } else {
-          parcels.push({
-            weight: itemWeightInKg,
-            length: itemLength,
-            width: itemWidth,
-            height: itemHeight,
-            quantity: quantity,
-          });
+          // Build parcel object, only include properties with valid values
+          const parcel = { quantity: quantity };
+          if (itemWeight !== undefined && itemWeight !== null) parcel.weight = itemWeight;
+          if (itemLength !== undefined && itemLength !== null) parcel.length = itemLength;
+          if (itemWidth !== undefined && itemWidth !== null) parcel.width = itemWidth;
+          if (itemHeight !== undefined && itemHeight !== null) parcel.height = itemHeight;
+          
+          parcels.push(parcel);
         }
       });
 

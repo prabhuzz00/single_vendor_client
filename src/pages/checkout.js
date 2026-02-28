@@ -240,6 +240,22 @@ const Checkout = () => {
                           register={register}
                           label={
                             <>
+                              State/Province
+                              <span className="text-red-500 ml-1">*</span>
+                            </>
+                          }
+                          name="state"
+                          type="text"
+                          placeholder="ON"
+                        />
+                        <Error errorName={errors.state} />
+                      </div>
+
+                      <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+                        <InputArea
+                          register={register}
+                          label={
+                            <>
                               {showingTranslateValue(
                                 storeCustomizationSetting?.checkout?.country,
                               )}
