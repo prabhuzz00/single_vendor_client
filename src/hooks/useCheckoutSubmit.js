@@ -202,7 +202,8 @@ const useCheckoutSubmit = (storeSetting) => {
                 quantity: item.quantity || 1,
               };
               // Only include dimensions if they exist, otherwise let backend apply defaults
-              if (item.weight || item.productWeight) parcel.weight = item.weight || item.productWeight;
+              if (item.weight || item.productWeight)
+                parcel.weight = item.weight || item.productWeight;
               if (item.length) parcel.length = item.length;
               if (item.width) parcel.width = item.width;
               if (item.height) parcel.height = item.height;
@@ -402,21 +403,42 @@ const useCheckoutSubmit = (storeSetting) => {
       const parcels = [];
       items.forEach((item, idx) => {
         const quantity = item.quantity;
-        
-        // Get weight from product or use undefined to let backend apply defaults
-        // Weight might be in grams or kg depending on product data
-        const itemWeight = item.weight || item.productWeight || undefined;
-        const itemLength = item.length || item.productLength || undefined;
-        const itemWidth = item.width || item.productWidth || undefined;
-        const itemHeight = item.height || item.productHeight || undefined;
+
+        // Get weight from product - NO DEFAULTS, must be configured
+        const itemWeight = item.weight || item.productWeight;
+        const itemLength = item.length || item.productLength;
+        const itemWidth = item.width || item.productWidth;
+        const itemHeight = item.height || item.productHeight;
 
         console.log(`Item ${idx}:`, {
           title: item.title || item.name,
           quantity: quantity,
           weight: itemWeight,
           dimensions: `${itemLength}x${itemWidth}x${itemHeight}`,
-          isCustomProduct: item.isCustomProduct || false,
+          isCustomProduct: item.customData?.isCustomProduct || false,
         });
+
+        // Validate that item has shipping properties configured
+        if (!itemWeight || itemWeight <= 0) {
+          throw new Error(
+            `Item "${item.title || item.name}" is missing weight configuration. Please contact admin.`,
+          );
+        }
+        if (!itemLength || itemLength <= 0) {
+          throw new Error(
+            `Item "${item.title || item.name}" is missing length configuration. Please contact admin.`,
+          );
+        }
+        if (!itemWidth || itemWidth <= 0) {
+          throw new Error(
+            `Item "${item.title || item.name}" is missing width configuration. Please contact admin.`,
+          );
+        }
+        if (!itemHeight || itemHeight <= 0) {
+          throw new Error(
+            `Item "${item.title || item.name}" is missing height configuration. Please contact admin.`,
+          );
+        }
 
         // If quantity exceeds limit, split into multiple parcels
         if (quantity > MAX_ITEMS_PER_PARCEL) {
@@ -427,27 +449,31 @@ const useCheckoutSubmit = (storeSetting) => {
           for (let i = 0; i < numParcels; i++) {
             const parcelQuantity =
               i < remainder ? baseQuantity + 1 : baseQuantity;
-            
-            // Build parcel object, only include properties with valid values
-            const parcel = { quantity: parcelQuantity };
-            if (itemWeight !== undefined && itemWeight !== null) parcel.weight = itemWeight;
-            if (itemLength !== undefined && itemLength !== null) parcel.length = itemLength;
-            if (itemWidth !== undefined && itemWidth !== null) parcel.width = itemWidth;
-            if (itemHeight !== undefined && itemHeight !== null) parcel.height = itemHeight;
-            
+
+            // Include all shipping properties (validated above)
+            const parcel = {
+              quantity: parcelQuantity,
+              weight: itemWeight,
+              length: itemLength,
+              width: itemWidth,
+              height: itemHeight,
+            };
+
             parcels.push(parcel);
           }
           console.log(
             `Split item into ${numParcels} parcels of max ${MAX_ITEMS_PER_PARCEL} items each`,
           );
         } else {
-          // Build parcel object, only include properties with valid values
-          const parcel = { quantity: quantity };
-          if (itemWeight !== undefined && itemWeight !== null) parcel.weight = itemWeight;
-          if (itemLength !== undefined && itemLength !== null) parcel.length = itemLength;
-          if (itemWidth !== undefined && itemWidth !== null) parcel.width = itemWidth;
-          if (itemHeight !== undefined && itemHeight !== null) parcel.height = itemHeight;
-          
+          // Include all shipping properties (validated above)
+          const parcel = {
+            quantity: quantity,
+            weight: itemWeight,
+            length: itemLength,
+            width: itemWidth,
+            height: itemHeight,
+          };
+
           parcels.push(parcel);
         }
       });
@@ -463,7 +489,36 @@ const useCheckoutSubmit = (storeSetting) => {
           country: destination.country,
         },
         parcels: parcels,
+        items: items.map((item) => {
+          const quantity = Number(item.quantity) || 1;
+          const unitPrice = Number(item.price) || 0;
+          const totalPrice = +(unitPrice * quantity).toFixed(2);
+
+          console.log("[useCheckoutSubmit] Mapping item:", {
+            title: item.title || item.name,
+            quantity,
+            unitPrice,
+            totalPrice,
+            rawPrice: item.price,
+          });
+
+          return {
+            description: item.title || item.name || "Product",
+            name: item.title || item.name,
+            sku: item.sku || item.id,
+            quantity: quantity,
+            price: unitPrice,
+            // Send total item price in `value` (client-side requirement). Backend will convert to unit price for Stallion.
+            value: totalPrice,
+            country_of_origin: "CA",
+          };
+        }),
       };
+
+      console.log(
+        "[useCheckoutSubmit] Rate payload:",
+        JSON.stringify(ratePayload, null, 2),
+      );
 
       const response = await ShippingServices.getRates(ratePayload);
 
@@ -512,7 +567,13 @@ const useCheckoutSubmit = (storeSetting) => {
       }
     } catch (error) {
       console.error("Failed to fetch shipping rates:", error);
-      notifyError("Failed to load shipping rates. Please try again.");
+
+      // Show specific validation errors or generic error
+      const errorMessage =
+        error.message || "Failed to load shipping rates. Please try again.";
+      notifyError(errorMessage);
+
+      setShippingRates([]);
     } finally {
       setIsLoadingRates(false);
     }
@@ -567,8 +628,12 @@ const useCheckoutSubmit = (storeSetting) => {
 
     try {
       const coupons = await CouponServices.getShowingCoupons();
+      const enteredCode = couponRef.current.value
+        .replace(/\s+/g, "")
+        .toUpperCase();
       const result = coupons.filter(
-        (coupon) => coupon.couponCode === couponRef.current.value,
+        (coupon) =>
+          coupon.couponCode.replace(/\s+/g, "").toUpperCase() === enteredCode,
       );
       setIsCouponAvailable(false);
 

@@ -253,6 +253,30 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
         return;
       }
 
+      // Validate that tier has weight and dimensions configured
+      console.log(
+        "[Product Page] Validating tier for add to cart:",
+        selectedTier,
+      );
+
+      const missingProperties = [];
+      if (!selectedTier.weight || selectedTier.weight <= 0)
+        missingProperties.push("weight (lbs)");
+      if (!selectedTier.length || selectedTier.length <= 0)
+        missingProperties.push("length (inches)");
+      if (!selectedTier.width || selectedTier.width <= 0)
+        missingProperties.push("width (inches)");
+      if (!selectedTier.height || selectedTier.height <= 0)
+        missingProperties.push("height (inches)");
+
+      if (missingProperties.length > 0) {
+        notifyError(
+          `Product shipping properties missing: ${missingProperties.join(", ")}. \n\n` +
+            `ADMIN: Configure in Admin Panel → Products → Edit Product → Size Variants → Pricing Tiers → Shipping Properties`,
+        );
+        return;
+      }
+
       const { variants, categories, description, ...updatedProduct } = product;
 
       const newItem = {
@@ -271,12 +295,15 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
         },
         price: getNumber(selectedTier.finalPrice),
         originalPrice: getNumber(selectedTier.basePrice),
-        // Shipping data: weight should be in GRAMS (will be converted to kg in checkout)
-        // Default to 2 grams per sticker if not specified
-        weight: product.weight || 2,
-        length: product.length || 10,
-        width: product.width || 10,
-        height: product.height || 5,
+        // Shipping data from tier (stored in lbs and inches in database)
+        weight: selectedTier.weight,
+        productWeight: selectedTier.weight,
+        length: selectedTier.length,
+        productLength: selectedTier.length,
+        width: selectedTier.width,
+        productWidth: selectedTier.width,
+        height: selectedTier.height,
+        productHeight: selectedTier.height,
         quantity: selectedTier.quantity,
       };
 
@@ -601,6 +628,36 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
 
   const CreateYourOwnStickerButton = () => {
     const handleContinue = () => {
+      // Validate tier has required shipping properties before navigation
+      if (!selectedTier) {
+        notifyError("Please select a quantity tier first");
+        return;
+      }
+
+      console.log(
+        "[Product Page] Selected Tier for Custom Sticker:",
+        selectedTier,
+      );
+
+      // Check if tier has shipping properties configured
+      const missingProperties = [];
+      if (!selectedTier.weight || selectedTier.weight <= 0)
+        missingProperties.push("weight");
+      if (!selectedTier.length || selectedTier.length <= 0)
+        missingProperties.push("length");
+      if (!selectedTier.width || selectedTier.width <= 0)
+        missingProperties.push("width");
+      if (!selectedTier.height || selectedTier.height <= 0)
+        missingProperties.push("height");
+
+      if (missingProperties.length > 0) {
+        notifyError(
+          `Product shipping properties not configured: ${missingProperties.join(", ")}. ` +
+            `Please configure these in Admin Panel → Products → Edit Product → Size Variants → Pricing Tiers → Shipping Properties (Weight: lbs, Dimensions: inches)`,
+        );
+        return;
+      }
+
       // Prepare product data to pass to custom sticker page
       const productDataToPass = {
         id: product._id,
@@ -614,6 +671,13 @@ const ProductScreen = ({ product, attributes, relatedProducts }) => {
         selectedTier: selectedTier,
         image: selectedImage || product.image?.[0],
       };
+
+      console.log("[Product Page] Passing to Custom Sticker:", {
+        tierWeight: selectedTier.weight,
+        tierLength: selectedTier.length,
+        tierWidth: selectedTier.width,
+        tierHeight: selectedTier.height,
+      });
 
       // Encode product data and navigate
       const encodedData = encodeURIComponent(JSON.stringify(productDataToPass));

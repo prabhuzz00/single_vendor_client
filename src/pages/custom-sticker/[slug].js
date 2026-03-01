@@ -7,6 +7,7 @@ import { FiUpload, FiShoppingCart, FiArrowRight } from "react-icons/fi";
 import Layout from "@layout/Layout";
 import { notifySuccess, notifyError } from "@utils/toast";
 import useUtilsFunction from "@hooks/useUtilsFunction";
+import ProductServices from "@services/ProductServices";
 
 const CustomStickerDesign = () => {
   const router = useRouter();
@@ -33,7 +34,7 @@ const CustomStickerDesign = () => {
     const fetchCloudinaryConfig = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/setting/cloudinary/config`
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/setting/cloudinary/config`,
         );
         if (response.ok) {
           const config = await response.json();
@@ -41,7 +42,7 @@ const CustomStickerDesign = () => {
         } else {
           console.error("Cloudinary config not available");
           notifyError(
-            "Cloudinary configuration not enabled. Please contact admin."
+            "Cloudinary configuration not enabled. Please contact admin.",
           );
         }
       } catch (error) {
@@ -54,15 +55,82 @@ const CustomStickerDesign = () => {
 
   useEffect(() => {
     if (router.query.productData) {
-      try {
-        const data = JSON.parse(decodeURIComponent(router.query.productData));
-        setProductData(data);
-        setQuantity(data.quantity || 1);
-      } catch (error) {
-        console.error("Error parsing product data:", error);
-        notifyError("Invalid product data");
-        router.push("/");
-      }
+      (async () => {
+        try {
+          const data = JSON.parse(decodeURIComponent(router.query.productData));
+          console.log("[Custom Sticker] Received Product Data:", data);
+
+          // If selectedTier missing shipping props, fetch full product from API and merge
+          const tier = data.selectedTier || null;
+          let mergedTier = tier;
+
+          const missingShipping =
+            !tier ||
+            !tier.weight ||
+            !tier.length ||
+            !tier.width ||
+            !tier.height;
+
+          if (missingShipping && data.slug) {
+            try {
+              const res = await ProductServices.getProductBySlug(data.slug);
+              // response might be product directly or wrapped
+              const productFromApi = res && (res.product || res.data || res);
+              console.log(
+                "[Custom Sticker] Fetched product from API:",
+                productFromApi?.slug || productFromApi?.title || productFromApi,
+              );
+
+              if (productFromApi && productFromApi.variants) {
+                // find size variant by combination string
+                const sizeVariant = productFromApi.variants.find(
+                  (v) =>
+                    v.variantType === "size" &&
+                    v.combination === data.selectedSize,
+                );
+
+                if (sizeVariant && Array.isArray(sizeVariant.pricingTiers)) {
+                  // attempt to match tier by quantity, then by price as fallback
+                  let matched = sizeVariant.pricingTiers.find(
+                    (t) => Number(t.quantity) === Number(tier?.quantity),
+                  );
+                  if (!matched && tier) {
+                    matched = sizeVariant.pricingTiers.find(
+                      (t) => Number(t.finalPrice) === Number(tier.finalPrice),
+                    );
+                  }
+                  if (matched) {
+                    mergedTier = { ...tier, ...matched };
+                    console.log(
+                      "[Custom Sticker] Merged tier shipping properties from API:",
+                      {
+                        weight: mergedTier.weight,
+                        length: mergedTier.length,
+                        width: mergedTier.width,
+                        height: mergedTier.height,
+                      },
+                    );
+                  }
+                }
+              }
+            } catch (fetchError) {
+              console.warn(
+                "[Custom Sticker] Failed to fetch product details:",
+                fetchError,
+              );
+            }
+          }
+
+          // set data with merged tier (if applicable)
+          const finalData = { ...data, selectedTier: mergedTier };
+          setProductData(finalData);
+          setQuantity(finalData.quantity || 1);
+        } catch (error) {
+          console.error("Error parsing product data:", error);
+          notifyError("Invalid product data");
+          router.push("/");
+        }
+      })();
     }
   }, [router.query]);
 
@@ -177,9 +245,51 @@ const CustomStickerDesign = () => {
       return;
     }
 
+    // Validate that tier has weight and dimensions configured
+    if (!productData.selectedTier) {
+      notifyError(
+        "Product tier information missing. Please select product again.",
+      );
+      return;
+    }
+
+    console.log(
+      "[Custom Sticker] Validating tier before add to cart:",
+      productData.selectedTier,
+    );
+
+    const missingProperties = [];
+    if (
+      !productData.selectedTier.weight ||
+      productData.selectedTier.weight <= 0
+    )
+      missingProperties.push("weight (lbs)");
+    if (
+      !productData.selectedTier.length ||
+      productData.selectedTier.length <= 0
+    )
+      missingProperties.push("length (inches)");
+    if (!productData.selectedTier.width || productData.selectedTier.width <= 0)
+      missingProperties.push("width (inches)");
+    if (
+      !productData.selectedTier.height ||
+      productData.selectedTier.height <= 0
+    )
+      missingProperties.push("height (inches)");
+
+    if (missingProperties.length > 0) {
+      notifyError(
+        `Product shipping properties missing: ${missingProperties.join(", ")}. \n\n` +
+          `ADMIN: Go to Products → Edit "${productData.title}" → Size Variants Tab → ` +
+          `Find your size variant → Edit Pricing Tier → Scroll to "Shipping Properties" section → ` +
+          `Fill in Weight (lbs) and Dimensions (inches) → Save Product`,
+      );
+      return;
+    }
+
     // Check if user is authenticated
     if (!session) {
-      // Save item to cart first
+      // Save item to cart first (validation passed, so tier has all properties)
       const customProduct = {
         id: `custom-${productData.id}-${Date.now()}`,
         title: productData.title,
@@ -187,6 +297,15 @@ const CustomStickerDesign = () => {
         price: productData.price,
         image: cloudinaryUrl,
         quantity: quantity,
+        // Include shipping properties from tier (stored in lbs and inches)
+        weight: productData.selectedTier.weight,
+        productWeight: productData.selectedTier.weight,
+        length: productData.selectedTier.length,
+        productLength: productData.selectedTier.length,
+        width: productData.selectedTier.width,
+        productWidth: productData.selectedTier.width,
+        height: productData.selectedTier.height,
+        productHeight: productData.selectedTier.height,
         customData: {
           productId: productData.id,
           selectedSize: productData.selectedSize,
@@ -212,6 +331,15 @@ const CustomStickerDesign = () => {
       price: productData.price,
       image: cloudinaryUrl, // Use Cloudinary URL instead of base64
       quantity: quantity,
+      // Include shipping properties from tier (stored in lbs and inches) - NO DEFAULTS
+      weight: productData.selectedTier.weight,
+      productWeight: productData.selectedTier.weight,
+      length: productData.selectedTier.length,
+      productLength: productData.selectedTier.length,
+      width: productData.selectedTier.width,
+      productWidth: productData.selectedTier.width,
+      height: productData.selectedTier.height,
+      productHeight: productData.selectedTier.height,
       customData: {
         productId: productData.id,
         selectedSize: productData.selectedSize,
@@ -339,28 +467,12 @@ const CustomStickerDesign = () => {
                     Quantity
                   </h2>
                   <div className="flex items-center space-x-4">
-                    <button
-                      onClick={() => handleQuantityChange(-1)}
-                      disabled={quantity <= 1}
-                      className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-yellow-400 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      -
-                    </button>
                     <input
                       type="number"
                       value={quantity}
-                      onChange={(e) => {
-                        const val = parseInt(e.target.value);
-                        if (val >= 1) setQuantity(val);
-                      }}
-                      className="w-20 text-center border-2 border-gray-300 rounded-lg px-4 py-2 font-semibold"
+                      readOnly
+                      className="w-20 text-center border-2 border-gray-300 rounded-lg px-4 py-2 font-semibold bg-gray-50 cursor-default"
                     />
-                    <button
-                      onClick={() => handleQuantityChange(1)}
-                      className="w-10 h-10 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-yellow-400 transition-all"
-                    >
-                      +
-                    </button>
                   </div>
                 </div>
               </div>

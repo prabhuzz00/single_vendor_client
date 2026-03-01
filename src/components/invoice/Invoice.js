@@ -200,9 +200,19 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
                 <span className="mb-1 font-semibold text-sm text-gray-600">
                   Tracking Number
                 </span>
-                <span className="text-sm font-semibold text-emerald-600">
-                  {data.shipment.trackingId}
-                </span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-sm font-semibold text-emerald-600">
+                    {data.shipment.trackingId}
+                  </span>
+                  <a
+                    href={`https://intelcom.ca/en/track-your-package/?tracking-id=${data.shipment.trackingId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-blue-600 hover:text-blue-800 underline"
+                  >
+                    Track your package here
+                  </a>
+                </div>
               </div>
               <div className="flex flex-col">
                 <span className="mb-1 font-semibold text-sm text-gray-600">

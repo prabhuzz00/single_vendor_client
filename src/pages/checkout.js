@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { CardElement, Elements } from "@stripe/react-stripe-js";
@@ -8,10 +8,13 @@ import {
   IoArrowForward,
   IoBagHandle,
   IoWalletSharp,
+  IoCloseCircle,
 } from "react-icons/io5";
 import { useQuery } from "@tanstack/react-query";
 import { ImCreditCard } from "react-icons/im";
 import useTranslation from "next-translate/useTranslation";
+import dayjs from "dayjs";
+import Cookies from "js-cookie";
 
 //internal import
 
@@ -28,18 +31,49 @@ import useUtilsFunction from "@hooks/useUtilsFunction";
 import SettingServices from "@services/SettingServices";
 import SwitchToggle from "@components/form/SwitchToggle";
 import getStripe from "@lib/stripe";
+import CouponServices from "@services/CouponServices";
 
 const stripePromise = getStripe();
+
+const COUNTRIES = [
+  { code: "US", name: "United States" },
+  { code: "CA", name: "Canada" },
+  { code: "GB", name: "United Kingdom" },
+  { code: "AU", name: "Australia" },
+  { code: "NZ", name: "New Zealand" },
+  { code: "IE", name: "Ireland" },
+  { code: "DE", name: "Germany" },
+  { code: "FR", name: "France" },
+  { code: "IT", name: "Italy" },
+  { code: "ES", name: "Spain" },
+  { code: "NL", name: "Netherlands" },
+  { code: "BE", name: "Belgium" },
+  { code: "CH", name: "Switzerland" },
+  { code: "AT", name: "Austria" },
+  { code: "SE", name: "Sweden" },
+  { code: "NO", name: "Norway" },
+  { code: "DK", name: "Denmark" },
+  { code: "FI", name: "Finland" },
+  { code: "PL", name: "Poland" },
+  { code: "PT", name: "Portugal" },
+];
 
 const Checkout = () => {
   const { t } = useTranslation();
   const { storeCustomizationSetting } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
+  const [showAvailableCoupons, setShowAvailableCoupons] = useState(false);
 
   const { data: storeSetting } = useQuery({
     queryKey: ["storeSetting"],
     queryFn: async () => await SettingServices.getStoreSetting(),
     staleTime: 4 * 60 * 1000, // Api request after 4 minutes
+  });
+
+  const { data: availableCoupons = [], isLoading: loadingCoupons } = useQuery({
+    queryKey: ["availableCoupons"],
+    queryFn: async () => await CouponServices.getShowingCoupons(),
+    staleTime: 2 * 60 * 1000, // Cache for 2 minutes
   });
 
   const {
@@ -73,6 +107,33 @@ const Checkout = () => {
     fetchShippingRates,
     handleShippingRateSelection,
   } = useCheckoutSubmit(storeSetting);
+
+  const applyCouponDirectly = (coupon) => {
+    if (couponRef.current) {
+      couponRef.current.value = coupon.couponCode;
+      handleCouponCode({ preventDefault: () => {} });
+      setShowAvailableCoupons(false);
+    }
+  };
+
+  const removeCoupon = () => {
+    Cookies.remove("couponInfo");
+    if (couponRef.current) {
+      couponRef.current.value = "";
+    }
+    window.location.reload();
+  };
+
+  const getApplicableCoupons = () => {
+    if (!availableCoupons || availableCoupons.length === 0) return [];
+    return availableCoupons.filter((coupon) => {
+      const isValid = dayjs().isBefore(dayjs(coupon.endTime));
+      const meetsMinimum = cartTotal >= coupon.minimumAmount;
+      return isValid && meetsMinimum;
+    });
+  };
+
+  const applicableCoupons = getApplicableCoupons();
 
   return (
     <>
@@ -252,20 +313,23 @@ const Checkout = () => {
                       </div>
 
                       <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                        <InputArea
-                          register={register}
-                          label={
-                            <>
-                              {showingTranslateValue(
-                                storeCustomizationSetting?.checkout?.country,
-                              )}
-                              <span className="text-red-500 ml-1">*</span>
-                            </>
-                          }
-                          name="country"
-                          type="text"
-                          placeholder="United States"
-                        />
+                        <label className="block text-gray-500 font-medium text-sm leading-none mb-2">
+                          {showingTranslateValue(
+                            storeCustomizationSetting?.checkout?.country,
+                          )}
+                          <span className="text-red-500 ml-1">*</span>
+                        </label>
+                        <select
+                          {...register("country", { required: true })}
+                          className="py-2 px-4 md:px-5 w-full appearance-none border text-sm opacity-75 text-input rounded-md placeholder-body min-h-12 transition duration-200 focus:ring-0 ease-in-out bg-white border-gray-200 focus:outline-none focus:border-emerald-500 h-11 md:h-12"
+                        >
+                          <option value="">Select Country</option>
+                          {COUNTRIES.map((country) => (
+                            <option key={country.code} value={country.code}>
+                              {country.code}
+                            </option>
+                          ))}
+                        </select>
                         <Error errorName={errors.country} />
                       </div>
 
@@ -517,47 +581,136 @@ const Checkout = () => {
                 <div className="flex items-center mt-4 py-4 lg:py-4 text-sm w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
                   <form className="w-full">
                     {couponInfo.couponCode ? (
-                      <span className="bg-yellow-50 px-4 py-3 leading-tight w-full rounded-lg flex justify-between">
-                        {" "}
-                        <p className="text-yellow-600">Coupon Applied </p>{" "}
-                        <span className="text-red-500 text-right">
-                          {couponInfo.couponCode}
-                        </span>
-                      </span>
-                    ) : (
-                      <div className="flex flex-col sm:flex-row items-start justify-end">
-                        <input
-                          ref={couponRef}
-                          type="text"
-                          placeholder={t("common:couponCode")}
-                          className="form-input py-2 px-3 md:px-4 w-full appearance-none transition ease-in-out border text-input text-sm rounded-lg h-12 duration-200 bg-white border-gray-300 focus:ring-0 focus:outline-none focus:border-yellow-600 placeholder-gray-500 placeholder-opacity-75"
-                        />
-                        {isCouponAvailable ? (
-                          <button
-                            disabled={isCouponAvailable}
-                            type="submit"
-                            className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-gray-300 rounded-lg placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 mt-3 sm:mt-0 sm:ml-3 md:mt-0 md:ml-3 lg:mt-0 lg:ml-3 hover:text-white hover:bg-black h-12 text-sm lg:text-base w-full sm:w-auto"
-                          >
-                            <img
-                              src="/loader/spinner.gif"
-                              alt="Loading"
-                              width={20}
-                              height={10}
-                            />
-                            <span className=" ml-2 font-light">Processing</span>
-                          </button>
-                        ) : (
-                          <button
-                            disabled={isCouponAvailable}
-                            onClick={handleCouponCode}
-                            className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-gray-300 rounded-lg placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 mt-3 sm:mt-0 sm:ml-3 md:mt-0 md:ml-3 lg:mt-0 lg:ml-3 hover:text-white hover:bg-black h-12 text-sm lg:text-base w-full sm:w-auto"
-                          >
-                            {showingTranslateValue(
-                              storeCustomizationSetting?.checkout?.apply_button,
-                            )}
-                          </button>
-                        )}
+                      <div className="bg-yellow-50 px-4 py-3 leading-tight w-full rounded-lg flex justify-between items-center">
+                        <div className="flex items-center">
+                          <p className="text-yellow-600 mr-2">
+                            Coupon Applied:
+                          </p>
+                          <span className="text-gray-800 font-bold">
+                            {couponInfo.couponCode}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={removeCoupon}
+                          className="flex items-center text-red-500 hover:text-red-700 transition-colors"
+                          title="Remove coupon"
+                        >
+                          <IoCloseCircle className="w-5 h-5" />
+                          <span className="ml-1 text-sm">Remove</span>
+                        </button>
                       </div>
+                    ) : (
+                      <>
+                        <div className="mb-3">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setShowAvailableCoupons(!showAvailableCoupons)
+                            }
+                            className="text-sm text-blue-600 hover:text-blue-800 underline font-medium"
+                          >
+                            {showAvailableCoupons ? "Hide" : "View"} Available
+                            Coupons ({applicableCoupons.length})
+                          </button>
+                        </div>
+
+                        {showAvailableCoupons && (
+                          <div className="mb-4 p-3 bg-gray-50 rounded-lg border border-gray-200 max-h-64 overflow-y-auto">
+                            {loadingCoupons ? (
+                              <p className="text-sm text-gray-500 text-center py-4">
+                                Loading coupons...
+                              </p>
+                            ) : applicableCoupons.length > 0 ? (
+                              <div className="space-y-2">
+                                {applicableCoupons.map((coupon) => (
+                                  <div
+                                    key={coupon._id}
+                                    className="bg-white p-3 rounded border border-gray-200 hover:border-yellow-400 transition-all cursor-pointer"
+                                    onClick={() => applyCouponDirectly(coupon)}
+                                  >
+                                    <div className="flex justify-between items-start">
+                                      <div className="flex-1">
+                                        <h4 className="font-bold text-sm text-gray-800">
+                                          {coupon.title?.en || "Coupon"}
+                                        </h4>
+                                        <p className="text-xs text-gray-600 mt-1">
+                                          Code:{" "}
+                                          <span className="font-semibold text-yellow-600">
+                                            {coupon.couponCode}
+                                          </span>
+                                        </p>
+                                        <p className="text-xs text-gray-500 mt-1">
+                                          {coupon.discountType?.type ===
+                                          "percentage"
+                                            ? `${coupon.discountType.value}% OFF`
+                                            : `${currency}${coupon.discountType?.value} OFF`}
+                                          {" • "}
+                                          Min: {currency}
+                                          {coupon.minimumAmount}
+                                        </p>
+                                        <p className="text-xs text-gray-400 mt-1">
+                                          Valid until{" "}
+                                          {dayjs(coupon.endTime).format(
+                                            "MMM DD, YYYY",
+                                          )}
+                                        </p>
+                                      </div>
+                                      <button
+                                        type="button"
+                                        className="ml-2 px-3 py-1 bg-yellow-500 text-white text-xs font-medium rounded hover:bg-yellow-600 transition-colors"
+                                      >
+                                        Apply
+                                      </button>
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              <p className="text-sm text-gray-500 text-center py-4">
+                                No coupons available for your order.
+                              </p>
+                            )}
+                          </div>
+                        )}
+
+                        <div className="flex flex-col sm:flex-row items-start justify-end">
+                          <input
+                            ref={couponRef}
+                            type="text"
+                            placeholder={t("common:couponCode")}
+                            className="form-input py-2 px-3 md:px-4 w-full appearance-none transition ease-in-out border text-input text-sm rounded-lg h-12 duration-200 bg-white border-gray-300 focus:ring-0 focus:outline-none focus:border-yellow-600 placeholder-gray-500 placeholder-opacity-75"
+                          />
+                          {isCouponAvailable ? (
+                            <button
+                              disabled={isCouponAvailable}
+                              type="submit"
+                              className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-gray-300 rounded-lg placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 mt-3 sm:mt-0 sm:ml-3 md:mt-0 md:ml-3 lg:mt-0 lg:ml-3 hover:text-white hover:bg-black h-12 text-sm lg:text-base w-full sm:w-auto"
+                            >
+                              <img
+                                src="/loader/spinner.gif"
+                                alt="Loading"
+                                width={20}
+                                height={10}
+                              />
+                              <span className=" ml-2 font-light">
+                                Processing
+                              </span>
+                            </button>
+                          ) : (
+                            <button
+                              disabled={isCouponAvailable}
+                              onClick={handleCouponCode}
+                              className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-gray-300 rounded-lg placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 mt-3 sm:mt-0 sm:ml-3 md:mt-0 md:ml-3 lg:mt-0 lg:ml-3 hover:text-white hover:bg-black h-12 text-sm lg:text-base w-full sm:w-auto"
+                            >
+                              {showingTranslateValue(
+                                storeCustomizationSetting?.checkout
+                                  ?.apply_button,
+                              )}
+                            </button>
+                          )}
+                        </div>
+                      </>
                     )}
                   </form>
                 </div>
@@ -594,8 +747,7 @@ const Checkout = () => {
                       storeCustomizationSetting?.checkout?.total_cost,
                     )}
                     <span className="font-serif font-extrabold text-lg">
-                      {currency}
-                      {parseFloat(total).toFixed(2)}
+                      ${parseFloat(total).toFixed(2)}
                     </span>
                   </div>
                 </div>

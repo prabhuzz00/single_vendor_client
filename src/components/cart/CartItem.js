@@ -1,17 +1,15 @@
 import { useContext } from "react";
 import Link from "next/link";
 import { useCart } from "react-use-cart";
-import { FiPlus, FiMinus, FiTrash2 } from "react-icons/fi";
+import { FiTrash2 } from "react-icons/fi";
 
-import useAddToCart from "@hooks/useAddToCart";
 import { SidebarContext } from "@context/SidebarContext";
 import Discount from "@components/common/Discount";
 import Price from "@components/common/Price";
 
 const CartItem = ({ item, currency }) => {
-  const { updateItemQuantity, removeItem } = useCart();
+  const { removeItem } = useCart();
   const { closeCartDrawer } = useContext(SidebarContext);
-  const { handleIncreaseQuantity } = useAddToCart();
 
   const hasDiscount = item.prices?.discount > 0;
   const categoryName = item.category?.name?.en || "Men";
@@ -20,14 +18,6 @@ const CartItem = ({ item, currency }) => {
   const itemTotal = itemPrice * itemQuantity;
   const originalPrice = item.originalPrice || 0;
   const originalTotal = originalPrice * itemQuantity;
-
-  const handleDecrease = () => {
-    updateItemQuantity(item.id, itemQuantity - 1);
-  };
-
-  const handleIncrease = () => {
-    handleIncreaseQuantity(item);
-  };
 
   const handleRemove = () => {
     removeItem(item.id);
@@ -74,24 +64,10 @@ const CartItem = ({ item, currency }) => {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <div className="flex items-center border border-gray-300 rounded-lg bg-white">
-              <button
-                onClick={handleDecrease}
-                className="p-1.5 sm:p-2 text-gray-500 hover:text-yellow-600 hover:bg-yellow-50 transition-colors"
-              >
-                <FiMinus className="w-3 h-3" />
-              </button>
-
-              <span className="px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold text-black min-w-[35px] sm:min-w-[40px] text-center">
-                {itemQuantity}
+            <div className="flex items-center border border-gray-300 rounded-lg bg-gray-50 px-3 py-2">
+              <span className="text-xs sm:text-sm font-semibold text-black">
+                Qty: {itemQuantity}
               </span>
-
-              <button
-                onClick={handleIncrease}
-                className="p-1.5 sm:p-2 text-gray-500 hover:text-yellow-600 hover:bg-yellow-50 transition-colors"
-              >
-                <FiPlus className="w-3 h-3" />
-              </button>
             </div>
 
             <button
