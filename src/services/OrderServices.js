@@ -28,6 +28,10 @@ const OrderServices = {
   sendEmailInvoiceToCustomer: async (body) => {
     return requests.post("/order/customer/invoice", body);
   },
+
+  requestCancelOrder: async (id, body) => {
+    return requests.put(`/order/${id}/cancel-request`, body || {});
+  },
 };
 
 export default OrderServices;
