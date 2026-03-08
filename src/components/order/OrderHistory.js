@@ -25,11 +25,17 @@ const OrderHistory = ({ order, currency }) => {
         {order.status === "Pending" && (
           <span className="text-orange-500">{order.status}</span>
         )}
-        {order.status === "Cancel" && (
+        {(order.status === "Cancel" || order.status === "Cancelled") && (
           <span className="text-red-500">{order.status}</span>
         )}
         {order.status === "Processing" && (
           <span className="text-indigo-500">{order.status}</span>
+        )}
+        {order.status === "Shipped" && (
+          <span className="text-blue-500">{order.status}</span>
+        )}
+        {order.status === "Refunded" && (
+          <span className="text-purple-500">{order.status}</span>
         )}
       </td>
       <td className="px-5 py-3 leading-6 text-center whitespace-nowrap">

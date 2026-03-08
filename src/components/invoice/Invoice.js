@@ -28,11 +28,17 @@ const Invoice = ({ data, printRef, globalSetting, currency }) => {
               {data.status === "Pending" && (
                 <span className="text-orange-500">{data.status}</span>
               )}
-              {data.status === "Cancel" && (
+              {(data.status === "Cancel" || data.status === "Cancelled") && (
                 <span className="text-red-500">{data.status}</span>
               )}
               {data.status === "Processing" && (
                 <span className="text-indigo-500">{data.status}</span>
+              )}
+              {data.status === "Shipped" && (
+                <span className="text-blue-500">{data.status}</span>
+              )}
+              {data.status === "Refunded" && (
+                <span className="text-purple-500">{data.status}</span>
               )}
               {data.status === "Deleted" && (
                 <span className="text-red-700">{data.status}</span>
