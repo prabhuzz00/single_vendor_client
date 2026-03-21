@@ -187,7 +187,11 @@ const useCheckoutSubmit = (storeSetting) => {
             orderId: orderResponse._id,
             service:
               selectedShippingRate?.service ||
-              selectedShippingRate?.serviceType,
+              selectedShippingRate?.serviceType ||
+              selectedShippingRate?.postage_type ||
+              selectedShippingRate?.postageType ||
+              selectedShippingRate?.name ||
+              "Stallion Economy",
             destination: {
               name: orderInfo.user_info.name,
               address1: orderInfo.user_info.address,
