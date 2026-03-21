@@ -217,7 +217,10 @@ const useCheckoutSubmit = (storeSetting) => {
             reference: `Order-${orderResponse._id}`,
           };
 
-          console.log("[Checkout] Sending shipment payload:", JSON.stringify(shipmentPayload, null, 2));
+          console.log(
+            "[Checkout] Sending shipment payload:",
+            JSON.stringify(shipmentPayload, null, 2),
+          );
           await ShippingServices.createShipment(shipmentPayload);
         } catch (shipmentError) {
           // Don't fail the order if shipment creation fails
