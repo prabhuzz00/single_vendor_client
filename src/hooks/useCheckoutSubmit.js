@@ -192,6 +192,14 @@ const useCheckoutSubmit = (storeSetting) => {
               selectedShippingRate?.postageType ||
               selectedShippingRate?.name ||
               "Stallion Economy",
+            // Include postage_type for direct calls to vendor API
+            postage_type:
+              selectedShippingRate?.postage_type ||
+              selectedShippingRate?.postageType ||
+              selectedShippingRate?.service ||
+              selectedShippingRate?.serviceType ||
+              selectedShippingRate?.name ||
+              "Stallion Economy",
             destination: {
               name: orderInfo.user_info.name,
               address1: orderInfo.user_info.address,
