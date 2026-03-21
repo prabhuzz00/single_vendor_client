@@ -545,7 +545,10 @@ const useCheckoutSubmit = (storeSetting) => {
 
         setShippingRates(ratesArray);
 
-        // Auto-select cheapest rate
+        // Do NOT auto-select a rate here. Let user explicitly pick a rate
+        // by clicking the radio button. We still log the cheapest option
+        // for debugging but avoid calling `setSelectedShippingRate` so the
+        // payload isn't sent prematurely.
         if (ratesArray && ratesArray.length > 0) {
           const cheapest = ratesArray.reduce((prev, curr) =>
             (prev.total || prev.rate || prev.cost) <
@@ -553,11 +556,8 @@ const useCheckoutSubmit = (storeSetting) => {
               ? prev
               : curr,
           );
-          console.log("Selected cheapest rate:", cheapest);
-          setSelectedShippingRate(cheapest);
-          setShippingCost(
-            Number(cheapest.total || cheapest.rate || cheapest.cost || 0),
-          );
+          console.log("Cheapest rate available (not auto-selected):", cheapest);
+          // NOTE: selection now happens only via `handleShippingRateSelection`
         } else {
           console.warn(
             "Rates array is empty. Possible reasons:",
