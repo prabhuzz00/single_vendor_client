@@ -186,8 +186,8 @@ const useCheckoutSubmit = (storeSetting) => {
           const shipmentPayload = {
             orderId: orderResponse._id,
             service:
-              selectedShippingRate.postage_type ||
-              selectedShippingRate.postage_type_id,
+              selectedShippingRate?.service ||
+              selectedShippingRate?.serviceType,
             destination: {
               name: orderInfo.user_info.name,
               address1: orderInfo.user_info.address,
