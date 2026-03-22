@@ -622,6 +622,7 @@ const useCheckoutSubmit = (storeSetting) => {
       // setValue("email", address.email);
       setValue("city", address.city);
       setValue("country", address.country);
+      setValue("state", address.state);
       setValue("zipCode", address.zipCode);
     } else {
       setValue("firstName");
@@ -631,6 +632,7 @@ const useCheckoutSubmit = (storeSetting) => {
       // setValue("email");
       setValue("city");
       setValue("country");
+      setValue("state");
       setValue("zipCode");
     }
   };

@@ -486,7 +486,7 @@ const Checkout = () => {
                         </div>
                       )}
 
-                      {/* {storeSetting?.razorpay_status && ( */}
+                      {/* RazorPay payment option temporarily disabled
                       <div className="">
                         <InputPayment
                           setShowCard={setShowCard}
@@ -497,7 +497,7 @@ const Checkout = () => {
                         />
                         <Error errorMessage={errors.paymentMethod} />
                       </div>
-                      {/* )} */}
+                      */}
                     </div>
                   </div>
 

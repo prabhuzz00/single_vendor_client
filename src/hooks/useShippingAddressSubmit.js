@@ -17,6 +17,7 @@ const useShippingAddressSubmit = (id) => {
     country: "",
     city: "",
     area: "",
+    state: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   // 'idle' | 'loading' | 'found' | 'partial' | 'not-found' | 'error'
@@ -96,6 +97,7 @@ const useShippingAddressSubmit = (id) => {
           country: matchedCountry.code,
           city: "",
           area: "",
+          state: addr?.state || addr?.state_district || "",
         }));
         setCities(matchedCountry.cities);
         setAreas([]);
@@ -123,7 +125,11 @@ const useShippingAddressSubmit = (id) => {
         );
 
         if (matchedArea) {
-          setSelectedValue((prev) => ({ ...prev, area: matchedArea }));
+          setSelectedValue((prev) => ({
+            ...prev,
+            area: matchedArea,
+            state: addr?.state || prev.state || "",
+          }));
           setZipLookupStatus("found");
         } else {
           setZipLookupStatus("partial"); // country + city matched
@@ -155,6 +161,7 @@ const useShippingAddressSubmit = (id) => {
           country: selectedValue.country,
           city: selectedValue.city,
           area: selectedValue.area,
+          state: data.state || selectedValue.state || "",
         },
       });
 
@@ -216,11 +223,13 @@ const useShippingAddressSubmit = (id) => {
       setValue("country", countryValue);
       setValue("city", data.city);
       setValue("area", data.area);
+      setValue("state", data.state);
       setValue("zipCode", data.zipCode);
       setSelectedValue({
         country: countryValue,
         city: data.city,
         area: data.area,
+        state: data.state || "",
       });
       setCities(matchedCountry ? matchedCountry.cities : [{ name: data.city }]);
       setAreas([data.area]);
